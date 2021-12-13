@@ -5,5 +5,5 @@
 (define scribblings '(("scribblings/racket-llvm13.scrbl" ())))
 (define pkg-desc "Description Here")
 (define version "0.0")
-(define pkg-authors '(linzizhuan))
+(define pkg-authors '(林子篆))
 (define license '(Apache-2.0 OR MIT))

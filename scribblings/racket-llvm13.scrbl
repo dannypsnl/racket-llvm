@@ -3,7 +3,7 @@
                     racket/base]]
 
 @title{racket-llvm13}
-@author{linzizhuan}
+@author{林子篆}
 
 @defmodule[racket-llvm13]
 
