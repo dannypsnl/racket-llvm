@@ -41,6 +41,7 @@
 (void (llvm-build-ret builder sum))
 
 (llvm-module-verify mod)
+(llvm-function-verify if-func)
 
 (displayln "before:")
 (display (llvm-module-to-string mod))

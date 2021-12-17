@@ -2,6 +2,7 @@
 
 (provide llvm-module
          llvm-module-verify
+         llvm-function-verify
          llvm-module-to-string
          llvm-add-function
          llvm-view-function-cfg
@@ -25,6 +26,13 @@
                                       -> (failure : _bool)
                                       -> (when failure (llvm-dispose-message err)))
   #:c-id LLVMVerifyModule)
+
+(define-llvm llvm-function-verify (_fun _LLVMValueRef
+                                        (_LLVMVerifierFailureAction = 'llvm-return-status-action)
+                                        (err : (_ptr o _string))
+                                        -> (failure : _bool)
+                                        -> (when failure (llvm-dispose-message err)))
+  #:c-id LLVMVerifyFunction)
 
 (define-llvm llvm-module-to-string (_fun _LLVMModuleRef -> _string)
   #:c-id LLVMPrintModuleToString)
