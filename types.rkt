@@ -13,6 +13,7 @@
 (define-llvm llvm-x86amx-type (_fun -> _LLVMTypeRef) #:c-id LLVMX86AMXType)
 
 (define-llvm llvm-int-type (_fun _int -> _LLVMTypeRef) #:c-id LLVMIntType)
+(define-llvm llvm-int1-type (_fun -> _LLVMTypeRef) #:c-id LLVMInt1Type)
 (define-llvm llvm-int8-type (_fun -> _LLVMTypeRef) #:c-id LLVMInt8Type)
 (define-llvm llvm-int16-type (_fun -> _LLVMTypeRef) #:c-id LLVMInt16Type)
 (define-llvm llvm-int32-type (_fun -> _LLVMTypeRef) #:c-id LLVMInt32Type)
