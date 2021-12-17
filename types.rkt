@@ -28,6 +28,13 @@
                                        -> _LLVMTypeRef)
   #:c-id LLVMFunctionType)
 
+(define-llvm llvm-struct-type (_fun ([element_types (list)] [pack? #f]) ::
+                                    (element_types : (_list i _LLVMTypeRef))
+                                    (_int = (length element_types))
+                                    (pack? : _bool)
+                                    -> _LLVMTypeRef)
+  #:c-id LLVMStructType)
+
 (define-llvm llvm-create-generic-value-of-int (_fun _LLVMTypeRef
                                                     _int ; value
                                                     _bool ; signed?
