@@ -47,13 +47,13 @@
 (display (llvm-module->string mod))
 
 ; let's do an optimization pass
-(define pm (llvm-pass-manager-create))
-(define pmb (llvm-pass-manager-builder-create))
-(llvm-pass-manager-builder-set-opt-level pmb 3)
-(llvm-pass-manager-builder-populate-module-pass-manager pmb pm)
+(define pass-manager (llvm-pass-manager-create))
+(define pass-manager-builder (llvm-pass-manager-builder-create))
+(llvm-pass-manager-builder-set-opt-level pass-manager-builder 3)
+(llvm-pass-manager-builder-populate-module-pass-manager pass-manager-builder pass-manager)
 
 (displayln "did the pass change anything?")
-(llvm-pass-manager-run pm mod)
+(llvm-pass-manager-run pass-manager mod)
 
 (displayln "after:")
 (display (llvm-module->string mod))
