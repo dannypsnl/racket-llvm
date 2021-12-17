@@ -48,5 +48,4 @@ jobs:
       - run: |
           export PATH=$PATH:${{ env.LLVM_PATH }}/bin
           raco pkg install --auto --skip-installed
-      - run: |
           raco test .
