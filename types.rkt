@@ -63,3 +63,12 @@
                                     (pack? : _bool)
                                     -> _LLVMTypeRef)
   #:c-id LLVMStructType)
+(define-llvm llvm-struct-create-named (_fun _LLVMContextRef _string -> _LLVMTypeRef)
+  #:c-id LLVMStructCreateNamed)
+(define-llvm llvm-struct-set-body (_fun (struct-ty [element_types (list)] [pack? #f]) ::
+                                        (struct-ty : _LLVMTypeRef)
+                                        (element_types : (_list i _LLVMTypeRef))
+                                        (_int = (length element_types))
+                                        (pack? : _bool)
+                                        -> _void)
+  #:c-id LLVMStructSetBody)

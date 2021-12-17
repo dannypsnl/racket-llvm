@@ -2,6 +2,7 @@
 
 (provide define-llvm
          _LLVMModuleRef
+         _LLVMContextRef
          _LLVMTypeRef
          _LLVMValueRef
          _LLVMBasicBlockRef
@@ -23,6 +24,7 @@
                                          #:get-lib-dirs get-llvm-lib-dir))
 
 (define _LLVMModuleRef (_cpointer 'LLVMOpaqueModule))
+(define _LLVMContextRef (_cpointer 'LLVMContextRef))
 (define _LLVMTypeRef (_cpointer 'LLVMOpaqueType))
 (define _LLVMValueRef (_cpointer 'LLVMOpaqueValue))
 (define _LLVMBasicBlockRef (_cpointer 'LLVMOpaqueBasicBlock))
