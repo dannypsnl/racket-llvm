@@ -222,9 +222,9 @@
                                   -> _LLVMValueRef)
   #:c-id LLVMBuildPhi)
 
-(define-llvm llvm-build-call2 (_fun (builder ty fn [args (list)] [name ""]) ::
+(define-llvm llvm-build-call2 (_fun (builder fn-ty fn args [name ""]) ::
                                     (builder : _LLVMBuilderRef)
-                                    (ty : _LLVMTypeRef)
+                                    (fn-ty : _LLVMTypeRef)
                                     (fn : _LLVMValueRef)
                                     (args : (_list i _LLVMValueRef))
                                     (_int = (length args))
