@@ -17,7 +17,7 @@
                                    "if"
                                    (llvm-function-type (llvm-int32-type))))
 
-(llvm-builder-position-at-end builder (llvm-append-basic-block if-func "entry"))
+(llvm-builder-position-at-end builder (llvm-append-basic-block if-func))
 
 (define cmp (llvm-build-int-cmp builder
                                 'int-eq
@@ -25,8 +25,8 @@
                                 (llvm-const-int (llvm-int32-type) 321)
                                 "equal"))
 
-(define then (llvm-append-basic-block if-func "then"))
-(define els (llvm-append-basic-block if-func "else"))
+(define then (llvm-append-basic-block if-func))
+(define els (llvm-append-basic-block if-func))
 
 (llvm-build-cond-br builder cmp then els)
 

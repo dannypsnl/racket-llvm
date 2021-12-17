@@ -5,8 +5,9 @@
 (require ffi/unsafe
          "definer.rkt")
 
-(define-llvm llvm-append-basic-block (_fun _LLVMValueRef
-                                           _string
+(define-llvm llvm-append-basic-block (_fun (fn [name ""]) ::
+                                           (fn : _LLVMValueRef)
+                                           (name : _string)
                                            -> _LLVMBasicBlockRef)
   #:c-id LLVMAppendBasicBlock)
 
@@ -262,7 +263,7 @@
     (define func-type (llvm-function-type (make-type) (list (make-type) (make-type))))
     (define func (llvm-add-function mod "" func-type))
 
-    (define entry (llvm-append-basic-block func ""))
+    (define entry (llvm-append-basic-block func))
     (llvm-builder-position-at-end builder entry)
     (llvm-build-ret builder (make-inst builder (llvm-get-param func 0) (llvm-get-param func 1)))
 
@@ -290,15 +291,15 @@
                        "func"
                        (llvm-function-type (llvm-int32-type))))
 
-  (define entry (llvm-append-basic-block func "entry"))
+  (define entry (llvm-append-basic-block func))
   (llvm-builder-position-at-end builder entry)
 
   (define x (llvm-const-int (llvm-int32-type) 42))
   (define y (llvm-const-int (llvm-int32-type) 16))
   (define cmp (llvm-build-int-cmp builder 'int-ugt x y "greaterThan"))
 
-  (define then (llvm-append-basic-block func "then"))
-  (define els (llvm-append-basic-block func "else"))
+  (define then (llvm-append-basic-block func))
+  (define els (llvm-append-basic-block func))
 
   (define cond-br (llvm-build-cond-br builder cmp then els))
 

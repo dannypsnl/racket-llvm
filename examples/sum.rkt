@@ -9,7 +9,7 @@
                                               (llvm-int32-type))))
 (define sum (llvm-add-function mod "sum" return-type))
 
-(define entry (llvm-append-basic-block sum ""))
+(define entry (llvm-append-basic-block sum))
 
 (define builder (llvm-builder-create))
 
