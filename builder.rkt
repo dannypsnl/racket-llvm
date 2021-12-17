@@ -1,23 +1,6 @@
 #lang racket
 
-(provide llvm-append-basic-block
-         llvm-builder-create
-         llvm-builder-position-at-end
-         llvm-get-param
-         ; control flow
-         llvm-build-ret
-         llvm-build-br
-         llvm-build-cond-br
-         _LLVMIntPredicate
-         ; compare
-         llvm-build-int-cmp
-         ; arithmetic
-         llvm-const-int
-         llvm-build-add
-         llvm-build-sub
-         llvm-build-mul
-         llvm-build-udiv
-         llvm-build-fadd)
+(provide (all-defined-out))
 
 (require ffi/unsafe
          "definer.rkt")
