@@ -107,6 +107,17 @@
 (define-llvm llvm-build-or binary-fun #:c-id LLVMBuildOr)
 (define-llvm llvm-build-xor binary-fun #:c-id LLVMBuildXor)
 
+(define unary-fun (_fun (builder v [name ""]) ::
+                        (builder : _LLVMBuilderRef)
+                        (v : _LLVMValueRef)
+                        (name : _string)
+                        -> _LLVMValueRef))
+(define-llvm llvm-build-neg unary-fun #:c-id LLVMBuildNeg)
+(define-llvm llvm-build-nswneg unary-fun #:c-id LLVMBuildNSWNeg)
+(define-llvm llvm-build-nuwneg unary-fun #:c-id LLVMBuildNUWNeg)
+(define-llvm llvm-build-fneg unary-fun #:c-id LLVMBuildFNeg)
+(define-llvm llvm-build-not unary-fun #:c-id LLVMBuildNot)
+
 (module+ test
   (require rackunit
            "module.rkt"
