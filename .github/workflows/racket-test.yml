@@ -26,12 +26,17 @@ jobs:
         racket-version: ["stable", "current"]
     steps:
       - uses: actions/checkout@master
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "13.0"
       - name: Cache installed packages
         uses: actions/cache@v2
         with:
           path: |
             ~/.cache/racket
             ~/.local/share/racket
+            ${{ env.LLVM_PATH }}
           key: ${{ runner.os }}-primes
       - name: Setup Racket
         uses: Bogdanp/setup-racket@v1.7
@@ -40,10 +45,6 @@ jobs:
           distribution: "minimal"
           variant: ${{ matrix.racket-variant }}
           version: ${{ matrix.racket-version }}
-      - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1
-        with:
-          version: "13.0"
       - run: |
           export PATH=$PATH:${{ env.LLVM_PATH }}/bin
           raco pkg install --auto --skip-installed
