@@ -267,7 +267,8 @@
     (llvm-builder-position-at-end builder entry)
     (llvm-build-ret builder (make-inst builder (llvm-get-param func 0) (llvm-get-param func 1)))
 
-    (check-equal? result (get-value (llvm-run-function eng func (map create-value (list rhs lhs))))))
+    (check-equal? (get-value (llvm-run-function eng func (map create-value (list rhs lhs))))
+                  result))
 
   (define (check-binary-int32-inst make-inst rhs lhs result)
     (check-binary-inst make-inst
@@ -281,42 +282,68 @@
                        llvm-float-type
                        (λ (x) (llvm-create-generic-value-of-float (llvm-float-type) x))
                        (λ (x) (llvm-generic-value-to-float (llvm-float-type) x))
-                       rhs lhs result)))
+                       rhs lhs result))
+
+  (define (check-unary-inst make-inst
+                            make-type
+                            create-value
+                            get-value
+                            v
+                            result)
+    (define builder (llvm-builder-create))
+    (define func-type (llvm-function-type (make-type) (list (make-type))))
+    (define func (llvm-add-function mod "" func-type))
+    (define entry (llvm-append-basic-block func))
+    (llvm-builder-position-at-end builder entry)
+    (llvm-build-ret builder (make-inst builder (llvm-get-param func 0)))
+    (check-equal? (get-value (llvm-run-function eng func (map create-value (list v))))
+                  result))
+
+  (define (check-unary-int-inst make-inst make-type v result)
+    (check-unary-inst make-inst
+                      make-type
+                      (λ (x) (llvm-create-generic-value-of-int (make-type) x #t))
+                      (λ (x) (llvm-generic-value-to-int x #t))
+                      v result))
+
+  (define (check-unary-float-inst make-inst make-type v result)
+    (check-unary-inst make-inst
+                      make-type
+                      (λ (x) (llvm-create-generic-value-of-float (make-type) x))
+                      (λ (x) (llvm-generic-value-to-float (make-type) x))
+                      v result)))
 (module+ test
-  ; if 42 > 16 then 1234 else 937
   (define builder (llvm-builder-create))
 
-  (define func
-    (llvm-add-function mod
-                       "func"
-                       (llvm-function-type (llvm-int32-type))))
-
-  (define entry (llvm-append-basic-block func))
-  (llvm-builder-position-at-end builder entry)
-
-  (define x (llvm-const-int (llvm-int32-type) 42))
-  (define y (llvm-const-int (llvm-int32-type) 16))
-  (define cmp (llvm-build-int-cmp builder 'int-ugt x y "greaterThan"))
-
-  (define then (llvm-append-basic-block func))
-  (define els (llvm-append-basic-block func))
-
-  (define cond-br (llvm-build-cond-br builder cmp then els))
-
-  (llvm-builder-position-at-end builder then)
-  (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 1234))
-
-  (llvm-builder-position-at-end builder els)
-  (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 937))
-
-  (define res (llvm-generic-value-to-int (llvm-run-function eng func (list)) #f))
-
-  (check-equal? 1234 res))
+  ; if 42 > 16 then 1234 else 937
+  (let* ([func (llvm-add-function mod "" (llvm-function-type (llvm-int32-type)))]
+         [entry (llvm-append-basic-block func)])
+    (llvm-builder-position-at-end builder entry)
+    (define then (llvm-append-basic-block func))
+    (define els (llvm-append-basic-block func))
+    (llvm-build-cond-br builder
+                        (llvm-build-int-cmp builder 'int-ugt
+                                            (llvm-const-int (llvm-int32-type) 42)
+                                            (llvm-const-int (llvm-int32-type) 16))
+                        then
+                        els)
+    (llvm-builder-position-at-end builder then)
+    (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 1234))
+    (llvm-builder-position-at-end builder els)
+    (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 937))
+    (check-equal? 1234 (llvm-generic-value-to-int (llvm-run-function eng func (list)) #f))))
 (module+ test
   (check-binary-int32-inst llvm-build-add 20 22 42)
   (check-binary-int32-inst llvm-build-sub 4321 321 4000)
   (check-binary-int32-inst llvm-build-mul 17 123 2091)
   (check-binary-int32-inst llvm-build-udiv 8 2 4)
   (check-binary-int32-inst llvm-build-udiv 57 7 8)
+  (check-binary-int32-inst llvm-build-lshr 4 2 1)
+  (check-binary-int32-inst llvm-build-shl 4 2 16)
   (check-binary-float-inst llvm-build-fadd 2.5 3.82 6.319999694824219)
-  (check-binary-float-inst llvm-build-fadd 2.5 -3.82 -1.3199999332427979))
+  (check-binary-float-inst llvm-build-fadd 2.5 -3.82 -1.3199999332427979)
+  (check-binary-float-inst llvm-build-frem 2.1 3.9 2.0999999046325684)
+  (check-unary-int-inst llvm-build-neg llvm-int32-type 1 -1)
+  (check-unary-int-inst llvm-build-not llvm-int1-type 1 0)
+  (check-unary-float-inst llvm-build-fneg llvm-float-type 1. -1.)
+  (check-unary-float-inst llvm-build-fneg llvm-float-type 2.1 -2.0999999046325684))
