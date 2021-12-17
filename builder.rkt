@@ -31,24 +31,31 @@
                                       -> _LLVMValueRef)
   #:c-id LLVMBuildCondBr)
 
+(define (cmp-fun pred)  (_fun (builder p lhs rhs [name ""]) ::
+                              (builder : _LLVMBuilderRef)
+                              (p : pred)
+                              (lhs : _LLVMValueRef)
+                              (rhs : _LLVMValueRef)
+                              (name : _string)
+                              -> _LLVMValueRef))
 (define _LLVMIntPredicate
-  (_enum '(llvm-int-eq = 32
-                       llvm-int-ne
-                       llvm-int-ugt
-                       llvm-int-uge
-                       llvm-int-ult
-                       llvm-int-ule
-                       llvm-int-sgt
-                       llvm-int-sge
-                       llvm-int-slt
-                       llvm-int-sle)))
-(define-llvm llvm-build-int-cmp (_fun _LLVMBuilderRef
-                                      _LLVMIntPredicate
-                                      _LLVMValueRef ; lhs
-                                      _LLVMValueRef ; rhs
-                                      _string ; name
-                                      -> _LLVMValueRef)
-  #:c-id LLVMBuildICmp)
+  (_enum '(int-eq = 32
+                  int-ne
+                  int-ugt
+                  int-uge
+                  int-ult
+                  int-ule
+                  int-sgt
+                  int-sge
+                  int-slt
+                  int-sle)))
+(define-llvm llvm-build-int-cmp (cmp-fun _LLVMIntPredicate) #:c-id LLVMBuildICmp)
+(define _LLVMRealPredicate
+  (_enum '(predicate-false
+           real-oeq real-ogt real-oge real-olt real-ole real-one real-ord
+           real-uno real-ueq real-ugt real-uge real-ult real-ule real-une
+           predicate-true)))
+(define-llvm llvm-build-float-cmp (cmp-fun _LLVMRealPredicate) #:c-id LLVMBuildFCmp)
 
 (define-llvm llvm-const-int (_fun (type value [sign-extend? #f]) ::
                                   (type : _LLVMTypeRef)
@@ -262,7 +269,7 @@
 
   (define x (llvm-const-int (llvm-int32-type) 42))
   (define y (llvm-const-int (llvm-int32-type) 16))
-  (define cmp (llvm-build-int-cmp builder 'llvm-int-ugt x y "greaterThan"))
+  (define cmp (llvm-build-int-cmp builder 'int-ugt x y "greaterThan"))
 
   (define then (llvm-append-basic-block func "then"))
   (define els (llvm-append-basic-block func "else"))
