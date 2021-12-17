@@ -42,6 +42,11 @@
                                      (addr-space : _LLVMAddressSpace)
                                      -> _LLVMTypeRef)
   #:c-id LLVMPointerType)
+(define-llvm llvm-array-type (_fun (element_type element_count) ::
+                                   (element_type : _LLVMTypeRef)
+                                   (element_count : _int)
+                                   -> _LLVMTypeRef)
+  #:c-id LLVMArrayType)
 
 (define-llvm llvm-function-type (_fun  (return-type [param-types (list)] [variadic? #f]) ::
                                        (return-type : _LLVMTypeRef)
