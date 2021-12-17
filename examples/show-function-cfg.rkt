@@ -9,7 +9,6 @@
 (define eng (llvm-create-execution-engine-for-module mod))
 
 (llvm-link-in-mcjit)
-(llvm-initialize-native-target)
 
 (define builder (llvm-builder-create))
 

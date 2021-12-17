@@ -1,7 +1,6 @@
 #lang racket
 
 (provide llvm-link-in-mcjit
-         llvm-initialize-native-target
          llvm-create-execution-engine-for-module
          llvm-run-function
          llvm-create-generic-value-of-int
@@ -16,11 +15,6 @@
 (define _LLVMExecutionEngineRef (_cpointer 'LLVMOpaqueExecutionEngine))
 
 (define-llvm llvm-link-in-mcjit (_fun -> _void) #:c-id LLVMLinkInMCJIT)
-
-(define-llvm llvm-initialize-native-target (_fun -> (result : _bool)
-                                                 -> (when result
-                                                      (error "Failed to initialize native target")))
-  #:c-id LLVMInitializeX86Target)
 
 (define-llvm llvm-create-execution-engine-for-module
   (_fun (eng : (_ptr o _LLVMExecutionEngineRef))
