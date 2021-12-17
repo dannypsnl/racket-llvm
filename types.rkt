@@ -27,6 +27,9 @@
 (define-llvm llvm-fp128-type (_fun -> _LLVMTypeRef) #:c-id LLVMFP128Type)
 (define-llvm llvm-ppcfp128-type (_fun -> _LLVMTypeRef) #:c-id LLVMPPCFP128Type)
 
+(define-llvm llvm-vector-type (_fun _LLVMTypeRef _int -> _LLVMTypeRef) #:c-id LLVMVectorType)
+(define-llvm llvm-scalable-vector-type (_fun _LLVMTypeRef _int -> _LLVMTypeRef) #:c-id LLVMScalableVectorType)
+
 (define ADDRESS_SPACE_GENERIC 0)
 (define ADDRESS_SPACE_GLOBAL 1)
 (define ADDRESS_SPACE_SHARED 3)
