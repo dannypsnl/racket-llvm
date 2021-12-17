@@ -181,6 +181,32 @@
 (define-llvm llvm-get-atomic-rmw-binop (get-fun _LLVMAtomicRMWBinOp) #:c-id LLVMGetAtomicRMWBinOp)
 (define-llvm llvm-set-atomic-rmw-binop (get-fun _LLVMAtomicRMWBinOp) #:c-id LLVMSetAtomicRMWBinOp)
 
+(define cast-fun (_fun (builder val dest-ty [name ""]) ::
+                       (builder : _LLVMBuilderRef)
+                       (val : _LLVMValueRef)
+                       (dest-ty : _LLVMTypeRef)
+                       (name : _string)
+                       -> _LLVMValueRef))
+(define-llvm llvm-build-trunc cast-fun #:c-id LLVMBuildTrunc)
+(define-llvm llvm-build-zext cast-fun #:c-id LLVMBuildZExt)
+(define-llvm llvm-build-sext cast-fun #:c-id LLVMBuildSExt)
+(define-llvm llvm-build-fp->ui cast-fun #:c-id LLVMBuildFPToUI)
+(define-llvm llvm-build-fp->si cast-fun #:c-id LLVMBuildFPToSI)
+(define-llvm llvm-build-ui->fp cast-fun #:c-id LLVMBuildUIToFP)
+(define-llvm llvm-build-si->fp cast-fun #:c-id LLVMBuildSIToFP)
+(define-llvm llvm-build-fp-trunc cast-fun #:c-id LLVMBuildFPTrunc)
+(define-llvm llvm-build-fp-ext cast-fun #:c-id LLVMBuildFPExt)
+(define-llvm llvm-build-ptr->int cast-fun #:c-id LLVMBuildPtrToInt)
+(define-llvm llvm-build-int->ptr cast-fun #:c-id LLVMBuildIntToPtr)
+(define-llvm llvm-build-bitcast cast-fun #:c-id LLVMBuildBitCast)
+(define-llvm llvm-build-addrspace-cast cast-fun #:c-id LLVMBuildAddrSpaceCast)
+(define-llvm llvm-build-zext-or-bitcast cast-fun #:c-id LLVMBuildZExtOrBitCast)
+(define-llvm llvm-build-sext-or-bitcast cast-fun #:c-id LLVMBuildSExtOrBitCast)
+(define-llvm llvm-build-trunc-or-bitcast cast-fun #:c-id LLVMBuildTruncOrBitCast)
+(define-llvm llvm-build-pointer-cast cast-fun #:c-id LLVMBuildPointerCast)
+(define-llvm llvm-build-fp-cast cast-fun #:c-id LLVMBuildFPCast)
+(define-llvm llvm-build-int-cast cast-fun #:c-id LLVMBuildIntCast)
+
 (module+ test
   (require rackunit
            "module.rkt"
