@@ -14,7 +14,13 @@
          "definer.rkt"
          "types.rkt"
          "error.rkt")
+(require scribble/srcdoc (for-doc scribble/manual ffi/unsafe racket/base))
 
+#;(provide (proc-doc/names
+            llvm-module (-> string? ctype?) (module-name)
+            ((racket llvm-module)
+             " returns a module, the core concept in LLVM."
+             " We puts global variables, functions, and type definitions in module.")))
 (define-llvm llvm-module (_fun _string -> _LLVMModuleRef)
   #:c-id LLVMModuleCreateWithName)
 
