@@ -53,13 +53,13 @@
            "types.rkt")
   (define mod (llvm-module "test_mod"))
   (define ft (llvm-function-type (llvm-int32-type)
-                                 (list (llvm-int32-type))
+                                 (list (llvm-pointer-type (llvm-int8-type)))
                                  #t))
   (define printf-fun (llvm-add-function mod "printf" ft))
   (check-equal? (llvm-module-to-string mod)
                 "; ModuleID = 'test_mod'
 source_filename = \"test_mod\"
 
-declare i32 @printf(i32, ...)
+declare i32 @printf(i8*, ...)
 ")
   )

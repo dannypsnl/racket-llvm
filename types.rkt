@@ -27,6 +27,18 @@
 (define-llvm llvm-fp128-type (_fun -> _LLVMTypeRef) #:c-id LLVMFP128Type)
 (define-llvm llvm-ppcfp128-type (_fun -> _LLVMTypeRef) #:c-id LLVMPPCFP128Type)
 
+(define ADDRESS_SPACE_GENERIC 0)
+(define ADDRESS_SPACE_GLOBAL 1)
+(define ADDRESS_SPACE_SHARED 3)
+(define ADDRESS_SPACE_CONST 4)
+(define ADDRESS_SPACE_LOCAL 5)
+(define ADDRESS_SPACE_PARAM 101)
+(define-llvm llvm-pointer-type (_fun (element_type [addr-space ADDRESS_SPACE_GENERIC]) ::
+                                     (element_type : _LLVMTypeRef)
+                                     (addr-space : _int)
+                                     -> _LLVMTypeRef)
+  #:c-id LLVMPointerType)
+
 (define-llvm llvm-function-type (_fun  (return-type [param-types (list)] [variadic? #f]) ::
                                        (return-type : _LLVMTypeRef)
                                        (param-types : (_list i _LLVMTypeRef))
