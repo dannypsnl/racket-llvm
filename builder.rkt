@@ -101,6 +101,86 @@
 (define-llvm llvm-build-fneg unary-fun #:c-id LLVMBuildFNeg)
 (define-llvm llvm-build-not unary-fun #:c-id LLVMBuildNot)
 
+(define allocation-fun (_fun (builder ty [name ""]) ::
+                             (builder : _LLVMBuilderRef)
+                             (ty : _LLVMTypeRef)
+                             (name : _string)
+                             -> _LLVMValueRef))
+(define-llvm llvm-build-malloc allocation-fun #:c-id LLVMBuildMalloc)
+(define-llvm llvm-build-alloca allocation-fun #:c-id LLVMBuildAlloca)
+(define array-allocation-fun (_fun (builder ty v [name ""]) ::
+                                   (builder : _LLVMBuilderRef)
+                                   (ty : _LLVMTypeRef)
+                                   (v : _LLVMValueRef)
+                                   (name : _string)
+                                   -> _LLVMValueRef))
+(define-llvm llvm-build-array-malloc allocation-fun #:c-id LLVMBuildArrayMalloc)
+(define-llvm llvm-build-array-alloca allocation-fun #:c-id LLVMBuildArrayAlloca)
+
+(define-llvm llvm-build-free (_fun _LLVMBuilderRef _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMBuildFree)
+
+(define-llvm llvm-build-load2 (_fun (builder ty pointer_val [name ""]) ::
+                                    (builder : _LLVMBuilderRef)
+                                    (ty : _LLVMTypeRef)
+                                    (pointer_val : _LLVMValueRef)
+                                    (name : _string)
+                                    -> _LLVMValueRef)
+  #:c-id LLVMBuildLoad2)
+(define-llvm llvm-build-store (_fun (builder val ptr) ::
+                                    (builder : _LLVMBuilderRef)
+                                    (val : _LLVMValueRef)
+                                    (ptr : _LLVMValueRef)
+                                    -> _LLVMValueRef)
+  #:c-id LLVMBuildStore)
+
+(define gep-fun (_fun (builder ty pointer indices [name ""]) ::
+                      (builder : _LLVMBuilderRef)
+                      (ty : _LLVMTypeRef)
+                      (pointer : _LLVMValueRef)
+                      (indices : (_list i _LLVMValueRef))
+                      (_int = (length indices))
+                      (name : _string)
+                      -> _LLVMValueRef))
+(define-llvm llvm-build-gep2 gep-fun #:c-id LLVMBuildGEP2)
+(define-llvm llvm-build-in-bounds-gep2 gep-fun #:c-id LLVMBuildInBoundsGEP2)
+(define-llvm llvm-build-struct-gep2 (_fun (builder ty pointer index [name ""]) ::
+                                          (builder : _LLVMBuilderRef)
+                                          (ty : _LLVMTypeRef)
+                                          (pointer : _LLVMValueRef)
+                                          (index : _int)
+                                          (name : _string)
+                                          -> _LLVMValueRef)
+  #:c-id LLVMBuildStructGEP2)
+
+(define build-string-fun (_fun (builder val [name ""]) ::
+                               (builder : _LLVMBuilderRef)
+                               (val : _string)
+                               (name : _string)
+                               -> _LLVMValueRef))
+(define-llvm llvm-build-string build-string-fun #:c-id LLVMBuildGlobalString)
+(define-llvm llvm-build-string-ptr build-string-fun #:c-id LLVMBuildGlobalStringPtr)
+
+(define (get-fun ty) (_fun _LLVMValueRef -> ty))
+(define (set-fun ty) (_fun _LLVMValueRef ty -> _void))
+(define-llvm llvm-get-volatile (get-fun _bool) #:c-id LLVMGetVolatile)
+(define-llvm llvm-set-volatile (get-fun _bool) #:c-id LLVMSetVolatile)
+(define-llvm llvm-get-weak (get-fun _bool) #:c-id LLVMGetWeak)
+(define-llvm llvm-set-weak (get-fun _bool) #:c-id LLVMSetWeak)
+(define _LLVMAtomicOrdering
+  (_enum '(not-atomic = 0
+                      unordered
+                      monotonic
+                      acquire = 4
+                      release
+                      acquire-release
+                      sequentially-consistent)))
+(define-llvm llvm-get-ordering (get-fun _LLVMAtomicOrdering) #:c-id LLVMGetOrdering)
+(define-llvm llvm-set-ordering (get-fun _LLVMAtomicOrdering) #:c-id LLVMSetOrdering)
+(define _LLVMAtomicRMWBinOp
+  (_enum '(xchg add sub and nand or xor max min umax umin fadd fsub)))
+(define-llvm llvm-get-atomic-rmw-binop (get-fun _LLVMAtomicRMWBinOp) #:c-id LLVMGetAtomicRMWBinOp)
+(define-llvm llvm-set-atomic-rmw-binop (get-fun _LLVMAtomicRMWBinOp) #:c-id LLVMSetAtomicRMWBinOp)
+
 (module+ test
   (require rackunit
            "module.rkt"
