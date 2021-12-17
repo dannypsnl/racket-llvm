@@ -4,11 +4,11 @@
          llvm-int64-type
          llvm-float-type
          llvm-double-type
+         llvm-function-type
          llvm-create-generic-value-of-int
          llvm-create-generic-value-of-float
          llvm-generic-value-to-int
-         llvm-generic-value-to-float
-         llvm-function-type)
+         llvm-generic-value-to-float)
 
 (require ffi/unsafe
          "definer.rkt")
@@ -24,6 +24,14 @@
 
 (define-llvm llvm-double-type (_fun -> _LLVMTypeRef)
   #:c-id LLVMDoubleType)
+
+(define-llvm llvm-function-type (_fun  (return-type [param-types (list)] [variadic? #f]) ::
+                                       (return-type : _LLVMTypeRef)
+                                       (param-types : (_list i _LLVMTypeRef))
+                                       (_int = (length param-types)) ; num params
+                                       (variadic? : _bool)
+                                       -> _LLVMTypeRef)
+  #:c-id LLVMFunctionType)
 
 (define-llvm llvm-create-generic-value-of-int (_fun _LLVMTypeRef
                                                     _int ; value
@@ -41,11 +49,3 @@
 
 (define-llvm llvm-generic-value-to-float (_fun _LLVMTypeRef _LLVMGenericValueRef -> _double)
   #:c-id LLVMGenericValueToFloat)
-
-(define-llvm llvm-function-type (_fun  (return-type [param-types (list)] [variadic? #f]) ::
-                                       (return-type : _LLVMTypeRef)
-                                       (param-types : (_list i _LLVMTypeRef))
-                                       (_int = (length param-types)) ; num params
-                                       (variadic? : _bool)
-                                       -> _LLVMTypeRef)
-  #:c-id LLVMFunctionType)
