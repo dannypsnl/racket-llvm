@@ -20,7 +20,7 @@
            (with-output-to-string
              (λ () (system* path "--libdir")))))))
 
-(define-ffi-definer define-llvm (ffi-lib "libLLVM" '("13" #f)
+(define-ffi-definer define-llvm (ffi-lib "libLLVM" '(#f)
                                          #:get-lib-dirs get-llvm-lib-dir))
 
 (define _LLVMModuleRef (_cpointer 'LLVMOpaqueModule))
