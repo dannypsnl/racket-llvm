@@ -4,11 +4,14 @@
          llvm-builder-create
          llvm-builder-position-at-end
          llvm-get-param
+         ; control flow
          llvm-build-ret
          llvm-build-br
          llvm-build-cond-br
          _LLVMIntPredicate
+         ; compare
          llvm-build-int-cmp
+         ; arithmetic
          llvm-const-int
          llvm-build-add
          llvm-build-sub
@@ -123,39 +126,36 @@
                                       -> _LLVMValueRef)
   #:c-id LLVMBuildICmp)
 (module+ test
-
   ; if 42 > 16 then 1234 else 937
-  (define (test-cond-br)
-    (define builder (llvm-builder-create))
+  (define builder (llvm-builder-create))
 
-    (define func
-      (llvm-add-function mod
-                         "func"
-                         (llvm-function-type (llvm-int32-type))))
+  (define func
+    (llvm-add-function mod
+                       "func"
+                       (llvm-function-type (llvm-int32-type))))
 
-    (define entry (llvm-append-basic-block func "entry"))
-    (llvm-builder-position-at-end builder entry)
+  (define entry (llvm-append-basic-block func "entry"))
+  (llvm-builder-position-at-end builder entry)
 
-    (define x (llvm-const-int (llvm-int32-type) 42))
-    (define y (llvm-const-int (llvm-int32-type) 16))
-    (define cmp (llvm-build-int-cmp builder 'llvm-int-ugt x y "greaterThan"))
+  (define x (llvm-const-int (llvm-int32-type) 42))
+  (define y (llvm-const-int (llvm-int32-type) 16))
+  (define cmp (llvm-build-int-cmp builder 'llvm-int-ugt x y "greaterThan"))
 
-    (define then (llvm-append-basic-block func "then"))
-    (define els (llvm-append-basic-block func "else"))
+  (define then (llvm-append-basic-block func "then"))
+  (define els (llvm-append-basic-block func "else"))
 
-    (define cond-br (llvm-build-cond-br builder cmp then els))
+  (define cond-br (llvm-build-cond-br builder cmp then els))
 
-    (llvm-builder-position-at-end builder then)
-    (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 1234))
+  (llvm-builder-position-at-end builder then)
+  (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 1234))
 
-    (llvm-builder-position-at-end builder els)
-    (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 937))
+  (llvm-builder-position-at-end builder els)
+  (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 937))
 
-    (define res (llvm-generic-value-to-int (llvm-run-function eng func (list)) #f))
+  (define res (llvm-generic-value-to-int (llvm-run-function eng func (list)) #f))
 
-    (check-equal? 1234 res))
-
-  (test-cond-br))
+  (check-equal? 1234 res)
+  )
 
 #| Constants |#
 
@@ -174,7 +174,6 @@
                                   _string
                                   -> _LLVMValueRef)
   #:c-id LLVMBuildAdd)
-
 (module+ test
   (check-binary-int32-inst llvm-build-add 20 22 42))
 
