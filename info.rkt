@@ -1,9 +1,8 @@
 #lang info
 (define collection "racket-llvm13")
 (define deps '("base"))
-(define build-deps '("scribble-lib" "racket-doc" "rackunit-lib"))
-(define scribblings '(("scribblings/racket-llvm13.scrbl" ())))
-(define pkg-desc "Description Here")
+(define build-deps '("rackunit-lib"))
+(define pkg-desc "LLVM 13 bindings for Racket")
 (define version "0.0")
-(define pkg-authors '(林子篆))
-(define license '(Apache-2.0 OR MIT))
+(define pkg-authors '(Luke Lau))
+(define test-omit-paths '("examples"))
