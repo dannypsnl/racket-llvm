@@ -5,6 +5,8 @@
 (require ffi/unsafe
          "definer.rkt")
 
+(define-llvm llvm-typeof (_fun _LLVMValueRef -> _LLVMTypeRef) #:c-id LLVMTypeOf)
+
 (define-llvm llvm-void-type (_fun -> _LLVMTypeRef) #:c-id LLVMVoidType)
 (define-llvm llvm-label-type (_fun -> _LLVMTypeRef) #:c-id LLVMLabelType)
 (define-llvm llvm-x86mmx-type (_fun -> _LLVMTypeRef) #:c-id LLVMX86MMXType)
