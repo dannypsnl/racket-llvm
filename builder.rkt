@@ -214,6 +214,32 @@
 (define-llvm llvm-build-fp-cast cast-fun #:c-id LLVMBuildFPCast)
 (define-llvm llvm-build-int-cast cast-fun #:c-id LLVMBuildIntCast)
 
+(define-llvm llvm-build-phi (_fun (builder ty [name ""]) ::
+                                  (builder : _LLVMBuilderRef)
+                                  (ty : _LLVMTypeRef)
+                                  (name : _string)
+                                  -> _LLVMValueRef)
+  #:c-id LLVMBuildPhi)
+
+(define-llvm llvm-build-call2 (_fun (builder ty fn [args (list)] [name ""]) ::
+                                    (builder : _LLVMBuilderRef)
+                                    (ty : _LLVMTypeRef)
+                                    (fn : _LLVMValueRef)
+                                    (args : (_list i _LLVMValueRef))
+                                    (_int = (length args))
+                                    (name : _string)
+                                    -> _LLVMValueRef)
+  #:c-id LLVMBuildCall2)
+
+(define-llvm llvm-build-select (_fun (builder if then else [args (list)] [name ""]) ::
+                                     (builder : _LLVMBuilderRef)
+                                     (if : _LLVMValueRef)
+                                     (then : _LLVMValueRef)
+                                     (else : _LLVMValueRef)
+                                     (name : _string)
+                                     -> _LLVMValueRef)
+  #:c-id LLVMBuildSelect)
+
 (module+ test
   (require rackunit
            "module.rkt"
