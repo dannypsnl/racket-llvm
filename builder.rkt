@@ -33,6 +33,28 @@
                                       _LLVMBasicBlockRef ; else
                                       -> _LLVMValueRef)
   #:c-id LLVMBuildCondBr)
+(define-llvm llvm-build-switch (_fun _LLVMBuilderRef
+                                     _LLVMValueRef ; V
+                                     _LLVMBasicBlockRef ; Else
+                                     _int ; NumCases
+                                     -> _LLVMValueRef)
+  #:c-id LLVMBuildSwitch)
+(define-llvm llvm-add-case (_fun _LLVMBuilderRef
+                                 _LLVMValueRef ; switch
+                                 _LLVMValueRef ; on value
+                                 _LLVMBasicBlockRef ; dest
+                                 -> _void)
+  #:c-id LLVMAddCase)
+(define-llvm llvm-build-indirectbr (_fun _LLVMBuilderRef
+                                         _LLVMValueRef ; Addr
+                                         _int ; NumDests
+                                         -> _LLVMValueRef)
+  #:c-id LLVMBuildIndirectBr)
+(define-llvm llvm-add-destination (_fun _LLVMValueRef ; IndirectBr
+                                        _LLVMBasicBlockRef ; Dest
+                                        -> _void)
+  #:c-id LLVMAddDestination)
+(define-llvm llvm-build-unreachable (_fun _LLVMBuilderRef -> _LLVMValueRef) #:c-id LLVMBuildUnreachable)
 
 (define (cmp-fun pred)  (_fun (builder p lhs rhs [name ""]) ::
                               (builder : _LLVMBuilderRef)
