@@ -24,7 +24,7 @@
         (err : (_ptr o _string))
         -> (result : _int)
         -> (cond
-             [err (llvm-dispose-message err)] ;TODO: use `llvm-dispose-message`
+             [err (llvm-dispose-message err)]
              [(not (= 0 result)) (error "Failed to create execution engine")]
              [else eng]))
   #:c-id LLVMCreateExecutionEngineForModule)
