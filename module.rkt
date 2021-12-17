@@ -3,7 +3,9 @@
 (provide llvm-module
          llvm-module-verify
          llvm-module-to-string
-         llvm-add-function)
+         llvm-add-function
+         llvm-view-function-cfg
+         llvm-view-function-cfg-only)
 
 (require ffi/unsafe
          "definer.rkt"
@@ -32,6 +34,11 @@
                                      _LLVMTypeRef
                                      -> _LLVMValueRef)
   #:c-id LLVMAddFunction)
+
+(define-llvm llvm-view-function-cfg (_fun _LLVMValueRef -> _void)
+  #:c-id LLVMViewFunctionCFG)
+(define-llvm llvm-view-function-cfg-only (_fun _LLVMValueRef -> _void)
+  #:c-id LLVMViewFunctionCFGOnly)
 
 (module+ test
   (require rackunit
