@@ -104,8 +104,6 @@
                                       -> _LLVMValueRef)
   #:c-id LLVMBuildCondBr)
 
-#| Comparisons |#
-
 (define _LLVMIntPredicate
   (_enum '(llvm-int-eq = 32
                        llvm-int-ne
@@ -157,16 +155,12 @@
   (check-equal? 1234 res)
   )
 
-#| Constants |#
-
 (define-llvm llvm-const-int (_fun (type value [sign-extend? #f]) ::
                                   (type : _LLVMTypeRef)
                                   (value : _llong)
                                   (sign-extend? : _bool)
                                   -> _LLVMValueRef)
   #:c-id LLVMConstInt)
-
-#| Operators |#
 
 (define-llvm llvm-build-add (_fun _LLVMBuilderRef
                                   _LLVMValueRef
