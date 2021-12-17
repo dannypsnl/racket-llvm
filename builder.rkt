@@ -42,14 +42,8 @@
 (define _LLVMIntPredicate
   (_enum '(int-eq = 32
                   int-ne
-                  int-ugt
-                  int-uge
-                  int-ult
-                  int-ule
-                  int-sgt
-                  int-sge
-                  int-slt
-                  int-sle)))
+                  int-ugt int-uge int-ult int-ule
+                  int-sgt int-sge int-slt int-sle)))
 (define-llvm llvm-build-int-cmp (cmp-fun _LLVMIntPredicate) #:c-id LLVMBuildICmp)
 (define _LLVMRealPredicate
   (_enum '(predicate-false
