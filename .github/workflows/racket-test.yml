@@ -46,6 +46,6 @@ jobs:
           variant: ${{ matrix.racket-variant }}
           version: ${{ matrix.racket-version }}
       - run: |
-          export PATH=$PATH:${{ env.LLVM_PATH }}/bin
+          echo ${{ env.LLVM_PATH }}/bin >> $GITHUB_PATH
           raco pkg install --auto --skip-installed
           raco test .
