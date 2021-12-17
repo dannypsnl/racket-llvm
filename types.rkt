@@ -5,6 +5,8 @@
 (require ffi/unsafe
          "definer.rkt")
 
+(define-llvm llvm-void-type (_fun -> _LLVMTypeRef) #:c-id LLVMVoidType)
+
 (define-llvm llvm-int-type (_fun _int -> _LLVMTypeRef) #:c-id LLVMIntType)
 (define-llvm llvm-int8-type (_fun -> _LLVMTypeRef) #:c-id LLVMInt8Type)
 (define-llvm llvm-int16-type (_fun -> _LLVMTypeRef) #:c-id LLVMInt16Type)
