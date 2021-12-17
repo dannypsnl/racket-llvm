@@ -20,7 +20,7 @@
 (llvm-builder-position-at-end builder (llvm-append-basic-block if-func "entry"))
 
 (define cmp (llvm-build-int-cmp builder
-                                'llvm-int-eq
+                                'int-eq
                                 (llvm-const-int (llvm-int32-type) 123)
                                 (llvm-const-int (llvm-int32-type) 321)
                                 "equal"))
@@ -44,7 +44,7 @@
 (llvm-function-verify if-func)
 
 (displayln "before:")
-(display (llvm-module-to-string mod))
+(display (llvm-module->string mod))
 
 ; let's do an optimization pass
 (define pm (llvm-pass-manager-create))
@@ -56,4 +56,4 @@
 (llvm-pass-manager-run pm mod)
 
 (displayln "after:")
-(display (llvm-module-to-string mod))
+(display (llvm-module->string mod))

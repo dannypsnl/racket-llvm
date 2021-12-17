@@ -3,7 +3,7 @@
 (provide llvm-module
          llvm-module-verify
          llvm-function-verify
-         llvm-module-to-string
+         llvm-module->string
          llvm-add-function
          llvm-view-function-cfg
          llvm-view-function-cfg-only)
@@ -34,7 +34,7 @@
                                         -> (when failure (llvm-dispose-message err)))
   #:c-id LLVMVerifyFunction)
 
-(define-llvm llvm-module-to-string (_fun _LLVMModuleRef -> _string)
+(define-llvm llvm-module->string (_fun _LLVMModuleRef -> _string)
   #:c-id LLVMPrintModuleToString)
 
 (define-llvm llvm-add-function (_fun _LLVMModuleRef
@@ -61,7 +61,7 @@
                                    (list (llvm-pointer-type (llvm-int8-type)))
                                    #t))
     (define printf-fun (llvm-add-function mod "printf" ft))
-    (check-equal? (llvm-module-to-string mod)
+    (check-equal? (llvm-module->string mod)
                   "; ModuleID = 'test_mod'
 source_filename = \"test_mod\"
 
@@ -73,7 +73,7 @@ declare i32 @printf(i8*, ...)
   (let ([mod (llvm-module "test_mod")])
     (llvm-add-global mod (llvm-struct-type (list (llvm-int8-type) (llvm-double-type)))
                      "hello")
-    (check-equal? (llvm-module-to-string mod)
+    (check-equal? (llvm-module->string mod)
                   "; ModuleID = 'test_mod'
 source_filename = \"test_mod\"
 

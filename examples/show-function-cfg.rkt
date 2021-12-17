@@ -20,7 +20,7 @@
 (llvm-builder-position-at-end builder (llvm-append-basic-block if-func "entry"))
 
 (define cmp (llvm-build-int-cmp builder
-                                'llvm-int-eq
+                                'int-eq
                                 (llvm-const-int (llvm-int32-type) 123)
                                 (llvm-const-int (llvm-int32-type) 321)
                                 "equal"))
