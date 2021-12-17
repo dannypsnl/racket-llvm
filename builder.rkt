@@ -21,6 +21,8 @@
 
 (define-llvm llvm-build-ret (_fun _LLVMBuilderRef _LLVMValueRef -> _LLVMValueRef)
   #:c-id LLVMBuildRet)
+(define-llvm llvm-build-ret-void (_fun _LLVMBuilderRef -> _LLVMValueRef)
+  #:c-id LLVMBuildRetVoid)
 (define-llvm llvm-build-br (_fun _LLVMBuilderRef
                                  _LLVMBasicBlockRef ; dest
                                  -> _LLVMValueRef)
