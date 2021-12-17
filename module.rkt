@@ -1,13 +1,13 @@
 #lang racket
 
 (provide llvm-module
-         llvm-dispose-message
          llvm-module-verify
          llvm-module-to-string
          llvm-add-function)
 
 (require ffi/unsafe
-         "definer.rkt")
+         "definer.rkt"
+         "error.rkt")
 
 (define-llvm llvm-module (_fun _string -> _LLVMModuleRef)
   #:c-id LLVMModuleCreateWithName)
@@ -17,15 +17,11 @@
            llvm-print-message-action
            llvm-return-status-action)))
 
-(define-llvm llvm-dispose-message (_fun (_ptr i _string) -> _void)
-  #:c-id LLVMDisposeMessage)
-
 (define-llvm llvm-module-verify (_fun _LLVMModuleRef
                                       (_LLVMVerifierFailureAction = 'llvm-return-status-action)
                                       (err : (_ptr o _string))
                                       -> (failure : _bool)
-                                      ; TODO: should call llvm-dispose-message
-                                      -> (when failure (error err)))
+                                      -> (when failure (llvm-dispose-message err)))
   #:c-id LLVMVerifyModule)
 
 (define-llvm llvm-module-to-string (_fun _LLVMModuleRef -> _string)

@@ -6,13 +6,13 @@
          llvm-run-function)
 
 (require ffi/unsafe
-         "definer.rkt")
+         "definer.rkt"
+         "error.rkt")
 
 (define _LLVMExecutionEngineRef (_cpointer 'LLVMOpaqueExecutionEngine))
 
 (define-llvm llvm-link-in-mcjit (_fun -> _void) #:c-id LLVMLinkInMCJIT)
 
-;TODO: figure out a way of replacing X86 with the current arch
 (define-llvm llvm-initialize-native-target (_fun -> (result : _bool)
                                                  -> (when result
                                                       (error "Failed to initialize native target")))
@@ -24,7 +24,7 @@
         (err : (_ptr o _string))
         -> (result : _int)
         -> (cond
-             [err (error err)] ;TODO: use `llvm-dispose-message`
+             [err (llvm-dispose-message err)] ;TODO: use `llvm-dispose-message`
              [(not (= 0 result)) (error "Failed to create execution engine")]
              [else eng]))
   #:c-id LLVMCreateExecutionEngineForModule)
