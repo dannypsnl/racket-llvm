@@ -268,14 +268,14 @@
     (check-binary-inst make-inst
                        llvm-int32-type
                        (λ (x) (llvm-create-generic-value-of-int (llvm-int32-type) x #f))
-                       (λ (x) (llvm-generic-value-to-int x #f))
+                       (λ (x) (llvm-generic-value->int x #f))
                        rhs lhs result))
 
   (define (check-binary-float-inst make-inst rhs lhs result)
     (check-binary-inst make-inst
                        llvm-float-type
                        (λ (x) (llvm-create-generic-value-of-float (llvm-float-type) x))
-                       (λ (x) (llvm-generic-value-to-float (llvm-float-type) x))
+                       (λ (x) (llvm-generic-value->float (llvm-float-type) x))
                        rhs lhs result))
 
   (define (check-unary-inst make-inst
@@ -297,14 +297,14 @@
     (check-unary-inst make-inst
                       make-type
                       (λ (x) (llvm-create-generic-value-of-int (make-type) x #t))
-                      (λ (x) (llvm-generic-value-to-int x #t))
+                      (λ (x) (llvm-generic-value->int x #t))
                       v result))
 
   (define (check-unary-float-inst make-inst make-type v result)
     (check-unary-inst make-inst
                       make-type
                       (λ (x) (llvm-create-generic-value-of-float (make-type) x))
-                      (λ (x) (llvm-generic-value-to-float (make-type) x))
+                      (λ (x) (llvm-generic-value->float (make-type) x))
                       v result)))
 (module+ test
   (define builder (llvm-builder-create))
@@ -325,7 +325,7 @@
     (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 1234))
     (llvm-builder-position-at-end builder els)
     (llvm-build-ret builder (llvm-const-int (llvm-int32-type) 937))
-    (check-equal? 1234 (llvm-generic-value-to-int (llvm-run-function eng func (list)) #f))))
+    (check-equal? 1234 (llvm-generic-value->int (llvm-run-function eng func (list)) #f))))
 (module+ test
   (check-binary-int32-inst llvm-build-add 20 22 42)
   (check-binary-int32-inst llvm-build-sub 4321 321 4000)

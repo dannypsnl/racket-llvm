@@ -34,4 +34,4 @@
 
 (define res (llvm-run-function eng sum args))
 
-(printf "JIT result: ~a\n" (llvm-generic-value-to-int res #f))
+(printf "JIT result: ~a\n" (llvm-generic-value->int res #f))
