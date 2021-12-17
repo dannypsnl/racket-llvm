@@ -30,15 +30,16 @@
 (define-llvm llvm-vector-type (_fun _LLVMTypeRef _int -> _LLVMTypeRef) #:c-id LLVMVectorType)
 (define-llvm llvm-scalable-vector-type (_fun _LLVMTypeRef _int -> _LLVMTypeRef) #:c-id LLVMScalableVectorType)
 
-(define ADDRESS_SPACE_GENERIC 0)
-(define ADDRESS_SPACE_GLOBAL 1)
-(define ADDRESS_SPACE_SHARED 3)
-(define ADDRESS_SPACE_CONST 4)
-(define ADDRESS_SPACE_LOCAL 5)
-(define ADDRESS_SPACE_PARAM 101)
-(define-llvm llvm-pointer-type (_fun (element_type [addr-space ADDRESS_SPACE_GENERIC]) ::
+(define _LLVMAddressSpace
+  (_enum '(addr-space-generic = 0
+                              addr-space-global
+                              addr-space-shared
+                              addr-space-const
+                              addr-space-local
+                              addr-space-param = 101)))
+(define-llvm llvm-pointer-type (_fun (element_type [addr-space 'addr-space-generic]) ::
                                      (element_type : _LLVMTypeRef)
-                                     (addr-space : _int)
+                                     (addr-space : _LLVMAddressSpace)
                                      -> _LLVMTypeRef)
   #:c-id LLVMPointerType)
 
