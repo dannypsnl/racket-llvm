@@ -42,6 +42,11 @@
                                      _LLVMTypeRef
                                      -> _LLVMValueRef)
   #:c-id LLVMAddFunction)
+(define-llvm llvm-get-named-function (_fun _LLVMModuleRef _string -> _LLVMValueRef)
+  #:c-id LLVMGetNamedFunction)
+
+(define-llvm llvm-add-global (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
+  #:c-id LLVMAddGlobal)
 
 (define-llvm llvm-view-function-cfg (_fun _LLVMValueRef -> _void)
   #:c-id LLVMViewFunctionCFG)
@@ -51,15 +56,26 @@
 (module+ test
   (require rackunit
            "types.rkt")
-  (define mod (llvm-module "test_mod"))
-  (define ft (llvm-function-type (llvm-int32-type)
-                                 (list (llvm-pointer-type (llvm-int8-type)))
-                                 #t))
-  (define printf-fun (llvm-add-function mod "printf" ft))
-  (check-equal? (llvm-module-to-string mod)
-                "; ModuleID = 'test_mod'
+  (let ([mod (llvm-module "test_mod")])
+    (define ft (llvm-function-type (llvm-int32-type)
+                                   (list (llvm-pointer-type (llvm-int8-type)))
+                                   #t))
+    (define printf-fun (llvm-add-function mod "printf" ft))
+    (check-equal? (llvm-module-to-string mod)
+                  "; ModuleID = 'test_mod'
 source_filename = \"test_mod\"
 
 declare i32 @printf(i8*, ...)
-")
-  )
+")))
+(module+ test
+  (require rackunit
+           "types.rkt")
+  (let ([mod (llvm-module "test_mod")])
+    (llvm-add-global mod (llvm-struct-type (list (llvm-int8-type) (llvm-double-type)))
+                     "hello")
+    (check-equal? (llvm-module-to-string mod)
+                  "; ModuleID = 'test_mod'
+source_filename = \"test_mod\"
+
+@hello = external global { i8, double }
+")))
