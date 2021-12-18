@@ -1,13 +1,13 @@
-racket-llvm13
+racket-llvm
 =============
-A racket to LLVM 13 C-API bindings.
+A racket to LLVM C-API bindings.
 
 ### Usage
 
-To use this package as your package's dependency, add `"git://github.com/failed-dragon-slayer/racket-llvm13"` into the list of `deps` in `info.rkt`. The following is an example.
+To use this package as your package's dependency, add `"git://github.com/failed-dragon-slayer/racket-llvm"` into the list of `deps` in `info.rkt`. The following is an example.
 
 ```racket
-(define deps '("base" "git://github.com/failed-dragon-slayer/racket-llvm13"))
+(define deps '("base" "git://github.com/failed-dragon-slayer/racket-llvm"))
 ```
 
 ### Develop

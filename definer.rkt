@@ -26,7 +26,7 @@
                     " takes an id as its produces function name, then is a C " (racket _fun) " defined types for C function. Finally, takes the link name of C function."
                     " "
                     "Using " (racket define-llvm) " to extend any functions missing in this library will be important.")))
-(define-ffi-definer define-llvm (ffi-lib "libLLVM" '(#f)
+(define-ffi-definer define-llvm (ffi-lib "libLLVM" '("13" "12" "11" #f)
                                          #:get-lib-dirs get-llvm-lib-dir))
 
 (define _LLVMModuleRef (_cpointer 'LLVMOpaqueModule))

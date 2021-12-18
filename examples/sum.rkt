@@ -1,6 +1,6 @@
 #lang racket
 
-(require racket-llvm13)
+(require racket-llvm)
 
 (define mod (llvm-module "test_mod"))
 
