@@ -10,6 +10,7 @@
 
 (require ffi/unsafe
          "definer.rkt"
+         "ref.rkt"
          "error.rkt")
 
 (define _LLVMExecutionEngineRef (_cpointer 'LLVMOpaqueExecutionEngine))

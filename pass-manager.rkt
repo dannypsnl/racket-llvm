@@ -9,7 +9,8 @@
          llvm-function-pass-manager-create)
 
 (require ffi/unsafe
-         "definer.rkt")
+         "definer.rkt"
+         "ref.rkt")
 
 #| Pass manager builder |#
 

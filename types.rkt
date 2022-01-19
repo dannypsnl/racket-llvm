@@ -3,7 +3,8 @@
 (provide (all-defined-out))
 
 (require ffi/unsafe
-         "definer.rkt")
+         "definer.rkt"
+         "ref.rkt")
 
 (define-llvm llvm-typeof (_fun _LLVMValueRef -> _LLVMTypeRef) #:c-id LLVMTypeOf)
 

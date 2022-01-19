@@ -3,7 +3,8 @@
 (provide (all-defined-out))
 
 (require ffi/unsafe
-         "definer.rkt")
+         "definer.rkt"
+         "ref.rkt")
 
 (define-llvm llvm-append-basic-block (_fun (fn [name ""]) ::
                                            (fn : _LLVMValueRef)
