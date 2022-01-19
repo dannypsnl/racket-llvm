@@ -3,7 +3,6 @@
 (provide llvm-function-verify
          llvm-get-module-context
          llvm-add-struct-type
-         llvm-add-function
          llvm-view-function-cfg
          llvm-view-function-cfg-only)
 
@@ -55,15 +54,21 @@
   (llvm-struct-set-body struct-ty element-types pack?)
   struct-ty)
 
-(define-llvm llvm-add-function (_fun _LLVMModuleRef
-                                     _string
-                                     _LLVMTypeRef
-                                     -> _LLVMValueRef)
+(define-llvm (llvm-add-function module function-name function-type)
+  (_fun _LLVMModuleRef
+        _string
+        _LLVMTypeRef
+        -> _LLVMValueRef)
+  #:contract (LLVMModuleRef? string? LLVMTypeRef? . c-> . LLVMValueRef?)
+  #:doc @{Add function into given module, return a function value. The function name is given by function-name, the function type is given by function-type.}
   #:c-id LLVMAddFunction)
 (define-llvm llvm-get-named-function (_fun _LLVMModuleRef _string -> _LLVMValueRef)
   #:c-id LLVMGetNamedFunction)
 
-(define-llvm llvm-add-global (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
+(define-llvm (llvm-add-global module var-type var-name)
+  (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
+  #:contract (LLVMModuleRef? LLVMTypeRef? string? . c-> . LLVMValueRef?)
+  #:doc @{Add a global variable into given module}
   #:c-id LLVMAddGlobal)
 
 (define-llvm llvm-view-function-cfg (_fun _LLVMValueRef -> _void)

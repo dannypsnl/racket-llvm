@@ -35,6 +35,6 @@
       #:doc doc
       #:c-id c-funcname:id)
    #'(begin
-       (provide (proc-doc/names name contract (module-name) doc))
+       (provide (proc-doc/names name contract (args ...) doc))
        (internal-define-llvm name c-function-type
                              #:c-id c-funcname))])
