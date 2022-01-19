@@ -1,7 +1,6 @@
 #lang at-exp racket
 
-(provide llvm-module
-         llvm-module-verify
+(provide llvm-module-verify
          llvm-function-verify
          llvm-module->string
          llvm-get-module-context
@@ -16,12 +15,15 @@
          "types.rkt"
          "error.rkt")
 (require scribble/srcdoc
+         (rename-in racket/contract/base
+                    [-> c->])
          (for-doc scribble/manual ffi/unsafe racket/base))
 
 (provide
- (form-doc
-  (llvm-module module-name)
-  #:contracts ([module-name string?])
+ (proc-doc/names
+  llvm-module
+  (c-> string? cpointer?)
+  (module-name)
   @{@racket[llvm-module] returns a module, the core concept in LLVM. We puts global variables, functions, and type definitions in module.}))
 (define-llvm llvm-module (_fun _string -> _LLVMModuleRef)
   #:c-id LLVMModuleCreateWithName)
