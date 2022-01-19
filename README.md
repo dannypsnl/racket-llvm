@@ -2,12 +2,18 @@ racket-llvm
 =============
 A racket to LLVM C-API bindings.
 
+### Installation
+
+```shell
+raco pkg install --auto racket-llvm
+```
+
 ### Usage
 
-To use this package as your package's dependency, add `"git://github.com/failed-dragon-slayer/racket-llvm"` into the list of `deps` in `info.rkt`. The following is an example.
+Add `"racket-llvm"` into `info.rkt`
 
 ```racket
-(define deps '("base" "git://github.com/failed-dragon-slayer/racket-llvm"))
+(define deps '("base" "racket-llvm"))
 ```
 
 ### Develop
