@@ -16,7 +16,7 @@
          (for-doc racket/base scribble/manual ffi/unsafe))
 
 (define-llvm (llvm-module module-name) (_fun _string -> _LLVMModuleRef)
-  #:contract (c-> string? cpointer?)
+  #:contract (c-> string? LLVMModuleRef?)
   #:doc @{@racket[llvm-module] returns a module, the core concept in LLVM. We puts global variables, functions, and type definitions in module.}
   #:c-id LLVMModuleCreateWithName)
 
@@ -30,7 +30,7 @@
                                                (err : (_ptr o _string))
                                                -> (failure : _bool)
                                                -> (when failure (llvm-dispose-message err)))
-  #:contract (c-> cpointer? boolean?)
+  #:contract (c-> LLVMModuleRef? boolean?)
   #:doc @{verify given module}
   #:c-id LLVMVerifyModule)
 
@@ -42,7 +42,7 @@
   #:c-id LLVMVerifyFunction)
 
 (define-llvm (llvm-module->string module) (_fun _LLVMModuleRef -> _string)
-  #:contract (c-> cpointer? string?)
+  #:contract (c-> LLVMModuleRef? string?)
   #:doc @{convert given module as string}
   #:c-id LLVMPrintModuleToString)
 

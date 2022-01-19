@@ -1,4 +1,13 @@
 #lang at-exp racket/base
+(provide LLVMModuleRef?
+         LLVMContextRef?
+         LLVMTypeRef?
+         LLVMValueRef?
+         LLVMBasicBlockRef?
+         LLVMBuilderRef?
+         LLVMGenericValueRef?
+         LLVMPassManagerRef?
+         LLVMPassManagerBuilderRef?)
 
 (require ffi/unsafe)
 (require scribble/srcdoc
@@ -14,12 +23,12 @@
  (thing-doc _LLVMGenericValueRef ctype? @{pointer to LLVMOpaqueGenericValue})
  (thing-doc _LLVMPassManagerRef ctype? @{pointer to LLVMOpaquePassManager})
  (thing-doc _LLVMPassManagerBuilderRef ctype? @{pointer to LLVMOpaquePassManagerBuilder}))
-(define _LLVMModuleRef (_cpointer 'LLVMOpaqueModule))
-(define _LLVMContextRef (_cpointer 'LLVMContextRef))
-(define _LLVMTypeRef (_cpointer 'LLVMOpaqueType))
-(define _LLVMValueRef (_cpointer 'LLVMOpaqueValue))
-(define _LLVMBasicBlockRef (_cpointer 'LLVMOpaqueBasicBlock))
-(define _LLVMBuilderRef (_cpointer 'LLVMOpaqueBuilder))
-(define _LLVMGenericValueRef (_cpointer 'LLVMOpaqueGenericValue))
-(define _LLVMPassManagerRef (_cpointer 'LLVMOpaquePassManager))
-(define _LLVMPassManagerBuilderRef (_cpointer 'LLVMOpaquePassManagerBuilder))
+(define-cpointer-type _LLVMModuleRef #:tag 'LLVMOpaqueModule)
+(define-cpointer-type _LLVMContextRef #:tag 'LLVMContextRef)
+(define-cpointer-type _LLVMTypeRef #:tag 'LLVMOpaqueType)
+(define-cpointer-type _LLVMValueRef #:tag 'LLVMOpaqueValue)
+(define-cpointer-type _LLVMBasicBlockRef #:tag 'LLVMOpaqueBasicBlock)
+(define-cpointer-type _LLVMBuilderRef #:tag 'LLVMOpaqueBuilder)
+(define-cpointer-type _LLVMGenericValueRef #:tag 'LLVMOpaqueGenericValue)
+(define-cpointer-type _LLVMPassManagerRef #:tag 'LLVMOpaquePassManager)
+(define-cpointer-type _LLVMPassManagerBuilderRef #:tag 'LLVMOpaquePassManagerBuilder)
