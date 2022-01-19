@@ -12,18 +12,12 @@
          "ref.rkt"
          "types.rkt"
          "error.rkt")
-(require scribble/srcdoc
-         (rename-in racket/contract/base
-                    [-> c->])
-         (for-doc scribble/manual ffi/unsafe racket/base))
+(require (rename-in racket/contract/base [-> c->])
+         (for-doc racket/base scribble/manual ffi/unsafe))
 
-(provide
- (proc-doc/names
-  llvm-module
-  (c-> string? cpointer?)
-  (module-name)
-  @{@racket[llvm-module] returns a module, the core concept in LLVM. We puts global variables, functions, and type definitions in module.}))
-(define-llvm llvm-module (_fun _string -> _LLVMModuleRef)
+(define-llvm (llvm-module module-name) (_fun _string -> _LLVMModuleRef)
+  #:contract (c-> string? cpointer?)
+  #:doc @{@racket[llvm-module] returns a module, the core concept in LLVM. We puts global variables, functions, and type definitions in module.}
   #:c-id LLVMModuleCreateWithName)
 
 (define _LLVMVerifierFailureAction
@@ -31,17 +25,13 @@
            llvm-print-message-action
            llvm-return-status-action)))
 
-(provide
- (proc-doc/names
-  llvm-module-verify
-  (c-> cpointer? boolean?)
-  (module)
-  @{@racket[llvm-module-verify] verify given module}))
-(define-llvm llvm-module-verify (_fun _LLVMModuleRef
-                                      (_LLVMVerifierFailureAction = 'llvm-return-status-action)
-                                      (err : (_ptr o _string))
-                                      -> (failure : _bool)
-                                      -> (when failure (llvm-dispose-message err)))
+(define-llvm (llvm-module-verify module) (_fun _LLVMModuleRef
+                                               (_LLVMVerifierFailureAction = 'llvm-return-status-action)
+                                               (err : (_ptr o _string))
+                                               -> (failure : _bool)
+                                               -> (when failure (llvm-dispose-message err)))
+  #:contract (c-> cpointer? boolean?)
+  #:doc @{verify given module}
   #:c-id LLVMVerifyModule)
 
 (define-llvm llvm-function-verify (_fun _LLVMValueRef
@@ -51,13 +41,9 @@
                                         -> (when failure (llvm-dispose-message err)))
   #:c-id LLVMVerifyFunction)
 
-(provide
- (proc-doc/names
-  llvm-module->string
-  (c-> cpointer? string?)
-  (module)
-  @{convert given module as string}))
-(define-llvm llvm-module->string (_fun _LLVMModuleRef -> _string)
+(define-llvm (llvm-module->string module) (_fun _LLVMModuleRef -> _string)
+  #:contract (c-> cpointer? string?)
+  #:doc @{convert given module as string}
   #:c-id LLVMPrintModuleToString)
 
 (define-llvm llvm-get-module-context (_fun _LLVMModuleRef -> _LLVMContextRef)
