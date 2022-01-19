@@ -1,15 +1,6 @@
 #lang at-exp racket/base
 
-(provide define-llvm
-         _LLVMModuleRef
-         _LLVMContextRef
-         _LLVMTypeRef
-         _LLVMValueRef
-         _LLVMBasicBlockRef
-         _LLVMBuilderRef
-         _LLVMGenericValueRef
-         _LLVMPassManagerRef
-         _LLVMPassManagerBuilderRef)
+(provide define-llvm)
 
 (require ffi/unsafe
          ffi/unsafe/define
@@ -32,6 +23,16 @@
 (define-ffi-definer define-llvm (ffi-lib "libLLVM" '("13" "12" "11" #f)
                                          #:get-lib-dirs get-llvm-lib-dir))
 
+(provide
+ (thing-doc _LLVMModuleRef ctype? @{pointer to LLVMOpaqueModule})
+ (thing-doc _LLVMContextRef ctype? @{pointer to LLVMContextRef})
+ (thing-doc _LLVMTypeRef ctype? @{pointer to LLVMOpaqueType})
+ (thing-doc _LLVMValueRef ctype? @{pointer to LLVMOpaqueValue})
+ (thing-doc _LLVMBasicBlockRef ctype? @{pointer to LLVMOpaqueBasicBlock})
+ (thing-doc _LLVMBuilderRef ctype? @{pointer to LLVMOpaqueBuilder})
+ (thing-doc _LLVMGenericValueRef ctype? @{pointer to LLVMOpaqueGenericValue})
+ (thing-doc _LLVMPassManagerRef ctype? @{pointer to LLVMOpaquePassManager})
+ (thing-doc _LLVMPassManagerBuilderRef ctype? @{pointer to LLVMOpaquePassManagerBuilder}))
 (define _LLVMModuleRef (_cpointer 'LLVMOpaqueModule))
 (define _LLVMContextRef (_cpointer 'LLVMContextRef))
 (define _LLVMTypeRef (_cpointer 'LLVMOpaqueType))
