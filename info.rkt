@@ -1,6 +1,7 @@
 #lang info
 (define collection "racket-llvm")
-(define deps '("base"))
+(define deps '("base"
+               "scribble-lib"))
 (define build-deps '("scribble-lib"
                      "racket-doc"
                      "rackunit-lib"
