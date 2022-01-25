@@ -1,5 +1,4 @@
 #lang scribble/manual
-
 @require[scribble/extract
          @for-label[racket-llvm
                     racket/base]]
@@ -11,7 +10,5 @@ A racket LLVM C-API bindings, document will show you how to use this library as 
 @defmodule[racket-llvm]
 @include-extracted["../definer.rkt"]
 
-@section{Module}
-@include-extracted["../module.rkt"]
-@section{LLVM Structure}
-@include-extracted["../ref.rkt"]
+@include-section["module.scrbl"]
+@include-section["llvm-structure.scrbl"]

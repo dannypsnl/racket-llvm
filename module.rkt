@@ -1,6 +1,10 @@
 #lang at-exp racket
 
-(provide llvm-function-verify
+(provide llvm-module
+         llvm-module-verify
+         llvm-function-verify
+         llvm-add-global
+         llvm-add-function
          llvm-get-module-context
          llvm-add-struct-type
          llvm-view-function-cfg
@@ -14,9 +18,7 @@
 (require (rename-in racket/contract/base [-> c->])
          (for-doc racket/base scribble/manual ffi/unsafe))
 
-(define-llvm (llvm-module module-name) (_fun _string -> _LLVMModuleRef)
-  #:contract (c-> string? LLVMModuleRef?)
-  #:doc @{@racket[llvm-module] returns a module, the core concept in LLVM. We puts global variables, functions, and type definitions in module.}
+(define-llvm llvm-module (_fun _string -> _LLVMModuleRef)
   #:c-id LLVMModuleCreateWithName)
 
 (define _LLVMVerifierFailureAction
@@ -24,13 +26,11 @@
            llvm-print-message-action
            llvm-return-status-action)))
 
-(define-llvm (llvm-module-verify module) (_fun _LLVMModuleRef
-                                               (_LLVMVerifierFailureAction = 'llvm-return-status-action)
-                                               (err : (_ptr o _string))
-                                               -> (failure : _bool)
-                                               -> (when failure (llvm-dispose-message err)))
-  #:contract (c-> LLVMModuleRef? boolean?)
-  #:doc @{verify given module}
+(define-llvm llvm-module-verify (_fun _LLVMModuleRef
+                                      (_LLVMVerifierFailureAction = 'llvm-return-status-action)
+                                      (err : (_ptr o _string))
+                                      -> (failure : _bool)
+                                      -> (when failure (llvm-dispose-message err)))
   #:c-id LLVMVerifyModule)
 
 (define-llvm llvm-function-verify (_fun _LLVMValueRef
@@ -54,21 +54,13 @@
   (llvm-struct-set-body struct-ty element-types pack?)
   struct-ty)
 
-(define-llvm (llvm-add-function module function-name function-type)
-  (_fun _LLVMModuleRef
-        _string
-        _LLVMTypeRef
-        -> _LLVMValueRef)
-  #:contract (LLVMModuleRef? string? LLVMTypeRef? . c-> . LLVMValueRef?)
-  #:doc @{Add function into given module, return a function value. The function name is given by function-name, the function type is given by function-type.}
+(define-llvm llvm-add-function (_fun _LLVMModuleRef _string _LLVMTypeRef
+                                     -> _LLVMValueRef)
   #:c-id LLVMAddFunction)
 (define-llvm llvm-get-named-function (_fun _LLVMModuleRef _string -> _LLVMValueRef)
   #:c-id LLVMGetNamedFunction)
 
-(define-llvm (llvm-add-global module var-type var-name)
-  (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
-  #:contract (LLVMModuleRef? LLVMTypeRef? string? . c-> . LLVMValueRef?)
-  #:doc @{Add a global variable into given module}
+(define-llvm llvm-add-global (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
   #:c-id LLVMAddGlobal)
 
 (define-llvm llvm-view-function-cfg (_fun _LLVMValueRef -> _void)
