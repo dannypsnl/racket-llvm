@@ -6,14 +6,17 @@
          llvm-create-generic-value-of-int
          llvm-create-generic-value-of-float
          llvm-generic-value->int
-         llvm-generic-value->float)
+         llvm-generic-value->float
+         ; types
+         _LLVMExecutionEngineRef
+         LLVMExecutionEngineRef?)
 
 (require ffi/unsafe
          "definer.rkt"
          "ref.rkt"
          "error.rkt")
 
-(define _LLVMExecutionEngineRef (_cpointer 'LLVMOpaqueExecutionEngine))
+(define-cpointer-type _LLVMExecutionEngineRef #:tag 'LLVMOpaqueExecutionEngine)
 
 (define-llvm llvm-link-in-mcjit (_fun -> _void) #:c-id LLVMLinkInMCJIT)
 

@@ -15,4 +15,5 @@ A racket LLVM C-API bindings, document will show you how to use this library as 
 }
 
 @include-section["module.scrbl"]
+@include-section["jit.scrbl"]
 @include-section["llvm-structure.scrbl"]
