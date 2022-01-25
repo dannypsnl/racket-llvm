@@ -15,8 +15,6 @@
          "ref.rkt"
          "types.rkt"
          "error.rkt")
-(require (rename-in racket/contract/base [-> c->])
-         (for-doc racket/base scribble/manual ffi/unsafe))
 
 (define-llvm llvm-module (_fun _string -> _LLVMModuleRef)
   #:c-id LLVMModuleCreateWithName)
@@ -40,9 +38,7 @@
                                         -> (when failure (llvm-dispose-message err)))
   #:c-id LLVMVerifyFunction)
 
-(define-llvm (llvm-module->string module) (_fun _LLVMModuleRef -> _string)
-  #:contract (c-> LLVMModuleRef? string?)
-  #:doc @{convert given module as string}
+(define-llvm llvm-module->string (_fun _LLVMModuleRef -> _string)
   #:c-id LLVMPrintModuleToString)
 
 (define-llvm llvm-get-module-context (_fun _LLVMModuleRef -> _LLVMContextRef)
