@@ -1,5 +1,4 @@
 #lang racket/base
-
 (require racket-llvm)
 
 (define mod (llvm-module "printf example"))

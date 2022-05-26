@@ -1,5 +1,4 @@
 #lang racket
-
 (require racket-llvm)
 
 ; let's create an if-else function

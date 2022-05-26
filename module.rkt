@@ -1,12 +1,13 @@
 #lang at-exp racket
-
 (provide llvm-module
          llvm-module-verify
          llvm-function-verify
+         llvm-module->string
+         llvm-get-module-context
          llvm-add-global
          llvm-add-function
-         llvm-get-module-context
          llvm-add-struct-type
+         llvm-get-named-function
          llvm-view-function-cfg
          llvm-view-function-cfg-only)
 
