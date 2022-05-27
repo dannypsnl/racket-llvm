@@ -1,9 +1,9 @@
 #lang racket
-
 (provide (all-defined-out))
 
 (require ffi/unsafe
          "definer.rkt"
+         "types.rkt"
          "ref.rkt")
 
 (define-llvm llvm-append-basic-block (_fun (fn [name ""]) ::
@@ -141,8 +141,8 @@
                                    (v : _LLVMValueRef)
                                    (name : _string)
                                    -> _LLVMValueRef))
-(define-llvm llvm-build-array-malloc allocation-fun #:c-id LLVMBuildArrayMalloc)
-(define-llvm llvm-build-array-alloca allocation-fun #:c-id LLVMBuildArrayAlloca)
+(define-llvm llvm-build-array-malloc array-allocation-fun #:c-id LLVMBuildArrayMalloc)
+(define-llvm llvm-build-array-alloca array-allocation-fun #:c-id LLVMBuildArrayAlloca)
 
 (define-llvm llvm-build-free (_fun _LLVMBuilderRef _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMBuildFree)
 
@@ -250,6 +250,8 @@
                                     (name : _string)
                                     -> _LLVMValueRef)
   #:c-id LLVMBuildCall2)
+(define (llvm-build-call builder fn args [name ""])
+  (llvm-build-call2 builder (llvm-typeof fn) fn args name))
 
 (define-llvm llvm-build-select (_fun (builder if then else [args (list)] [name ""]) ::
                                      (builder : _LLVMBuilderRef)
