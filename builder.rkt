@@ -265,8 +265,6 @@
                                     (name : _string)
                                     -> _LLVMValueRef)
   #:c-id LLVMBuildCall2)
-(define (llvm-build-call builder fn args [name ""])
-  (llvm-build-call2 builder (llvm-typeof fn) fn args name))
 
 (define-llvm llvm-build-select (_fun (builder if then else [args (list)] [name ""]) ::
                                      (builder : _LLVMBuilderRef)
