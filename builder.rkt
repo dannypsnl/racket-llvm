@@ -167,6 +167,13 @@
                                            (name : _string)
                                            -> _LLVMValueRef)
   #:c-id LLVMBuildInsertValue)
+(define-llvm llvm-build-extract-element (_fun (builder aggregate_val index_val [name ""]) ::
+                                              (builder : _LLVMBuilderRef)
+                                              (aggregate_val : _LLVMValueRef)
+                                              (index_val  : _LLVMValueRef)
+                                              (name : _string)
+                                              -> _LLVMValueRef)
+  #:c-id LLVMBuildExtractElement)
 
 (define gep-fun (_fun (builder ty pointer indices [name ""]) ::
                       (builder : _LLVMBuilderRef)
