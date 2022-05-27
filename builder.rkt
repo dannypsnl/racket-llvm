@@ -159,6 +159,14 @@
                                     (ptr : _LLVMValueRef)
                                     -> _LLVMValueRef)
   #:c-id LLVMBuildStore)
+(define-llvm llvm-build-insert-value (_fun (builder aggregate_val element_val index [name ""]) ::
+                                           (builder : _LLVMBuilderRef)
+                                           (aggregate_val : _LLVMValueRef)
+                                           (element_val  : _LLVMValueRef)
+                                           (index : _int)
+                                           (name : _string)
+                                           -> _LLVMValueRef)
+  #:c-id LLVMBuildInsertValue)
 
 (define gep-fun (_fun (builder ty pointer indices [name ""]) ::
                       (builder : _LLVMBuilderRef)
