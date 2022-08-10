@@ -10,3 +10,9 @@
     set @racket[builder] insert position to the end of @racket[basic-block]
 }
 @defproc[(llvm-get-param [function LLVMValueRef?] [index integer?]) LLVMValueRef?]{get parameter from @racket[function] by index}
+
+@defproc[(llvm-build-ret [builder LLVMBuilderRef?]
+                         [value LLVMValueRef?])
+          LLVMValueRef?]{}
+@defproc[(llvm-build-ret-void [builder LLVMBuilderRef?])
+          LLVMValueRef?]{}
