@@ -7,12 +7,9 @@
 @defproc[(llvm-append-basic-block [function LLVMValueRef?]) LLVMBasicBlockRef?]{create new basic block for given @racket[function]}
 @defproc[(llvm-builder-create) LLVMBuilderRef?]{new @racket[LLVMBuilderRef?]}
 @defproc[(llvm-builder-position-at-end [builder LLVMBuilderRef?] [basic-block LLVMBasicBlockRef?]) void?]{
-    set @racket[builder] insert position to the end of @racket[basic-block]
+ set @racket[builder] insert position to the end of @racket[basic-block]
 }
 @defproc[(llvm-get-param [function LLVMValueRef?] [index integer?]) LLVMValueRef?]{get parameter from @racket[function] by index}
 
-@defproc[(llvm-build-ret [builder LLVMBuilderRef?]
-                         [value LLVMValueRef?])
-          LLVMValueRef?]{}
-@defproc[(llvm-build-ret-void [builder LLVMBuilderRef?])
-          LLVMValueRef?]{}
+@defproc[(llvm-build-ret [builder LLVMBuilderRef?] [value LLVMValueRef?]) LLVMValueRef?]{}
+@defproc[(llvm-build-ret-void [builder LLVMBuilderRef?]) LLVMValueRef?]{}
