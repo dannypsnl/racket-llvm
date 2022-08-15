@@ -1,7 +1,5 @@
 #lang racket/base
-
 (provide llvm-dispose-message)
-
 (require ffi/unsafe
          "definer.rkt")
 

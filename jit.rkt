@@ -1,5 +1,4 @@
 #lang racket
-
 (provide llvm-link-in-mcjit
          llvm-create-execution-engine-for-module
          llvm-run-function
@@ -10,7 +9,6 @@
          ; types
          _LLVMExecutionEngineRef
          LLVMExecutionEngineRef?)
-
 (require ffi/unsafe
          "definer.rkt"
          "ref.rkt"

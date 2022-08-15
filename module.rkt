@@ -10,7 +10,6 @@
          llvm-get-named-function
          llvm-view-function-cfg
          llvm-view-function-cfg-only)
-
 (require ffi/unsafe
          "definer.rkt"
          "ref.rkt"

@@ -1,5 +1,4 @@
 #lang racket
-
 (provide llvm-pass-manager-builder-create
          llvm-pass-manager-builder-set-opt-level
          llvm-pass-manager-builder-populate-module-pass-manager
@@ -7,13 +6,11 @@
          llvm-pass-manager-create
          llvm-pass-manager-run
          llvm-function-pass-manager-create)
-
 (require ffi/unsafe
          "definer.rkt"
          "ref.rkt")
 
 #| Pass manager builder |#
-
 (define-llvm llvm-pass-manager-builder-create (_fun -> _LLVMPassManagerBuilderRef)
   #:c-id LLVMPassManagerBuilderCreate)
 
@@ -36,7 +33,6 @@
   #:c-id LLVMPassManagerBuilderPopulateFunctionPassManager)
 
 #| Whole module pass manager |#
-
 (define-llvm llvm-pass-manager-create (_fun -> _LLVMPassManagerRef)
   #:c-id LLVMCreatePassManager)
 
@@ -46,6 +42,5 @@
   #:c-id LLVMRunPassManager)
 
 #| Function pass manager |#
-
 (define-llvm llvm-function-pass-manager-create (_fun _LLVMModuleRef -> _LLVMPassManagerRef)
   #:c-id LLVMCreateFunctionPassManagerForModule)

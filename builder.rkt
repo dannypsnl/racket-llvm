@@ -1,6 +1,5 @@
 #lang racket
 (provide (all-defined-out))
-
 (require ffi/unsafe
          "definer.rkt"
          "types.rkt"

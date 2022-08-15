@@ -1,7 +1,5 @@
 #lang racket/base
-
 (provide (all-defined-out))
-
 (require ffi/unsafe
          "definer.rkt"
          "ref.rkt")

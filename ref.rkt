@@ -17,7 +17,6 @@
           LLVMGenericValueRef?
           LLVMPassManagerRef?
           LLVMPassManagerBuilderRef?)
-
 (require ffi/unsafe)
 
 (define-cpointer-type _LLVMModuleRef #:tag 'LLVMOpaqueModule)
