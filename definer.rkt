@@ -12,5 +12,5 @@
            (with-output-to-string
              (λ () (system* path "--libdir")))))))
 
-(define-ffi-definer define-llvm (ffi-lib "libLLVM" '("14" "13" "12" "11" #f)
+(define-ffi-definer define-llvm (ffi-lib "libLLVM" '("15" "14" "13" "12" "11" #f)
                                          #:get-lib-dirs get-llvm-lib-dir))

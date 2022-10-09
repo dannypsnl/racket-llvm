@@ -77,7 +77,7 @@
                   "; ModuleID = 'test_mod'
 source_filename = \"test_mod\"
 
-declare i32 @printf(i8*, ...)
+declare i32 @printf(ptr, ...)
 ")))
 (module+ test
   (require rackunit
