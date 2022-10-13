@@ -33,3 +33,9 @@
 ]{
     Add a global variable into given module
 }
+
+@defproc[(llvm-write-bitcode-to-file [module LLVMModuleRef?] [file-path string?])
+    void?
+]{
+    Write @code{module} as content of @code{file-path}.
+}

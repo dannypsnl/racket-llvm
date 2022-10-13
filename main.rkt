@@ -5,6 +5,7 @@
           "module.rkt"
           "types.rkt"
           "builder.rkt"
+          "bit-writer.rkt"
           "jit.rkt"
           "pass-manager.rkt"))
 (require "definer.rkt"
@@ -12,5 +13,6 @@
          "module.rkt"
          "types.rkt"
          "builder.rkt"
+         "bit-writer.rkt"
          "jit.rkt"
          "pass-manager.rkt")
