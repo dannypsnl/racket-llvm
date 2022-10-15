@@ -4,9 +4,12 @@
          llvm-function-verify
          llvm-module->string
          llvm-get-module-context
-         llvm-add-global
-         llvm-add-function
+         ; struct
          llvm-add-struct-type
+         ; global
+         llvm-add-global llvm-set-initializer
+         ; function
+         llvm-add-function
          llvm-get-named-function
          llvm-view-function-cfg
          llvm-view-function-cfg-only)
@@ -58,6 +61,11 @@
 
 (define-llvm llvm-add-global (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
   #:c-id LLVMAddGlobal)
+(define-llvm llvm-set-initializer (_fun (global-var constant-val) ::
+                                        (global-var : _LLVMValueRef)
+                                        (constant-val : _LLVMValueRef)
+                                        -> _void)
+  #:c-id LLVMSetInitializer)
 
 (define-llvm llvm-view-function-cfg (_fun _LLVMValueRef -> _void)
   #:c-id LLVMViewFunctionCFG)
