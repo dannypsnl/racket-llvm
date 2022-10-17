@@ -31,7 +31,13 @@
 @defproc[(llvm-add-global [module LLVMModuleRef?] [var-type LLVMTypeRef?] [var-name string?])
     LLVMValueRef?
 ]{
-    Add a global variable into given module
+    Add a global variable into given module.
+}
+
+@defproc[(llvm-get-named-global [module LLVMModuleRef?] [global-variable-name string?])
+    LLVMValueRef?
+]{
+    Get global variable reference by its name.
 }
 
 @defproc[(llvm-write-bitcode-to-file [module LLVMModuleRef?] [file-path string?])

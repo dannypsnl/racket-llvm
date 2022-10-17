@@ -7,7 +7,9 @@
          ; struct
          llvm-add-struct-type
          ; global
-         llvm-add-global llvm-set-initializer
+         llvm-add-global
+         llvm-get-named-global
+         llvm-set-initializer
          ; function
          llvm-add-function
          llvm-get-named-function
@@ -61,6 +63,8 @@
 
 (define-llvm llvm-add-global (_fun _LLVMModuleRef _LLVMTypeRef _string -> _LLVMValueRef)
   #:c-id LLVMAddGlobal)
+(define-llvm llvm-get-named-global (_fun _LLVMModuleRef _string -> _LLVMValueRef)
+  #:c-id LLVMGetNamedGlobal)
 (define-llvm llvm-set-initializer (_fun (global-var constant-val) ::
                                         (global-var : _LLVMValueRef)
                                         (constant-val : _LLVMValueRef)
@@ -101,3 +105,7 @@ source_filename = \"test_mod\"
 
 @hello = external global %0
 ")))
+
+
+
+
