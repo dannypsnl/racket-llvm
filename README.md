@@ -66,6 +66,29 @@ The following one shows how to use **Execution Engine** to run a LLVM function a
 (printf "JIT result: ~a\n" (llvm-generic-value->int res #f))
 ```
 
+### Develop
+
+Here is an example to show how can one define a new llvm function binding via `define-llvm`.
+
+```racket
+;; our standard is converting from CamlCase to kebab-case identifier
+(define-llvm llvm-build-struct-gep2
+  ;; here is a complicated version of `_fun`, the first wrapped list are parameters
+  (_fun (builder ty pointer index [name ""]) ::
+        ;; the followings are type for parameters
+        (builder : _LLVMBuilderRef)
+        (ty : _LLVMTypeRef)
+        (pointer : _LLVMValueRef)
+        (index : _int)
+        (name : _string)
+        ;; final, the return type
+        -> _LLVMValueRef)
+  ;; `LLVMBuildStructGEP2` is the name of function in C side
+  #:c-id LLVMBuildStructGEP2)
+```
+
+And you can get llvm functions list from [LLVM C-API](https://llvm.org/doxygen/dir_db1e4f1ef1b4536ff54becd23c94e664.html). To get more about the FFI in racket, reference to its [document](https://docs.racket-lang.org/foreign/index.html#%28tech._ffi%29).
+
 ### Reference
 
 - [llvm doxygen](https://llvm.org/doxygen/)
