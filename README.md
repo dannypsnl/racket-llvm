@@ -14,6 +14,13 @@ raco pkg install --auto racket-llvm
 
 ### Usage
 
+Ensure you have `llvm-config` installed and can invoke it. You might need following command.
+
+```shell
+# export homebrew installed llvm binaries
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+```
+
 ##### Dependencies
 
 Add `"racket-llvm"` into `info.rkt`
