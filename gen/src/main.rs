@@ -1,6 +1,7 @@
 use std::env;
 
-use lang_c::ast::TranslationUnit;
+use lang_c::ast::ExternalDeclaration;
+use lang_c::ast::{Declaration, StaticAssert, TranslationUnit};
 use lang_c::driver::{parse, Config};
 use lang_c::print::Printer;
 use lang_c::visit::Visit;
@@ -30,7 +31,21 @@ fn main() {
 }
 
 fn generate_racket(unit: TranslationUnit) {
-    let s = &mut String::new();
-    ..Printer::new(s).visit_translation_unit(&unit);
-    println!("{:?}", s);
+    // NOTE: debug printing
+    // let s = &mut String::new();
+    // ..Printer::new(s).visit_translation_unit(&unit);
+    // println!("{:?}", s);
+
+    for decl in unit.0 {
+        use ExternalDeclaration::*;
+        match decl.node {
+            Declaration(decl) => {
+                println!("{:?}", decl);
+            }
+            StaticAssert(_) => {}
+            FunctionDefinition(func) => {
+                println!("{:?}", func);
+            }
+        }
+    }
 }
