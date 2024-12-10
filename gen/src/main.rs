@@ -1,5 +1,6 @@
 use std::env;
 
+use lang_c::ast::TranslationUnit;
 use lang_c::driver::{parse, Config};
 use lang_c::print::Printer;
 use lang_c::visit::Visit;
@@ -25,7 +26,11 @@ fn main() {
 
     let p = parse(&config, "Core.h").expect("parse failed");
 
+    generate_racket(p.unit);
+}
+
+fn generate_racket(unit: TranslationUnit) {
     let s = &mut String::new();
-    Printer::new(s).visit_translation_unit(&p.unit);
+    ..Printer::new(s).visit_translation_unit(&unit);
     println!("{:?}", s);
 }
