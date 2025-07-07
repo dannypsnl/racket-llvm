@@ -1,0 +1,10 @@
+[project]
+name = "racket-llvm"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cffi>=1.17.1",
+    "pycparser>=2.22",
+]
