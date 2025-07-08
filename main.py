@@ -173,6 +173,10 @@ class RacketGenerator:
         if self.needs_sophisticated_signature(name):
             return self.create_sophisticated_function(name, prototype)
         
+        # Check if this function uses the int-fail pattern
+        if self.uses_int_fail_pattern(name, prototype):
+            return self.create_int_fail_function(name, prototype)
+        
         # Build the argument types for the FFI signature
         arg_types = []
         for i, arg_type in enumerate(prototype.args):
@@ -221,6 +225,101 @@ class RacketGenerator:
         }
         
         return func_name in boolean_returns
+    
+    def uses_int_fail_pattern(self, func_name: str, prototype) -> bool:
+        """Check if a function uses the int-fail pattern (returns int where 0=success, non-zero=failure)"""
+        # Functions that return int and represent failure patterns
+        int_fail_functions = {
+            "LLVMCreateInterpreterForModule",
+            "LLVMCreateJITCompilerForModule", 
+            "LLVMCreateMCJITCompilerForModule",
+            "LLVMCreateMemoryBufferWithContentsOfFile",
+            "LLVMCreateMemoryBufferWithSTDIN",
+            "LLVMGetBitcodeModule",
+            "LLVMGetBitcodeModule2",
+            "LLVMGetBitcodeModuleInContext",
+            "LLVMGetBitcodeModuleInContext2",
+            "LLVMGetTargetFromTriple",
+            "LLVMLinkModules2",
+            "LLVMLoadLibraryPermanently",
+            "LLVMParseBitcode",
+            "LLVMParseBitcode2",
+            "LLVMParseBitcodeInContext",
+            "LLVMParseBitcodeInContext2",
+            "LLVMParseIRInContext",
+            "LLVMPrintModuleToFile",
+            "LLVMRemoveModule",
+            "LLVMRunFunctionAsMain",
+            "LLVMRunFunctionPassManager",
+            "LLVMRunPassManager",
+            "LLVMStripModuleDebugInfo",
+            "LLVMTargetMachineEmitToFile",
+            "LLVMTargetMachineEmitToMemoryBuffer",
+            "LLVMWriteBitcodeToFD",
+            "LLVMWriteBitcodeToFile",
+            "LLVMWriteBitcodeToFileHandle",
+        }
+        
+        return (func_name in int_fail_functions and 
+                prototype.result.kind == "primitive" and 
+                prototype.result.cname == "int")
+    
+    def create_int_fail_function(self, name: str, prototype) -> str:
+        """Create a function with the int-fail pattern (converts int return to bool with error handling)"""
+        racket_name = self.normalize_name(name)
+        
+        # Build parameter names and types
+        param_names = []
+        param_types = []
+        used_names = set()  # Track used names to avoid duplicates
+        
+        for i, arg_type in enumerate(prototype.args):
+            racket_type = self.convert_type_to_racket(arg_type)
+            
+            # Generate parameter name based on type or position
+            if racket_type == "_LLVMModuleRef":
+                base_name = "mod"
+                param_name = base_name
+                counter = 1
+                while param_name in used_names:
+                    param_name = f"{base_name}-{counter}"
+                    counter += 1
+            elif racket_type == "_string":
+                param_name = "file-path" if "file" in name.lower() else "path"
+            elif racket_type == "_pointer":
+                param_name = f"out-param-{i}"
+            elif racket_type.startswith("_LLVM") and racket_type.endswith("Ref"):
+                # Extract base type name for parameter
+                base_type = racket_type[5:-3].lower()  # Remove _LLVM and Ref
+                base_name = base_type.replace("_", "-")
+                param_name = base_name
+                counter = 1
+                while param_name in used_names:
+                    param_name = f"{base_name}-{counter}"
+                    counter += 1
+            else:
+                param_name = f"param-{i}"
+            
+            used_names.add(param_name)
+            param_names.append(param_name)
+            param_types.append(f"({param_name} : {racket_type})")
+        
+        # Create the function signature with int-fail pattern
+        param_signature = " ".join(param_names)
+        param_types_str = "\n                                              ".join(param_types)
+        
+        # Generate appropriate error message
+        error_message = f"{name.lower().replace('llvm', '').replace('_', ' ')} failed"
+        
+        result = f"""(define-llvm {racket_name} (_fun ({param_signature}) ::
+                                              {param_types_str}
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "{error_message}")))
+  #:c-id {name})"""
+        
+        return result
     
     def needs_sophisticated_signature(self, func_name: str) -> bool:
         """Check if a function needs a sophisticated Racket FFI signature"""

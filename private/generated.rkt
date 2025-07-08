@@ -933,13 +933,55 @@
   #:c-id LLVMCreateGenericValueOfInt)
 (define-llvm llvm-create-generic-value-of-pointer (_fun _pointer -> _LLVMGenericValueRef) #:c-id LLVMCreateGenericValueOfPointer)
 (define-llvm llvm-create-intel-jit-event-listener (_fun -> _LLVMJITEventListenerRef) #:c-id LLVMCreateIntelJITEventListener)
-(define-llvm llvm-create-interpreter-for-module (_fun _pointer _LLVMModuleRef _pointer -> _int) #:c-id LLVMCreateInterpreterForModule)
-(define-llvm llvm-create-jit-compiler-for-module (_fun _pointer _LLVMModuleRef _uint _pointer -> _int) #:c-id LLVMCreateJITCompilerForModule)
-(define-llvm llvm-create-mcjit-compiler-for-module (_fun _pointer _LLVMModuleRef _LLVMMCJITCompilerOptionsRef _ulong _pointer -> _int) #:c-id LLVMCreateMCJITCompilerForModule)
-(define-llvm llvm-create-memory-buffer-with-contents-of-file (_fun _string _pointer _pointer -> _int) #:c-id LLVMCreateMemoryBufferWithContentsOfFile)
+(define-llvm llvm-create-interpreter-for-module (_fun (out-param-0 mod out-param-2) ::
+                                              (out-param-0 : _pointer)
+                                              (mod : _LLVMModuleRef)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "createinterpreterformodule failed")))
+  #:c-id LLVMCreateInterpreterForModule)
+(define-llvm llvm-create-jit-compiler-for-module (_fun (out-param-0 mod param-2 out-param-3) ::
+                                              (out-param-0 : _pointer)
+                                              (mod : _LLVMModuleRef)
+                                              (param-2 : _uint)
+                                              (out-param-3 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "createjitcompilerformodule failed")))
+  #:c-id LLVMCreateJITCompilerForModule)
+(define-llvm llvm-create-mcjit-compiler-for-module (_fun (out-param-0 mod mcjitcompileroptions param-3 out-param-4) ::
+                                              (out-param-0 : _pointer)
+                                              (mod : _LLVMModuleRef)
+                                              (mcjitcompileroptions : _LLVMMCJITCompilerOptionsRef)
+                                              (param-3 : _ulong)
+                                              (out-param-4 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "createmcjitcompilerformodule failed")))
+  #:c-id LLVMCreateMCJITCompilerForModule)
+(define-llvm llvm-create-memory-buffer-with-contents-of-file (_fun (file-path out-param-1 out-param-2) ::
+                                              (file-path : _string)
+                                              (out-param-1 : _pointer)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "creatememorybufferwithcontentsoffile failed")))
+  #:c-id LLVMCreateMemoryBufferWithContentsOfFile)
 (define-llvm llvm-create-memory-buffer-with-memory-range (_fun _string _ulong _string _int -> _LLVMMemoryBufferRef) #:c-id LLVMCreateMemoryBufferWithMemoryRange)
 (define-llvm llvm-create-memory-buffer-with-memory-range-copy (_fun _string _ulong _string -> _LLVMMemoryBufferRef) #:c-id LLVMCreateMemoryBufferWithMemoryRangeCopy)
-(define-llvm llvm-create-memory-buffer-with-stdin (_fun _pointer _pointer -> _int) #:c-id LLVMCreateMemoryBufferWithSTDIN)
+(define-llvm llvm-create-memory-buffer-with-stdin (_fun (out-param-0 out-param-1) ::
+                                              (out-param-0 : _pointer)
+                                              (out-param-1 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "creatememorybufferwithstdin failed")))
+  #:c-id LLVMCreateMemoryBufferWithSTDIN)
 (define-llvm llvm-create-message (_fun _string -> _string) #:c-id LLVMCreateMessage)
 (define-llvm llvm-create-module-provider-for-existing-module (_fun _LLVMModuleRef -> _LLVMModuleProviderRef) #:c-id LLVMCreateModuleProviderForExistingModule)
 (define-llvm llvm-create-o-profile-jit-event-listener (_fun -> _LLVMJITEventListenerRef) #:c-id LLVMCreateOProfileJITEventListener)
@@ -1114,10 +1156,42 @@
 (define-llvm llvm-get-basic-block-parent (_fun _LLVMBasicBlockRef -> _LLVMValueRef) #:c-id LLVMGetBasicBlockParent)
 (define-llvm llvm-get-basic-block-terminator (_fun _LLVMBasicBlockRef -> _LLVMValueRef) #:c-id LLVMGetBasicBlockTerminator)
 (define-llvm llvm-get-basic-blocks (_fun _LLVMValueRef _pointer -> _void) #:c-id LLVMGetBasicBlocks)
-(define-llvm llvm-get-bitcode-module (_fun _LLVMMemoryBufferRef _pointer _pointer -> _int) #:c-id LLVMGetBitcodeModule)
-(define-llvm llvm-get-bitcode-module2 (_fun _LLVMMemoryBufferRef _pointer -> _int) #:c-id LLVMGetBitcodeModule2)
-(define-llvm llvm-get-bitcode-module-in-context (_fun _LLVMContextRef _LLVMMemoryBufferRef _pointer _pointer -> _int) #:c-id LLVMGetBitcodeModuleInContext)
-(define-llvm llvm-get-bitcode-module-in-context2 (_fun _LLVMContextRef _LLVMMemoryBufferRef _pointer -> _int) #:c-id LLVMGetBitcodeModuleInContext2)
+(define-llvm llvm-get-bitcode-module (_fun (memorybuffer out-param-1 out-param-2) ::
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-1 : _pointer)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "getbitcodemodule failed")))
+  #:c-id LLVMGetBitcodeModule)
+(define-llvm llvm-get-bitcode-module2 (_fun (memorybuffer out-param-1) ::
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-1 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "getbitcodemodule2 failed")))
+  #:c-id LLVMGetBitcodeModule2)
+(define-llvm llvm-get-bitcode-module-in-context (_fun (context memorybuffer out-param-2 out-param-3) ::
+                                              (context : _LLVMContextRef)
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-2 : _pointer)
+                                              (out-param-3 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "getbitcodemoduleincontext failed")))
+  #:c-id LLVMGetBitcodeModuleInContext)
+(define-llvm llvm-get-bitcode-module-in-context2 (_fun (context memorybuffer out-param-2) ::
+                                              (context : _LLVMContextRef)
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "getbitcodemoduleincontext2 failed")))
+  #:c-id LLVMGetBitcodeModuleInContext2)
 (define-llvm llvm-get-block-address-basic-block (_fun _LLVMValueRef -> _LLVMBasicBlockRef) #:c-id LLVMGetBlockAddressBasicBlock)
 (define-llvm llvm-get-block-address-function (_fun _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMGetBlockAddressFunction)
 (define-llvm llvm-get-buffer-size (_fun _LLVMMemoryBufferRef -> _ulong) #:c-id LLVMGetBufferSize)
@@ -1341,7 +1415,15 @@
 (define-llvm llvm-get-target-ext-type-num-type-params (_fun _LLVMTypeRef -> _uint) #:c-id LLVMGetTargetExtTypeNumTypeParams)
 (define-llvm llvm-get-target-ext-type-type-param (_fun _LLVMTypeRef _uint -> _LLVMTypeRef) #:c-id LLVMGetTargetExtTypeTypeParam)
 (define-llvm llvm-get-target-from-name (_fun _string -> _LLVMTargetRef) #:c-id LLVMGetTargetFromName)
-(define-llvm llvm-get-target-from-triple (_fun _string _pointer _pointer -> _int) #:c-id LLVMGetTargetFromTriple)
+(define-llvm llvm-get-target-from-triple (_fun (path out-param-1 out-param-2) ::
+                                              (path : _string)
+                                              (out-param-1 : _pointer)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "gettargetfromtriple failed")))
+  #:c-id LLVMGetTargetFromTriple)
 (define-llvm llvm-get-target-machine-cpu (_fun _LLVMTargetMachineRef -> _string) #:c-id LLVMGetTargetMachineCPU)
 (define-llvm llvm-get-target-machine-feature-string (_fun _LLVMTargetMachineRef -> _string) #:c-id LLVMGetTargetMachineFeatureString)
 (define-llvm llvm-get-target-machine-target (_fun _LLVMTargetMachineRef -> _LLVMTargetRef) #:c-id LLVMGetTargetMachineTarget)
@@ -1452,8 +1534,21 @@
 (define-llvm llvm-label-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMLabelTypeInContext)
 (define-llvm llvm-link-in-interpreter (_fun -> _void) #:c-id LLVMLinkInInterpreter)
 (define-llvm llvm-link-in-mcjit (_fun -> _void) #:c-id LLVMLinkInMCJIT)
-(define-llvm llvm-link-modules2 (_fun _LLVMModuleRef _LLVMModuleRef -> _int) #:c-id LLVMLinkModules2)
-(define-llvm llvm-load-library-permanently (_fun _string -> _int) #:c-id LLVMLoadLibraryPermanently)
+(define-llvm llvm-link-modules2 (_fun (mod mod-1) ::
+                                              (mod : _LLVMModuleRef)
+                                              (mod-1 : _LLVMModuleRef)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "linkmodules2 failed")))
+  #:c-id LLVMLinkModules2)
+(define-llvm llvm-load-library-permanently (_fun (path) ::
+                                              (path : _string)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "loadlibrarypermanently failed")))
+  #:c-id LLVMLoadLibraryPermanently)
 (define-llvm llvm-lookup-intrinsic-id (_fun _string _ulong -> _uint) #:c-id LLVMLookupIntrinsicID)
 (define-llvm llvmmd-node (_fun _pointer _uint -> _LLVMValueRef) #:c-id LLVMMDNode)
 (define-llvm llvmmd-node-in-context (_fun _LLVMContextRef _pointer _uint -> _LLVMValueRef) #:c-id LLVMMDNodeInContext)
@@ -1575,12 +1670,53 @@
 (define-llvm llvm-orc-thread-safe-module-with-module-do (_fun _LLVMOrcOpaqueThreadSafeModuleRef _pointer _pointer -> _LLVMErrorRef) #:c-id LLVMOrcThreadSafeModuleWithModuleDo)
 (define-llvm llvmppcfp128-type (_fun -> _LLVMTypeRef) #:c-id LLVMPPCFP128Type)
 (define-llvm llvmppcfp128-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMPPCFP128TypeInContext)
-(define-llvm llvm-parse-bitcode (_fun _LLVMMemoryBufferRef _pointer _pointer -> _int) #:c-id LLVMParseBitcode)
-(define-llvm llvm-parse-bitcode2 (_fun _LLVMMemoryBufferRef _pointer -> _int) #:c-id LLVMParseBitcode2)
-(define-llvm llvm-parse-bitcode-in-context (_fun _LLVMContextRef _LLVMMemoryBufferRef _pointer _pointer -> _int) #:c-id LLVMParseBitcodeInContext)
-(define-llvm llvm-parse-bitcode-in-context2 (_fun _LLVMContextRef _LLVMMemoryBufferRef _pointer -> _int) #:c-id LLVMParseBitcodeInContext2)
+(define-llvm llvm-parse-bitcode (_fun (memorybuffer out-param-1 out-param-2) ::
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-1 : _pointer)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "parsebitcode failed")))
+  #:c-id LLVMParseBitcode)
+(define-llvm llvm-parse-bitcode2 (_fun (memorybuffer out-param-1) ::
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-1 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "parsebitcode2 failed")))
+  #:c-id LLVMParseBitcode2)
+(define-llvm llvm-parse-bitcode-in-context (_fun (context memorybuffer out-param-2 out-param-3) ::
+                                              (context : _LLVMContextRef)
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-2 : _pointer)
+                                              (out-param-3 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "parsebitcodeincontext failed")))
+  #:c-id LLVMParseBitcodeInContext)
+(define-llvm llvm-parse-bitcode-in-context2 (_fun (context memorybuffer out-param-2) ::
+                                              (context : _LLVMContextRef)
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "parsebitcodeincontext2 failed")))
+  #:c-id LLVMParseBitcodeInContext2)
 (define-llvm llvm-parse-command-line-options (_fun _int _pointer _string -> _void) #:c-id LLVMParseCommandLineOptions)
-(define-llvm llvm-parse-ir-in-context (_fun _LLVMContextRef _LLVMMemoryBufferRef _pointer _pointer -> _int) #:c-id LLVMParseIRInContext)
+(define-llvm llvm-parse-ir-in-context (_fun (context memorybuffer out-param-2 out-param-3) ::
+                                              (context : _LLVMContextRef)
+                                              (memorybuffer : _LLVMMemoryBufferRef)
+                                              (out-param-2 : _pointer)
+                                              (out-param-3 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "parseirincontext failed")))
+  #:c-id LLVMParseIRInContext)
 (define-llvm llvm-pass-builder-options-set-aa-pipeline (_fun _LLVMPassBuilderOptionsRef _string -> _void) #:c-id LLVMPassBuilderOptionsSetAAPipeline)
 (define-llvm llvm-pass-builder-options-set-call-graph-profile (_fun _LLVMPassBuilderOptionsRef _int -> _void) #:c-id LLVMPassBuilderOptionsSetCallGraphProfile)
 (define-llvm llvm-pass-builder-options-set-debug-logging (_fun _LLVMPassBuilderOptionsRef _int -> _void) #:c-id LLVMPassBuilderOptionsSetDebugLogging)
@@ -1611,7 +1747,15 @@
 (define-llvm llvm-preferred-alignment-of-global (_fun _LLVMTargetDataRef _LLVMValueRef -> _uint) #:c-id LLVMPreferredAlignmentOfGlobal)
 (define-llvm llvm-preferred-alignment-of-type (_fun _LLVMTargetDataRef _LLVMTypeRef -> _uint) #:c-id LLVMPreferredAlignmentOfType)
 (define-llvm llvm-print-dbg-record-to-string (_fun _LLVMDbgRecordRef -> _string) #:c-id LLVMPrintDbgRecordToString)
-(define-llvm llvm-print-module-to-file (_fun _LLVMModuleRef _string _pointer -> _int) #:c-id LLVMPrintModuleToFile)
+(define-llvm llvm-print-module-to-file (_fun (mod file-path out-param-2) ::
+                                              (mod : _LLVMModuleRef)
+                                              (file-path : _string)
+                                              (out-param-2 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "printmoduletofile failed")))
+  #:c-id LLVMPrintModuleToFile)
 (define-llvm llvm-print-module-to-string (_fun _LLVMModuleRef -> _string) #:c-id LLVMPrintModuleToString)
 (define-llvm llvm-print-type-to-string (_fun _LLVMTypeRef -> _string) #:c-id LLVMPrintTypeToString)
 (define-llvm llvm-print-value-to-string (_fun _LLVMValueRef -> _string) #:c-id LLVMPrintValueToString)
@@ -1645,7 +1789,16 @@
 (define-llvm llvm-remove-call-site-string-attribute (_fun _LLVMValueRef _uint _string _uint -> _void) #:c-id LLVMRemoveCallSiteStringAttribute)
 (define-llvm llvm-remove-enum-attribute-at-index (_fun _LLVMValueRef _uint _uint -> _void) #:c-id LLVMRemoveEnumAttributeAtIndex)
 (define-llvm llvm-remove-global-i-func (_fun _LLVMValueRef -> _void) #:c-id LLVMRemoveGlobalIFunc)
-(define-llvm llvm-remove-module (_fun _LLVMExecutionEngineRef _LLVMModuleRef _pointer _pointer -> _int) #:c-id LLVMRemoveModule)
+(define-llvm llvm-remove-module (_fun (executionengine mod out-param-2 out-param-3) ::
+                                              (executionengine : _LLVMExecutionEngineRef)
+                                              (mod : _LLVMModuleRef)
+                                              (out-param-2 : _pointer)
+                                              (out-param-3 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "removemodule failed")))
+  #:c-id LLVMRemoveModule)
 (define-llvm llvm-remove-string-attribute-at-index (_fun _LLVMValueRef _uint _string _uint -> _void) #:c-id LLVMRemoveStringAttributeAtIndex)
 (define-llvm llvm-replace-all-uses-with (_fun _LLVMValueRef _LLVMValueRef -> _void) #:c-id LLVMReplaceAllUsesWith)
 (define-llvm llvm-replace-md-node-operand-with (_fun _LLVMValueRef _uint _LLVMMetadataRef -> _void) #:c-id LLVMReplaceMDNodeOperandWith)
@@ -1657,9 +1810,33 @@
                                      (args : (_list i _LLVMGenericValueRef))
                                      -> _LLVMGenericValueRef)
   #:c-id LLVMRunFunction)
-(define-llvm llvm-run-function-as-main (_fun _LLVMExecutionEngineRef _LLVMValueRef _uint _pointer _pointer -> _int) #:c-id LLVMRunFunctionAsMain)
-(define-llvm llvm-run-function-pass-manager (_fun _LLVMPassManagerRef _LLVMValueRef -> _int) #:c-id LLVMRunFunctionPassManager)
-(define-llvm llvm-run-pass-manager (_fun _LLVMPassManagerRef _LLVMModuleRef -> _int) #:c-id LLVMRunPassManager)
+(define-llvm llvm-run-function-as-main (_fun (executionengine value param-2 out-param-3 out-param-4) ::
+                                              (executionengine : _LLVMExecutionEngineRef)
+                                              (value : _LLVMValueRef)
+                                              (param-2 : _uint)
+                                              (out-param-3 : _pointer)
+                                              (out-param-4 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "runfunctionasmain failed")))
+  #:c-id LLVMRunFunctionAsMain)
+(define-llvm llvm-run-function-pass-manager (_fun (passmanager value) ::
+                                              (passmanager : _LLVMPassManagerRef)
+                                              (value : _LLVMValueRef)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "runfunctionpassmanager failed")))
+  #:c-id LLVMRunFunctionPassManager)
+(define-llvm llvm-run-pass-manager (_fun (passmanager mod) ::
+                                              (passmanager : _LLVMPassManagerRef)
+                                              (mod : _LLVMModuleRef)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "runpassmanager failed")))
+  #:c-id LLVMRunPassManager)
 (define-llvm llvm-run-passes (_fun _LLVMModuleRef _string _LLVMTargetMachineRef _LLVMPassBuilderOptionsRef -> _LLVMErrorRef) #:c-id LLVMRunPasses)
 (define-llvm llvm-run-passes-on-function (_fun _LLVMValueRef _string _LLVMTargetMachineRef _LLVMPassBuilderOptionsRef -> _LLVMErrorRef) #:c-id LLVMRunPassesOnFunction)
 (define-llvm llvm-run-static-constructors (_fun _LLVMExecutionEngineRef -> _void) #:c-id LLVMRunStaticConstructors)
@@ -1741,7 +1918,13 @@
 (define-llvm llvm-start-multithreaded (_fun -> _int) #:c-id LLVMStartMultithreaded)
 (define-llvm llvm-stop-multithreaded (_fun -> _void) #:c-id LLVMStopMultithreaded)
 (define-llvm llvm-store-size-of-type (_fun _LLVMTargetDataRef _LLVMTypeRef -> _ullong) #:c-id LLVMStoreSizeOfType)
-(define-llvm llvm-strip-module-debug-info (_fun _LLVMModuleRef -> _int) #:c-id LLVMStripModuleDebugInfo)
+(define-llvm llvm-strip-module-debug-info (_fun (mod) ::
+                                              (mod : _LLVMModuleRef)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "stripmoduledebuginfo failed")))
+  #:c-id LLVMStripModuleDebugInfo)
 (define-llvm llvm-struct-create-named (_fun _LLVMContextRef _string -> _LLVMTypeRef) #:c-id LLVMStructCreateNamed)
 (define-llvm llvm-struct-get-type-at-index (_fun _LLVMTypeRef _uint -> _LLVMTypeRef) #:c-id LLVMStructGetTypeAtIndex)
 (define-llvm llvm-struct-set-body (_fun _LLVMTypeRef _pointer _uint _int -> _void) #:c-id LLVMStructSetBody)
@@ -1751,8 +1934,28 @@
 (define-llvm llvm-target-has-asm-backend (_fun _LLVMTargetRef -> _int) #:c-id LLVMTargetHasAsmBackend)
 (define-llvm llvm-target-has-jit (_fun _LLVMTargetRef -> _int) #:c-id LLVMTargetHasJIT)
 (define-llvm llvm-target-has-target-machine (_fun _LLVMTargetRef -> _int) #:c-id LLVMTargetHasTargetMachine)
-(define-llvm llvm-target-machine-emit-to-file (_fun _LLVMTargetMachineRef _LLVMModuleRef _string _uint _pointer -> _int) #:c-id LLVMTargetMachineEmitToFile)
-(define-llvm llvm-target-machine-emit-to-memory-buffer (_fun _LLVMTargetMachineRef _LLVMModuleRef _uint _pointer _pointer -> _int) #:c-id LLVMTargetMachineEmitToMemoryBuffer)
+(define-llvm llvm-target-machine-emit-to-file (_fun (targetmachine mod file-path param-3 out-param-4) ::
+                                              (targetmachine : _LLVMTargetMachineRef)
+                                              (mod : _LLVMModuleRef)
+                                              (file-path : _string)
+                                              (param-3 : _uint)
+                                              (out-param-4 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "targetmachineemittofile failed")))
+  #:c-id LLVMTargetMachineEmitToFile)
+(define-llvm llvm-target-machine-emit-to-memory-buffer (_fun (targetmachine mod param-2 out-param-3 out-param-4) ::
+                                              (targetmachine : _LLVMTargetMachineRef)
+                                              (mod : _LLVMModuleRef)
+                                              (param-2 : _uint)
+                                              (out-param-3 : _pointer)
+                                              (out-param-4 : _pointer)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "targetmachineemittomemorybuffer failed")))
+  #:c-id LLVMTargetMachineEmitToMemoryBuffer)
 (define-llvm llvm-target-machine-options-set-abi (_fun _LLVMTargetMachineOptionsRef _string -> _void) #:c-id LLVMTargetMachineOptionsSetABI)
 (define-llvm llvm-target-machine-options-set-cpu (_fun _LLVMTargetMachineOptionsRef _string -> _void) #:c-id LLVMTargetMachineOptionsSetCPU)
 (define-llvm llvm-target-machine-options-set-code-gen-opt-level (_fun _LLVMTargetMachineOptionsRef _uint -> _void) #:c-id LLVMTargetMachineOptionsSetCodeGenOptLevel)
@@ -1785,9 +1988,32 @@
 (define-llvm llvm-view-function-cfg-only (_fun _LLVMValueRef -> _void) #:c-id LLVMViewFunctionCFGOnly)
 (define-llvm llvm-void-type (_fun -> _LLVMTypeRef) #:c-id LLVMVoidType)
 (define-llvm llvm-void-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMVoidTypeInContext)
-(define-llvm llvm-write-bitcode-to-fd (_fun _LLVMModuleRef _int _int _int -> _int) #:c-id LLVMWriteBitcodeToFD)
-(define-llvm llvm-write-bitcode-to-file (_fun _LLVMModuleRef _string -> _int) #:c-id LLVMWriteBitcodeToFile)
-(define-llvm llvm-write-bitcode-to-file-handle (_fun _LLVMModuleRef _int -> _int) #:c-id LLVMWriteBitcodeToFileHandle)
+(define-llvm llvm-write-bitcode-to-fd (_fun (mod param-1 param-2 param-3) ::
+                                              (mod : _LLVMModuleRef)
+                                              (param-1 : _int)
+                                              (param-2 : _int)
+                                              (param-3 : _int)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "writebitcodetofd failed")))
+  #:c-id LLVMWriteBitcodeToFD)
+(define-llvm llvm-write-bitcode-to-file (_fun (mod file-path) ::
+                                              (mod : _LLVMModuleRef)
+                                              (file-path : _string)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "writebitcodetofile failed")))
+  #:c-id LLVMWriteBitcodeToFile)
+(define-llvm llvm-write-bitcode-to-file-handle (_fun (mod param-1) ::
+                                              (mod : _LLVMModuleRef)
+                                              (param-1 : _int)
+                                              ; coercion the integer failure to bool
+                                              ; 0 should be #f, otherwise is #t
+                                              -> (failure : _bool)
+                                              -> (when failure (raise "writebitcodetofilehandle failed")))
+  #:c-id LLVMWriteBitcodeToFileHandle)
 (define-llvm llvm-write-bitcode-to-memory-buffer (_fun _LLVMModuleRef -> _LLVMMemoryBufferRef) #:c-id LLVMWriteBitcodeToMemoryBuffer)
 (define-llvm llvmx86amx-type (_fun -> _LLVMTypeRef) #:c-id LLVMX86AMXType)
 (define-llvm llvmx86amx-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMX86AMXTypeInContext)
