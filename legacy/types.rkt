@@ -8,7 +8,6 @@
 
 (define-llvm llvm-void-type (_fun -> _LLVMTypeRef) #:c-id LLVMVoidType)
 (define-llvm llvm-label-type (_fun -> _LLVMTypeRef) #:c-id LLVMLabelType)
-(define-llvm llvm-x86mmx-type (_fun -> _LLVMTypeRef) #:c-id LLVMX86MMXType)
 (define-llvm llvm-x86amx-type (_fun -> _LLVMTypeRef) #:c-id LLVMX86AMXType)
 
 (define-llvm llvm-int-type (_fun _int -> _LLVMTypeRef) #:c-id LLVMIntType)
