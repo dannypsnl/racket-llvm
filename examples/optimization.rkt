@@ -1,12 +1,10 @@
 #lang racket
 (require racket-llvm)
 
-; let's create an if-else function
+; LLVM 20 Optimization Example
+; Demonstrates migration from deprecated PassManagerBuilder to new PassBuilder API
 
 (define mod (llvm-module "optimizeMe"))
-
-(define eng (llvm-create-execution-engine-for-module mod))
-
 (llvm-link-in-mcjit)
 
 (define builder (llvm-builder-create))
@@ -41,17 +39,34 @@
 (llvm-module-verify mod)
 (llvm-function-verify if-func)
 
-(displayln "before:")
+(displayln "=== Before Optimization ===")
 (display (llvm-module->string mod))
 
-; let's do an optimization pass
-(define pass-manager (llvm-pass-manager-create))
-(define pass-manager-builder (llvm-pass-manager-builder-create))
-(llvm-pass-manager-builder-set-opt-level pass-manager-builder 3)
-(llvm-pass-manager-builder-populate-module-pass-manager pass-manager-builder pass-manager)
+; Create PassBuilder options
+(define pass-options (llvm-create-pass-builder-options))
 
-(displayln "did the pass change anything?")
-(llvm-pass-manager-run pass-manager mod)
+(define target (llvm-int-ptr-type (llvm-get-module-data-layout mod)))
+(define triple (llvm-get-default-target-triple))
+(define cpu (llvm-get-host-cpu-name))
+(define features (llvm-get-host-cpu-features))
+(define target-machine
+  (llvm-create-target-machine
+    target
+    triple
+    cpu
+    features
+    0
+    0
+    0))
+; Try using null target machine for basic passes
+(define pass-error #f)
+(with-handlers ([exn:fail? (lambda (e) 
+                            (displayln (format "Error: ~a" (exn-message e)))
+                            (displayln "Target machine might be required for PassBuilder API"))])
+  (set! pass-error (llvm-run-passes mod "instcombine" target-machine pass-options)))
 
-(displayln "after:")
+(when pass-error
+  (llvm-consume-error pass-error))
+
+(displayln "\n=== After Optimization Attempt ===")
 (display (llvm-module->string mod))
