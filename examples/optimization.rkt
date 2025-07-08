@@ -45,12 +45,25 @@
 ; Create PassBuilder options
 (define pass-options (llvm-create-pass-builder-options))
 
+(define target (llvm-int-ptr-type (llvm-get-module-data-layout mod)))
+(define triple (llvm-get-default-target-triple))
+(define cpu (llvm-get-host-cpu-name))
+(define features (llvm-get-host-cpu-features))
+(define target-machine
+  (llvm-create-target-machine
+    target
+    triple
+    cpu
+    features
+    0
+    0
+    0))
 ; Try using null target machine for basic passes
 (define pass-error #f)
 (with-handlers ([exn:fail? (lambda (e) 
                             (displayln (format "Error: ~a" (exn-message e)))
                             (displayln "Target machine might be required for PassBuilder API"))])
-  (set! pass-error (llvm-run-passes mod "instcombine" #f pass-options)))
+  (set! pass-error (llvm-run-passes mod "instcombine" target-machine pass-options)))
 
 (when pass-error
   (llvm-consume-error pass-error))
