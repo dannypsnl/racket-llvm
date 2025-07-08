@@ -10,7 +10,7 @@
          _LLVMExecutionEngineRef
          LLVMExecutionEngineRef?)
 (require ffi/unsafe
-         "definer.rkt"
+         "../definer.rkt"
          "ref.rkt"
          "error.rkt")
 

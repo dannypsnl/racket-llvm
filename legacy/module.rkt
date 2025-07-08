@@ -16,7 +16,7 @@
          llvm-view-function-cfg
          llvm-view-function-cfg-only)
 (require ffi/unsafe
-         "definer.rkt"
+         "../definer.rkt"
          "ref.rkt"
          "types.rkt"
          "error.rkt")

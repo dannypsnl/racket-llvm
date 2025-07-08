@@ -1,7 +1,7 @@
 #lang racket
 (provide (all-defined-out))
 (require ffi/unsafe
-         "definer.rkt"
+         "../definer.rkt"
          "types.rkt"
          "ref.rkt")
 

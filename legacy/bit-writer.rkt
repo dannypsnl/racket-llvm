@@ -1,7 +1,7 @@
 #lang racket
 (provide (all-defined-out))
 (require ffi/unsafe
-         "definer.rkt"
+         "../definer.rkt"
          "ref.rkt")
 
 (define-llvm llvm-write-bitcode-to-file (_fun (mod file-path) ::
