@@ -1,3 +1,5 @@
+# modify from https://github.com/revng/llvmcpy/blob/master/llvmcpy/_generator.py
+# under MIT license
 import fnmatch
 import keyword
 import os

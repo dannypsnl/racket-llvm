@@ -1,27 +1,20 @@
-racket-llvm
-=============
+# racket-llvm
 
-> **Warning**
-> LLVM is a big project, that's quite normal to find some missing functions/definitions in this project. Thus, you can use `define-llvm` to get missing functions, and we will give you a big thanks if you would like to port them back to the project by pull requests! To get full definitions in LLVM, look at [LLVM C-API](https://llvm.org/doxygen/dir_db1e4f1ef1b4536ff54becd23c94e664.html) for reference.
+A racket to LLVM C-API bindings. We use `uv run main.py` to generate bindings, but LLVM is a big project, that's normal to find some missing functions/definitions in this project.
 
-A racket to LLVM C-API bindings.
+You can use `define-llvm` to get missing functions for immediate using, we will give you a big thanks if you would like to port them back to the project! To get full definitions in LLVM, look at [LLVM C-API](https://llvm.org/doxygen/dir_db1e4f1ef1b4536ff54becd23c94e664.html) for reference.
 
-### Installation
+## Installation
 
 ```shell
 raco pkg install --auto racket-llvm
 ```
 
-### Usage
+## Usage
 
-Ensure you have `llvm-config` installed and can invoke it. You might need following command.
+You can operate LLVM IR in racket, such as creating module, adding function, building instructions, verifying module, and running functions via execution engine.
 
-```shell
-# export homebrew installed llvm binaries
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-```
-
-##### Dependencies
+### Dependencies
 
 Add `"racket-llvm"` into `info.rkt`
 
@@ -29,7 +22,7 @@ Add `"racket-llvm"` into `info.rkt`
 (define deps '("base" "racket-llvm"))
 ```
 
-##### Example
+### Example
 
 The following one shows how to use **Execution Engine** to run a LLVM function and view the result.
 
@@ -73,7 +66,14 @@ The following one shows how to use **Execution Engine** to run a LLVM function a
 (printf "JIT result: ~a\n" (llvm-generic-value->int res #f))
 ```
 
-### Develop
+## Develop
+
+Ensure you have `llvm-config` installed and can invoke it. For example, you might need following command if you install llvm via homebrew.
+
+```shell
+# export homebrew installed llvm binaries
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+```
 
 Here is an example to show how can one define a new llvm function binding via `define-llvm`.
 
@@ -96,7 +96,7 @@ Here is an example to show how can one define a new llvm function binding via `d
 
 And you can get llvm functions list from [LLVM C-API](https://llvm.org/doxygen/dir_db1e4f1ef1b4536ff54becd23c94e664.html). To get more about the FFI in racket, reference to its [document](https://docs.racket-lang.org/foreign/index.html#%28tech._ffi%29).
 
-### Reference
+## Reference
 
 - [llvm doxygen](https://llvm.org/doxygen/)
 - [How to get started with the LLVM C API](https://www.pauladamsmith.com/blog/2015/01/how-to-get-started-with-llvm-c-api.html)
