@@ -4,11 +4,23 @@
 
 @title{Module}
 
+@section{Module Creation and Management}
+
 @defproc[(llvm-module [module-name string?])
     LLVMModuleRef?
 ]{
     @racket[llvm-module] returns a module, the core concept in LLVM. We puts global variables, functions, and type definitions in module.
 }
+
+@defproc[(llvm-dispose-module [module LLVMModuleRef?]) void?]{
+    Disposes a module and frees its resources.
+}
+
+@defproc[(llvm-clone-module [module LLVMModuleRef?]) LLVMModuleRef?]{
+    Creates a deep copy of the given module.
+}
+
+@section{Module Verification and Output}
 
 @defproc[(llvm-module-verify [module LLVMModuleRef?])
     boolean?
@@ -22,11 +34,45 @@
     convert given module as string
 }
 
+@defproc[(llvm-dump-module [module LLVMModuleRef?]) void?]{
+    Dumps the module's IR to stderr for debugging.
+}
+
+@defproc[(llvm-print-module-to-string [module LLVMModuleRef?]) string?]{
+    Returns the module's LLVM IR as a string.
+}
+
+@defproc[(llvm-write-bitcode-to-file [module LLVMModuleRef?] [file-path string?])
+    void?
+]{
+    Write @code{module} as content of @code{file-path}.
+}
+
+@section{Functions}
+
 @defproc[(llvm-add-function [module LLVMModuleRef?] [function-name string?] [function-type LLVMTypeRef?])
     LLVMValueRef?
 ]{
     Add function into given module, return a function value. The function name is given by function-name, the function type is given by function-type.
 }
+
+@defproc[(llvm-get-function [module LLVMModuleRef?] [name string?]) LLVMValueRef?]{
+    Gets a function from the module by name. Returns @racket[#f] if not found.
+}
+
+@defproc[(llvm-set-function-call-conv [function LLVMValueRef?] [cc exact-nonnegative-integer?]) void?]{
+    Sets the calling convention of a function.
+}
+
+@defproc[(llvm-count-params [function LLVMValueRef?]) exact-nonnegative-integer?]{
+    Returns the number of parameters of a function.
+}
+
+@defproc[(llvm-verify-function [function LLVMValueRef?] [action exact-nonnegative-integer?]) boolean?]{
+    Verifies that a function is well-formed.
+}
+
+@section{Global Variables}
 
 @defproc[(llvm-add-global [module LLVMModuleRef?] [var-type LLVMTypeRef?] [var-name string?])
     LLVMValueRef?
@@ -40,8 +86,30 @@
     Get global variable reference by its name.
 }
 
-@defproc[(llvm-write-bitcode-to-file [module LLVMModuleRef?] [file-path string?])
-    void?
-]{
-    Write @code{module} as content of @code{file-path}.
+@defproc[(llvm-set-initializer [global LLVMValueRef?] [constant-val LLVMValueRef?]) void?]{
+    Sets the initializer for a global variable.
+}
+
+@defproc[(llvm-get-initializer [global LLVMValueRef?]) LLVMValueRef?]{
+    Gets the initializer of a global variable.
+}
+
+@section{Context}
+
+@defproc[(llvm-context-create) LLVMContextRef?]{
+    Creates a new LLVM context. Contexts allow multiple independent compilations in the same process.
+}
+
+@defproc[(llvm-get-global-context) LLVMContextRef?]{
+    Returns the global LLVM context shared by all modules that don't use a specific context.
+}
+
+@section{Initialization}
+
+@defproc[(llvm-link-in-mcjit) void?]{
+    Links in the MCJIT execution engine. Must be called before creating an MCJIT-based execution engine.
+}
+
+@defproc[(llvm-link-in-interpreter) void?]{
+    Links in the LLVM interpreter. Must be called before creating an interpreter-based execution engine.
 }

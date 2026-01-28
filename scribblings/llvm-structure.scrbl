@@ -4,6 +4,8 @@
 
 @title{LLVM Structure}
 
+Core LLVM reference types used throughout the API.
+
 @defthing*[([_LLVMModuleRef ctype?]
             [_LLVMContextRef ctype?]
             [_LLVMTypeRef ctype?]
@@ -11,8 +13,11 @@
             [_LLVMBasicBlockRef ctype?]
             [_LLVMBuilderRef ctype?]
             [_LLVMGenericValueRef ctype?]
+            [_LLVMExecutionEngineRef ctype?]
             [_LLVMPassManagerRef ctype?]
-            [_LLVMPassManagerBuilderRef ctype?])]{
+            [_LLVMPassManagerBuilderRef ctype?]
+            [_LLVMTargetDataRef ctype?]
+            [_LLVMTargetMachineRef ctype?])]{
     LLVM primitive types.
 }
 
@@ -50,6 +55,11 @@
     boolean?
 ]{
     check a value is LLVMOpaqueGenericValue or not
+}
+@defproc[(LLVMExecutionEngineRef? [v any/c])
+    boolean?
+]{
+    check a value is LLVMOpaqueExecutionEngine or not
 }
 @defproc[(LLVMPassManagerRef? [v any/c])
     boolean?
