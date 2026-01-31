@@ -1,6 +1,6 @@
 # racket-llvm
 
-A racket to LLVM C-API bindings. We use `uv run main.py` to generate bindings, but LLVM is a big project, that's normal to find some missing functions/definitions in this project.
+A racket to LLVM C-API bindings, from LLVM 11 to 21. We use `uv run main.py` to generate bindings, but LLVM is a big project, that's normal to find some missing functions/definitions in this project.
 
 You can use `define-llvm` to get missing functions for immediate using, we will give you a big thanks if you would like to port them back to the project! To get full definitions in LLVM, look at [LLVM C-API](https://llvm.org/doxygen/dir_db1e4f1ef1b4536ff54becd23c94e664.html) for reference.
 
