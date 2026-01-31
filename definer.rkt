@@ -12,5 +12,6 @@
            (with-output-to-string
              (λ () (system* path "--libdir")))))))
 
-(define-ffi-definer define-llvm (ffi-lib "libLLVM" '("20" "19" "18" "17" "16" "15" "14" "13" "12" "11" #f)
-                                         #:get-lib-dirs get-llvm-lib-dir))
+(define-ffi-definer define-llvm (ffi-lib "libLLVM" '("21" "20" "19" "18" "17" "16" "15" "14" "13" "12" "11" #f)
+                                         #:get-lib-dirs get-llvm-lib-dir)
+  #:default-make-fail make-not-available)

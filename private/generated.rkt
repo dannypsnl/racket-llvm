@@ -3564,11 +3564,25 @@
 (define llvm-pass-manager-run llvm-run-pass-manager)
 
 ; Simple module verification wrapper
+(define llvm-generic-value->float llvm-generic-value-to-float)
+(define llvm-build-float-cmp llvm-build-f-cmp)
+(define llvm-build-string llvm-build-global-string)
+
 (define (llvm-module-verify mod)
   (llvm-verify-module mod))
 (define (llvm-function-verify func)
   (llvm-verify-function func))
 
+(define (llvm-add-struct-type mod element-types [pack? #f])
+  (define ctx (llvm-get-module-context mod))
+  (define struct-ty (llvm-struct-create-named ctx ""))
+  (define n (length element-types))
+  (define types-ptr (malloc n _pointer))
+  (for ([ty (in-list element-types)]
+        [i (in-range n)])
+    (ptr-set! types-ptr _pointer i ty))
+  (llvm-struct-set-body struct-ty types-ptr n (if pack? 1 0))
+  struct-ty)
 
 ; End of generated bindings
 
