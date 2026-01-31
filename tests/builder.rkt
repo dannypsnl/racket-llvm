@@ -70,11 +70,6 @@
                       (λ (x) (llvm-generic-value-to-float (make-type) x))
                       v result))
 
-  ;; Wrap generated functions that require a mandatory name argument
-  ;; so they work with the check-binary-inst / check-unary-inst helpers
-  (define (wrap-binary f) (λ (builder lhs rhs) (f builder lhs rhs "")))
-  (define (wrap-unary f) (λ (builder v) (f builder v "")))
-
   ;; Test: if 42 > 16 then 1234 else 937
   (let ()
     (define builder (llvm-builder-create))
@@ -97,17 +92,17 @@
 
   ;; Test: binary and unary instructions
   (check-binary-int32-inst llvm-build-add 20 22 42)
-  (check-binary-int32-inst (wrap-binary llvm-build-sub) 4321 321 4000)
-  (check-binary-int32-inst (wrap-binary llvm-build-mul) 17 123 2091)
-  (check-binary-int32-inst (wrap-binary llvm-build-u-div) 8 2 4)
-  (check-binary-int32-inst (wrap-binary llvm-build-u-div) 57 7 8)
-  (check-binary-int32-inst (wrap-binary llvm-build-l-shr) 4 2 1)
-  (check-binary-int32-inst (wrap-binary llvm-build-shl) 4 2 16)
-  (check-binary-float-inst (wrap-binary llvm-build-f-add) 2.5 3.82 6.319999694824219)
-  (check-binary-float-inst (wrap-binary llvm-build-f-add) 2.5 -3.82 -1.3199999332427979)
-  (check-binary-float-inst (wrap-binary llvm-build-f-rem) 2.1 3.9 2.0999999046325684)
-  (check-unary-int-inst (wrap-unary llvm-build-neg) llvm-int32-type 1 18446744073709551615)
-  (check-unary-int-inst (wrap-unary llvm-build-not) llvm-int1-type 1 0)
-  (check-unary-float-inst (wrap-unary llvm-build-f-neg) llvm-float-type 1. -1.)
-  (check-unary-float-inst (wrap-unary llvm-build-f-neg) llvm-float-type 2.1 -2.0999999046325684)
+  (check-binary-int32-inst llvm-build-sub 4321 321 4000)
+  (check-binary-int32-inst llvm-build-mul 17 123 2091)
+  (check-binary-int32-inst llvm-build-udiv 8 2 4)
+  (check-binary-int32-inst llvm-build-udiv 57 7 8)
+  (check-binary-int32-inst llvm-build-lshr 4 2 1)
+  (check-binary-int32-inst llvm-build-shl 4 2 16)
+  (check-binary-float-inst llvm-build-fadd 2.5 3.82 6.319999694824219)
+  (check-binary-float-inst llvm-build-fadd 2.5 -3.82 -1.3199999332427979)
+  (check-binary-float-inst llvm-build-frem 2.1 3.9 2.0999999046325684)
+  (check-unary-int-inst llvm-build-neg llvm-int32-type 1 18446744073709551615)
+  (check-unary-int-inst llvm-build-not llvm-int1-type 1 0)
+  (check-unary-float-inst llvm-build-fneg llvm-float-type 1. -1.)
+  (check-unary-float-inst llvm-build-fneg llvm-float-type 2.1 -2.0999999046325684)
   )

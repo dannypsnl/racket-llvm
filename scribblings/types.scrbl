@@ -54,7 +54,7 @@ LLVM types represent the type system of the intermediate representation. Every v
     Creates a fixed-size vector type of @racket[count] elements of @racket[element-type].
 }
 
-@defproc[(llvm-struct-type [element-types cpointer?] [element-count exact-nonnegative-integer?] [packed? boolean?])
+@defproc[(llvm-struct-type [element-types (listof LLVMTypeRef?)] [packed? boolean? #f])
     LLVMTypeRef?
 ]{
     Creates a literal (anonymous) struct type with the given element types. If @racket[packed?] is true, the struct has no padding between elements.
@@ -66,10 +66,16 @@ LLVM types represent the type system of the intermediate representation. Every v
     Creates a named struct type in the given context. Use @racket[llvm-struct-set-body] to define its fields.
 }
 
-@defproc[(llvm-struct-set-body [struct-type LLVMTypeRef?] [element-types cpointer?] [element-count exact-nonnegative-integer?] [packed? boolean?])
+@defproc[(llvm-struct-set-body [struct-type LLVMTypeRef?] [element-types (listof LLVMTypeRef?) (list)] [pack? boolean? #f])
     void?
 ]{
     Sets the body of a named struct type created with @racket[llvm-struct-create-named].
+}
+
+@defproc[(llvm-add-struct-type [mod LLVMModuleRef?] [element-types (listof LLVMTypeRef?)] [pack? boolean? #f])
+    LLVMTypeRef?
+]{
+    Convenience function that creates a named struct in the module's context and sets its body in one step.
 }
 
 @section{Type Queries}

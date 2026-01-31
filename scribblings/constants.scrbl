@@ -37,6 +37,38 @@ Functions for creating constant values in LLVM IR.
     Creates a constant floating-point value by parsing @racket[text].
 }
 
+@section{Composite Constants}
+
+@defproc[(llvm-const-struct [constant-vals (listof LLVMValueRef?)] [packed? boolean? #f])
+    LLVMValueRef?
+]{
+    Creates a constant struct with the given values. If @racket[packed?] is true, the struct has no padding.
+}
+
+@defproc[(llvm-const-named-struct [struct-ty LLVMTypeRef?] [constant-vals (listof LLVMValueRef?)])
+    LLVMValueRef?
+]{
+    Creates a constant value of a named struct type with the given field values.
+}
+
+@defproc[(llvm-const-array [element-ty LLVMTypeRef?] [constant-vals (listof LLVMValueRef?)])
+    LLVMValueRef?
+]{
+    Creates a constant array of the given element type with the given values.
+}
+
+@defproc[(llvm-const-array2 [element-ty LLVMTypeRef?] [constant-vals (listof LLVMValueRef?)])
+    LLVMValueRef?
+]{
+    Creates a constant array (64-bit length variant) of the given element type with the given values.
+}
+
+@defproc[(llvm-const-vector [scalar-constant-vals (listof LLVMValueRef?)])
+    LLVMValueRef?
+]{
+    Creates a constant vector with the given scalar values.
+}
+
 @section{Special Constants}
 
 @defproc[(llvm-const-null [type LLVMTypeRef?]) LLVMValueRef?]{Creates a null constant of the given type.}
@@ -44,3 +76,17 @@ Functions for creating constant values in LLVM IR.
 @defproc[(llvm-const-pointer-null [type LLVMTypeRef?]) LLVMValueRef?]{Creates a null pointer constant of the given pointer type.}
 @defproc[(llvm-get-undef [type LLVMTypeRef?]) LLVMValueRef?]{Creates an undefined value of the given type.}
 @defproc[(llvm-get-poison [type LLVMTypeRef?]) LLVMValueRef?]{Creates a poison value of the given type.}
+
+@section{Constant Expressions}
+
+@defproc[(llvm-const-gep2 [ty LLVMTypeRef?] [constant-val LLVMValueRef?] [constant-indices (listof LLVMValueRef?)])
+    LLVMValueRef?
+]{
+    Creates a constant GEP (Get Element Pointer) expression.
+}
+
+@defproc[(llvm-const-in-bounds-gep2 [ty LLVMTypeRef?] [constant-val LLVMValueRef?] [constant-indices (listof LLVMValueRef?)])
+    LLVMValueRef?
+]{
+    Creates a constant in-bounds GEP expression.
+}
