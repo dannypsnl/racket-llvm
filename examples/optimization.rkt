@@ -1,8 +1,9 @@
 #lang racket
-(require racket-llvm)
+(require racket-llvm
+         ffi/unsafe)
 
-; LLVM 20 Optimization Example
-; Demonstrates migration from deprecated PassManagerBuilder to new PassBuilder API
+; LLVM Optimization Example
+; Demonstrates using the PassBuilder API
 
 (define mod (llvm-module "optimizeMe"))
 (llvm-link-in-mcjit)
@@ -42,31 +43,36 @@
 (displayln "=== Before Optimization ===")
 (display (llvm-module->string mod))
 
-; Create PassBuilder options
-(define pass-options (llvm-create-pass-builder-options))
+; Initialize native target
+(llvm-initialize-native-target)
 
-(define target (llvm-int-ptr-type (llvm-get-module-data-layout mod)))
+; Get target from triple
 (define triple (llvm-get-default-target-triple))
+(define target-ptr (malloc _pointer))
+(define error-ptr (malloc _pointer))
+(llvm-get-target-from-triple triple target-ptr error-ptr)
+(define target (ptr-ref target-ptr _pointer))
+
+; Create target machine
 (define cpu (llvm-get-host-cpu-name))
 (define features (llvm-get-host-cpu-features))
 (define target-machine
   (llvm-create-target-machine
-    target
-    triple
-    cpu
-    features
-    0
-    0
-    0))
-; Try using null target machine for basic passes
-(define pass-error #f)
-(with-handlers ([exn:fail? (lambda (e) 
-                            (displayln (format "Error: ~a" (exn-message e)))
-                            (displayln "Target machine might be required for PassBuilder API"))])
-  (set! pass-error (llvm-run-passes mod "instcombine" target-machine pass-options)))
+   (cast target _pointer _LLVMTargetRef)
+   triple
+   cpu
+   features
+   0   ; LLVMCodeGenOptLevel default
+   0   ; LLVMRelocMode default
+   0)) ; LLVMCodeModel default
+
+; Create PassBuilder options and run optimization passes
+(define pass-options (llvm-create-pass-builder-options))
+
+(define pass-error (llvm-run-passes mod "instcombine,simplifycfg" target-machine pass-options))
 
 (when pass-error
-  (llvm-consume-error pass-error))
+  (llvm-consume-error (cast pass-error _pointer _LLVMErrorRef)))
 
-(displayln "\n=== After Optimization Attempt ===")
+(displayln "\n=== After Optimization ===")
 (display (llvm-module->string mod))
