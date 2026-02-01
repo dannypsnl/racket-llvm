@@ -300,6 +300,34 @@ def format_function_signature(name: str, prototype) -> str:
     return f"{ret} {name}({args_str})"
 
 
+def load_racket_bindings(bindings_path: Path) -> Tuple[set, MutableMapping[str, set]]:
+    """Extract #:c-id names and enum values from bindings.rkt.
+
+    Returns (bound_functions, bound_enum_values) where bound_enum_values
+    maps each Racket _enum variable name to a set of integer values defined in it.
+    """
+    content = bindings_path.read_text()
+    bound_functions = set(re.findall(r"#:c-id\s+(\S+)\)", content))
+
+    # Extract enum value sets: find all _enum blocks and collect their integer values
+    # Each block looks like: (define _name (_enum '(... name = N ...)))
+    bound_enum_values: MutableMapping[str, set] = {}
+    for match in re.finditer(
+        r"\(define\s+(\S+)\s*\n?\s*\(_enum\s+'\((.+?)\)\)\)",
+        content,
+        re.DOTALL,
+    ):
+        enum_var = match.group(1)
+        enum_body = match.group(2)
+        values = set()
+        for val_match in re.finditer(r"=\s*(\d+)", enum_body):
+            values.add(int(val_match.group(1)))
+        if values:
+            bound_enum_values[enum_var] = values
+
+    return bound_functions, bound_enum_values
+
+
 def main():
     import argparse
     import json
@@ -323,6 +351,13 @@ def main():
     )
 
     args = parser.parse_args()
+
+    # Load existing Racket bindings
+    bindings_path = Path(__file__).parent / "private" / "bindings.rkt"
+    if bindings_path.exists():
+        bound_functions, bound_enum_values = load_racket_bindings(bindings_path)
+    else:
+        bound_functions, bound_enum_values = set(), {}
 
     # Get LLVM directories using llvm-config if not provided
     if not args.include_dir or not args.lib_dir:
@@ -398,13 +433,56 @@ def main():
     functions.sort(key=lambda x: x[0])
     constants.sort(key=lambda x: x[0])
 
+    # Filter out functions already bound in Racket
+    missing_functions = [(n, p) for n, p in functions if n not in bound_functions]
+
+    # Filter enums: find C enum members whose values are not in any Racket _enum
+    # Match C enums to Racket enums by finding overlapping value sets
+    all_bound_values = set()
+    for vals in bound_enum_values.values():
+        all_bound_values.update(vals)
+
+    missing_enums: MutableMapping[str, MutableMapping[str, int]] = {}
+    for enum_name, enum_values in enums.items():
+        # Get the C enum's value->name mapping
+        c_value_to_name = {
+            v: k for k, v in enum_values.items() if isinstance(k, str)
+        }
+        c_values = set(c_value_to_name.keys())
+
+        # Find which Racket _enum block best matches this C enum
+        best_match = None
+        best_overlap = 0
+        for rkt_name, rkt_values in bound_enum_values.items():
+            overlap = len(c_values & rkt_values)
+            if overlap > best_overlap:
+                best_overlap = overlap
+                best_match = rkt_name
+
+        if best_match and best_overlap > 0:
+            rkt_values = bound_enum_values[best_match]
+            missing_values = c_values - rkt_values
+            if missing_values:
+                missing_enums[enum_name] = {
+                    c_value_to_name[v]: v
+                    for v in sorted(missing_values)
+                    if v in c_value_to_name
+                }
+        else:
+            # Entire enum is missing
+            missing_enums[enum_name] = {
+                k: v for k, v in enum_values.items() if isinstance(k, str)
+            }
+
+    # Filter out enums with no missing members
+    missing_enums = {k: v for k, v in missing_enums.items() if v}
+
     if args.format == "json":
         output = {
             "functions": [],
             "enums": {},
-            "constants": [],
         }
-        for name, prototype in functions:
+        for name, prototype in missing_functions:
             ret = format_cffi_type(prototype.result)
             func_args = [format_cffi_type(a) for a in prototype.args]
             output["functions"].append(
@@ -415,41 +493,30 @@ def main():
                     "signature": format_function_signature(name, prototype),
                 }
             )
-        for enum_name, enum_values in enums.items():
-            # Only keep string->int mappings for JSON
-            output["enums"][enum_name] = {
-                k: v for k, v in enum_values.items() if isinstance(k, str)
-            }
-        for name, value in constants:
-            output["constants"].append({"name": name, "value": value})
+        for enum_name, members in missing_enums.items():
+            output["enums"][enum_name] = members
 
         print(json.dumps(output, indent=2))
     else:
         # Text output
-        print(f"=== LLVM-C Definitions ({len(functions)} functions, {len(enums)} enums, {len(constants)} constants) ===")
+        print(f"=== Missing LLVM-C Bindings ({len(missing_functions)} functions, {len(missing_enums)} enums with missing members) ===")
         print()
 
-        print("--- Enums ---")
-        for enum_name, enum_values in sorted(enums.items()):
-            print(f"typedef enum {enum_name} {{")
-            # Print only string->int entries, sorted by value
-            entries = sorted(
-                [(k, v) for k, v in enum_values.items() if isinstance(k, str)],
-                key=lambda x: x[1],
-            )
-            for entry_name, entry_value in entries:
-                print(f"  {entry_name} = {entry_value},")
-            print("}")
-            print()
+        if missing_enums:
+            print("--- Missing Enum Members ---")
+            for enum_name, members in sorted(missing_enums.items()):
+                print(f"typedef enum {enum_name} {{")
+                for entry_name, entry_value in sorted(
+                    members.items(), key=lambda x: x[1]
+                ):
+                    print(f"  {entry_name} = {entry_value},")
+                print("}")
+                print()
 
-        print("--- Functions ---")
-        for name, prototype in functions:
-            print(format_function_signature(name, prototype) + ";")
-        print()
-
-        print("--- Constants ---")
-        for name, value in constants:
-            print(f"{name} = {value}")
+        if missing_functions:
+            print("--- Missing Functions ---")
+            for name, prototype in missing_functions:
+                print(format_function_signature(name, prototype) + ";")
 
 
 if __name__ == "__main__":
