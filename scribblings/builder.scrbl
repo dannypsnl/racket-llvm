@@ -177,6 +177,7 @@ All arithmetic instructions take a @racket[builder], operands, and an optional @
 @defproc[(llvm-build-freeze [builder LLVMBuilderRef?] [v LLVMValueRef?] [name string? ""]) LLVMValueRef?]{Freezes a potentially undefined or poison value to a fixed value.}
 @defproc[(llvm-build-global-string [builder LLVMBuilderRef?] [str string?] [name string? ""]) LLVMValueRef?]{Creates a global string constant.}
 @defproc[(llvm-build-global-string-ptr [builder LLVMBuilderRef?] [str string?] [name string? ""]) LLVMValueRef?]{Creates a pointer to a global string constant. The alias @racket[llvm-build-string-ptr] is also available.}
+@defproc[(llvm-build-string-ptr [builder LLVMBuilderRef?] [str string?] [name string? ""]) LLVMValueRef?]{Alias of @racket[llvm-build-global-string-ptr]}
 
 @section{Value Queries}
 
