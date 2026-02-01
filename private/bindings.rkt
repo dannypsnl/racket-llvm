@@ -169,27 +169,19 @@
            llvm-available-externally-linkage = 1
            llvm-link-once-any-linkage = 2
            llvm-link-once-odr-linkage = 3
-           ut only replaced by something
-                            equivalent. 
-  llvm-link-once-odr-auto-hide-linkage = 4
+           llvm-link-once-odr-auto-hide-linkage = 4
            llvm-weak-any-linkage = 5
            llvm-weak-odr-linkage = 6
-           ut only replaced by something
-                            equivalent. 
-  llvm-appending-linkage = 7
-           nly applies to global arrays 
-  llvm-internal-linkage = 8
+           llvm-appending-linkage = 7
+           llvm-internal-linkage = 8
            llvm-private-linkage = 9
-           ut omit from symbol table 
-  llvmdll-import-linkage = 10
-           llvmdll-export-linkage = 11
+           llvm-dll-import-linkage = 10
+           llvm-dll-export-linkage = 11
            llvm-external-weak-linkage = 12
            llvm-ghost-linkage = 13
            llvm-common-linkage = 14
            llvm-linker-private-linkage = 15
-           ut linker removes. 
-  llvm-linker-private-weak-linkage /< -like -linker-private = 16
-           ut is weak. = 17)))
+           llvm-linker-private-weak-linkage = 16)))
 (define _llvm-visibility
   (_enum '(llvm-default-visibility = 0
            llvm-hidden-visibility = 1
@@ -297,14 +289,10 @@
            real-ueq = 9
            real-ugt = 10
            real-uge = 11
-           reater than = 12
-           r equal 
-  llvm-real-ult = 13
-           real-ule = 14
-           ess than = 15
-           r equal 
-  llvm-real-une = 16
-           real-predicate-true = 17)))
+           real-ult = 12
+           real-ule = 13
+           real-une = 14
+           real-predicate-true = 15)))
 (define _llvm-landing-pad-clause-ty
   (_enum '(llvm-landing-pad-catch = 0
            llvm-landing-pad-filter = 1)))
@@ -317,23 +305,11 @@
 (define _llvm-atomic-ordering
   (_enum '(llvm-atomic-ordering-not-atomic = 0
            llvm-atomic-ordering-unordered = 1
-           uarantees
-                                     somewhat sane results = 2
-           ock free. 
-  llvm-atomic-ordering-monotonic = 2
-            consistent ordering exists 
-  llvm-atomic-ordering-acquire = 4
+           llvm-atomic-ordering-monotonic = 2
+           llvm-atomic-ordering-acquire = 4
            llvm-atomic-ordering-release = 5
-           ut with
-                                   a barrier of the sort necessary to release
-                                   a lock. 
-  llvm-atomic-ordering-acquire-release = 6
-           llvm-atomic-ordering-sequentially-consistent = 8
-           t guarantees
-                                                 that a total ordering exists
-                                                 between all
-                                                 -sequentially-consistent
-                                                 operations. = 9)))
+           llvm-atomic-ordering-acquire-release = 6
+           llvm-atomic-ordering-sequentially-consistent = 7)))
 (define _llvm-atomic-rmw-bin-op
   (_enum '(llvm-atomic-rmw-bin-op-xchg = 0
            llvm-atomic-rmw-bin-op-add = 1
@@ -351,14 +327,11 @@
            llvm-atomic-rmw-bin-op-f-max = 13
            llvm-atomic-rmw-bin-op-f-min = 14
            llvm-atomic-rmw-bin-op-u-inc-wrap = 15
-           rapping back to zero
-                               when incremented above input value 
-  llvm-atomic-rmw-bin-op-u-dec-wrap = 16
-           rapping back to
-                               the input value when decremented below zero 
-  llvm-atomic-rmw-bin-op-u-sub-cond = 17
+           llvm-atomic-rmw-bin-op-u-dec-wrap = 16
+           llvm-atomic-rmw-bin-op-u-sub-cond = 17
            llvm-atomic-rmw-bin-op-u-sub-sat = 18
-           lamping to zero = 19)))
+           llvm-atomic-rmw-bin-op-f-maximum = 19
+           llvm-atomic-rmw-bin-op-f-minimum = 20)))
 (define _llvm-diagnostic-severity
   (_enum '(llvmds-error = 0
            llvmds-warning = 1
@@ -368,41 +341,12 @@
   (_enum '(llvm-inline-asm-dialect-att = 0
            llvm-inline-asm-dialect-intel = 1)))
 (define _llvm-module-flag-behavior
-  (_enum '(therwise the resulting value is
-   
-   
-   
-   
-  llvm-module-flag-behavior-error = 0
+  (_enum '(llvm-module-flag-behavior-error = 0
            llvm-module-flag-behavior-warning = 1
-           here the first element of the pair is the id of the module flag = 2
-           nd the second element of the pair is the value the
-   
-   
-   
-   
-   
-   
-  llvm-module-flag-behavior-require = 3
-           egardless of the behavior or value of the = 4
-           ut the values = 5
-           n error will be emitted.
-   
-   
-   
-  llvm-module-flag-behavior-override = 6
-           hich are required to be metadata nodes.
-   
-   
-   
-  llvm-module-flag-behavior-append = 7
-           hich are required to be metadata = 8
-           uplicate entries in the second list are dropped
-   
-   
-   
-   
-  llvm-module-flag-behavior-append-unique = 9)))
+           llvm-module-flag-behavior-require = 2
+           llvm-module-flag-behavior-override = 3
+           llvm-module-flag-behavior-append = 4
+           llvm-module-flag-behavior-append-unique = 5)))
 (define _llvm-tail-call-kind
   (_enum '(llvm-tail-call-kind-none = 0
            llvm-tail-call-kind-tail = 1
@@ -560,22 +504,14 @@
            llvm-binary-type-win-res = 4
            llvm-binary-type-coff = 5
            llvm-binary-type-elf32l = 6
-           ittle endian. 
-  llvm-binary-type-elf32b = 7
-           ig endian. 
-  llvm-binary-type-elf64l = 8
-           ittle endian. 
-  llvm-binary-type-elf64b = 9
-           ig endian. 
-  llvm-binary-type-mach-o32l = 10
-           ittle endian. 
-  llvm-binary-type-mach-o32b = 11
-           ig endian. 
-  llvm-binary-type-mach-o64l = 12
-           ittle endian. 
-  llvm-binary-type-mach-o64b = 13
-           ig endian. 
-  llvm-binary-type-wasm = 14
+           llvm-binary-type-elf32b = 7
+           llvm-binary-type-elf64l = 8
+           llvm-binary-type-elf64b = 9
+           llvm-binary-type-mach-o32l = 10
+           llvm-binary-type-mach-o32b = 11
+           llvm-binary-type-mach-o64l = 12
+           llvm-binary-type-mach-o64b = 13
+           llvm-binary-type-wasm = 14
            llvm-binary-type-offload = 15)))
 (define _llvmjit-symbol-generic-flags
   (_enum '(llvmjit-symbol-generic-flags-none = 0
@@ -600,25 +536,25 @@
            llvm-print-message-action = 1
            llvm-return-status-action = 2)))
 (define _to-symbol-attributes
-  (_enum '(lto-symbol-alignment-mask = 1
-           lto-symbol-permissions-mask = 3
-           lto-symbol-permissions-code = 5
-           lto-symbol-permissions-data = 7
-           lto-symbol-permissions-rodata = 9
-           lto-symbol-definition-mask = 11
-           lto-symbol-definition-regular = 13
-           lto-symbol-definition-tentative = 15
-           lto-symbol-definition-weak = 17
-           lto-symbol-definition-undefined = 19
-           lto-symbol-definition-weakundef = 21
-           lto-symbol-scope-mask = 23
-           lto-symbol-scope-internal = 25
-           lto-symbol-scope-hidden = 27
-           lto-symbol-scope-protected = 29
-           lto-symbol-scope-default = 31
-           lto-symbol-scope-default-can-be-hidden = 33
-           lto-symbol-comdat = 35
-           lto-symbol-alias = 37)))
+  (_enum '(lto-symbol-alignment-mask = #x0000001F
+           lto-symbol-permissions-mask = #x000000E0
+           lto-symbol-permissions-code = #x000000A0
+           lto-symbol-permissions-data = #x000000C0
+           lto-symbol-permissions-rodata = #x00000080
+           lto-symbol-definition-mask = #x00000700
+           lto-symbol-definition-regular = #x00000100
+           lto-symbol-definition-tentative = #x00000200
+           lto-symbol-definition-weak = #x00000300
+           lto-symbol-definition-undefined = #x00000400
+           lto-symbol-definition-weakundef = #x00000500
+           lto-symbol-scope-mask = #x00003800
+           lto-symbol-scope-internal = #x00000800
+           lto-symbol-scope-hidden = #x00001000
+           lto-symbol-scope-protected = #x00002000
+           lto-symbol-scope-default = #x00001800
+           lto-symbol-scope-default-can-be-hidden = #x00002800
+           lto-symbol-comdat = #x00004000
+           lto-symbol-alias = #x00008000)))
 (define _to-debug-model
   (_enum '(lto-debug-model-none = 0
            lto-debug-model-dwarf = 1)))
