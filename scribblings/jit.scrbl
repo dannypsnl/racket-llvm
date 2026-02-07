@@ -21,13 +21,13 @@ Functions for JIT compilation and execution of LLVM IR.
 }
 
 @defproc[(llvm-get-execution-engine-target-data [engine LLVMExecutionEngineRef?])
-    _LLVMTargetDataRef?
+    _LLVMTargetDataRef
 ]{
     Returns the target data associated with the execution engine.
 }
 
 @defproc[(llvm-get-execution-engine-target-machine [engine LLVMExecutionEngineRef?])
-    _LLVMTargetMachineRef?
+    _LLVMTargetMachineRef
 ]{
     Returns the target machine associated with the execution engine.
 }
@@ -94,19 +94,19 @@ Generic values are used to pass arguments to and receive results from JIT-compil
     Emits the module as code to a memory buffer. Returns the generated code as bytes.
 }
 
-@defproc[(llvm-target-machine-options-set-code-gen-opt-level [options _LLVMTargetMachineOptionsRef?] [level _llvm-code-gen-opt-level]) void?]{
+@defproc[(llvm-target-machine-options-set-code-gen-opt-level [options _LLVMTargetMachineOptionsRef] [level _llvm-code-gen-opt-level]) void?]{
     Sets the code generation optimization level for target machine options.
 }
 
-@defproc[(llvm-target-machine-options-set-code-model [options _LLVMTargetMachineOptionsRef?] [model _llvm-code-model]) void?]{
+@defproc[(llvm-target-machine-options-set-code-model [options _LLVMTargetMachineOptionsRef] [model _llvm-code-model]) void?]{
     Sets the code model for target machine options.
 }
 
-@defproc[(llvm-target-machine-options-set-reloc-mode [options _LLVMTargetMachineOptionsRef?] [reloc _llvm-reloc-mode]) void?]{
+@defproc[(llvm-target-machine-options-set-reloc-mode [options _LLVMTargetMachineOptionsRef] [reloc _llvm-reloc-mode]) void?]{
     Sets the relocation mode for target machine options.
 }
 
-@defproc[(llvm-set-target-machine-global-i-sel-abort [machine LLVMTargetMachineRef?] [mode _llvm-global-i-sel-abort-mode]) void?]{
+@defproc[(llvm-set-target-machine-global-i-sel-abort [machine _LLVMTargetMachineRef] [mode _llvm-global-i-sel-abort-mode]) void?]{
     Controls whether GlobalISel aborts on failure.
 }
 
