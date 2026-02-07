@@ -143,6 +143,10 @@
            llvmf-neg = 66
            llvm-call-br = 67
            llvm-freeze = 68)))
+
+;; LLVM instruction/value opcode
+;; Defines all instruction operations (add, mul, load, store, branch, call, etc.)
+;; Note: opcodes are used internally; consider using specific builder functions
 (define _llvm-type-kind
   (_enum '(llvm-void-type-kind = 0
            llvm-half-type-kind = 1
@@ -164,6 +168,7 @@
            llvmb-float-type-kind = 18
            llvmx86-amx-type-kind = 19
            llvm-target-ext-type-kind = 20)))
+
 (define _llvm-linkage
   (_enum '(llvm-external-linkage = 0
            llvm-available-externally-linkage = 1
@@ -182,18 +187,22 @@
            llvm-common-linkage = 14
            llvm-linker-private-linkage = 15
            llvm-linker-private-weak-linkage = 16)))
+
 (define _llvm-visibility
   (_enum '(llvm-default-visibility = 0
            llvm-hidden-visibility = 1
            llvm-protected-visibility = 2)))
+
 (define _llvm-unnamed-addr
   (_enum '(llvm-no-unnamed-addr = 0
            llvm-local-unnamed-addr = 1
            llvm-global-unnamed-addr = 2)))
+
 (define _llvmdll-storage-class
   (_enum '(llvm-default-storage-class = 0
            llvmdll-import-storage-class = 1
            llvmdll-export-storage-class = 2)))
+
 (define _llvm-call-conv
   (_enum '(llvmc-call-conv = 0
            llvm-fast-call-conv = 8
@@ -236,6 +245,7 @@
            llvmmsp430builtin-call-conv = 94
            llvmamdgpuls-call-conv = 95
            llvmamdgpues-call-conv = 96)))
+
 (define _llvm-value-kind
   (_enum '(llvm-argument-value-kind = 0
            llvm-basic-block-value-kind = 1
@@ -293,15 +303,18 @@
            real-ule = 13
            real-une = 14
            real-predicate-true = 15)))
+
 (define _llvm-landing-pad-clause-ty
   (_enum '(llvm-landing-pad-catch = 0
            llvm-landing-pad-filter = 1)))
+
 (define _llvm-thread-local-mode
   (_enum '(llvm-not-thread-local = 0
            llvm-general-dynamic-tls-model = 1
            llvm-local-dynamic-tls-model = 2
            llvm-initial-exec-tls-model = 3
            llvm-local-exec-tls-model = 4)))
+
 (define _llvm-atomic-ordering
   (_enum '(llvm-atomic-ordering-not-atomic = 0
            llvm-atomic-ordering-unordered = 1
@@ -310,6 +323,7 @@
            llvm-atomic-ordering-release = 5
            llvm-atomic-ordering-acquire-release = 6
            llvm-atomic-ordering-sequentially-consistent = 7)))
+
 (define _llvm-atomic-rmw-bin-op
   (_enum '(llvm-atomic-rmw-bin-op-xchg = 0
            llvm-atomic-rmw-bin-op-add = 1
@@ -332,14 +346,17 @@
            llvm-atomic-rmw-bin-op-u-sub-sat = 18
            llvm-atomic-rmw-bin-op-f-maximum = 19
            llvm-atomic-rmw-bin-op-f-minimum = 20)))
+
 (define _llvm-diagnostic-severity
   (_enum '(llvmds-error = 0
            llvmds-warning = 1
            llvmds-remark = 2
            llvmds-note = 3)))
+
 (define _llvm-inline-asm-dialect
   (_enum '(llvm-inline-asm-dialect-att = 0
            llvm-inline-asm-dialect-intel = 1)))
+
 (define _llvm-module-flag-behavior
   (_enum '(llvm-module-flag-behavior-error = 0
            llvm-module-flag-behavior-warning = 1
@@ -347,11 +364,13 @@
            llvm-module-flag-behavior-override = 3
            llvm-module-flag-behavior-append = 4
            llvm-module-flag-behavior-append-unique = 5)))
+
 (define _llvm-tail-call-kind
   (_enum '(llvm-tail-call-kind-none = 0
            llvm-tail-call-kind-tail = 1
            llvm-tail-call-kind-must-tail = 2
            llvm-tail-call-kind-no-tail = 3)))
+
 (define _llvmdi-flags
   (_enum '(llvmdi-flag-zero = 0
            llvmdi-flag-private = 1
@@ -388,6 +407,7 @@
            llvmdi-flag-indirect-virtual-base = 61
            llvmdi-flag-accessibility = 63
            llvmdi-flag-ptr-to-member-rep = 65)))
+
 (define _llvmdwarf-source-language
   (_enum '(llvmdwarf-source-language-c89 = 0
            llvmdwarf-source-language-c = 1
@@ -452,21 +472,28 @@
            llvmdwarf-source-language-mips--assembler = 60
            llvmdwarf-source-language-google--render-script = 61
            llvmdwarf-source-language-borland--delphi = 62)))
+
 (define _llvmdwarf-emission-kind
   (_enum '(llvmdwarf-emission-none = 0
            llvmdwarf-emission-full = 1
            llvmdwarf-emission-line-tables-only = 2)))
+
 (define _llvmdwarf-macinfo-record-type
   (_enum '(llvmdwarf-macinfo-record-type-define = 1
            llvmdwarf-macinfo-record-type-macro = 3
            llvmdwarf-macinfo-record-type-start-file = 5
            llvmdwarf-macinfo-record-type-end-file = 7
            llvmdwarf-macinfo-record-type-vendor-ext = 9)))
+
 (define _llvm-code-gen-opt-level
   (_enum '(llvm-code-gen-level-none = 0
            llvm-code-gen-level-less = 1
            llvm-code-gen-level-default = 2
            llvm-code-gen-level-aggressive = 3)))
+
+;; Relocation model for code generation
+;; Used in: llvm-create-target-machine, llvm-target-machine-options-set-reloc-mode
+;; Specifies how code should handle relocations (default, static, PIC, dynamic-no-pic, etc.)
 (define _llvm-reloc-mode
   (_enum '(llvm-reloc-default = 0
            llvm-reloc-static = 1
@@ -475,6 +502,10 @@
            llvm-reloc-ropi = 4
            llvm-reloc-rwpi = 5
            llvm-reloc-ropi-rwpi = 6)))
+
+;; Code model specifying memory addressing constraints
+;; Used in: llvm-create-target-machine, llvm-target-machine-options-set-code-model
+;; Different models support different ranges of code and data memory (tiny, small, kernel, medium, large, etc.)
 (define _llvm-code-model
   (_enum '(llvm-code-model-default = 0
            llvm-code-model-jit-default = 1
@@ -483,19 +514,23 @@
            llvm-code-model-kernel = 4
            llvm-code-model-medium = 5
            llvm-code-model-large = 6)))
+
 (define _llvm-code-gen-file-type
   (_enum '(llvm-assembly-file = 0
            llvm-object-file = 1)))
+
 (define _llvm-global-i-sel-abort-mode
   (_enum '(llvm-global-i-sel-abort-enable = 0
            llvm-global-i-sel-abort-disable = 1
            llvm-global-i-sel-abort-disable-with-diag = 2)))
+
 (define _llvm-comdat-selection-kind
   (_enum '(llvm-any-comdat-selection-kind = 0
            llvm-exact-match-comdat-selection-kind = 1
            llvm-largest-comdat-selection-kind = 2
            llvm-no-deduplicate-comdat-selection-kind = 3
            llvm-same-size-comdat-selection-kind = 4)))
+
 (define _llvm-binary-type
   (_enum '(llvm-binary-type-archive = 0
            llvm-binary-type-mach-o-universal-binary = 1
@@ -513,6 +548,7 @@
            llvm-binary-type-mach-o64b = 13
            llvm-binary-type-wasm = 14
            llvm-binary-type-offload = 15)))
+
 (define _llvmjit-symbol-generic-flags
   (_enum '(llvmjit-symbol-generic-flags-none = 0
            llvmjit-symbol-generic-flags-exported = 2
@@ -592,7 +628,7 @@
   #:c-id LLVMAddIncoming)
 (define-llvm llvm-add-metadata-to-inst (_fun _LLVMBuilderRef _LLVMValueRef -> _void) #:c-id LLVMAddMetadataToInst)
 (define-llvm llvm-add-module (_fun _LLVMExecutionEngineRef _LLVMModuleRef -> _void) #:c-id LLVMAddModule)
-(define-llvm llvm-add-module-flag (_fun _LLVMModuleRef _uint _string _ulong _LLVMMetadataRef -> _void) #:c-id LLVMAddModuleFlag)
+(define-llvm llvm-add-module-flag (_fun _LLVMModuleRef _llvm-module-flag-behavior _string _ulong _LLVMMetadataRef -> _void) #:c-id LLVMAddModuleFlag)
 (define-llvm llvm-add-named-metadata-operand (_fun _LLVMModuleRef _string _LLVMValueRef -> _void) #:c-id LLVMAddNamedMetadataOperand)
 (define-llvm llvm-add-symbol (_fun _string _pointer -> _void) #:c-id LLVMAddSymbol)
 (define-llvm llvm-add-target-dependent-function-attr (_fun _LLVMValueRef _string _string -> _void) #:c-id LLVMAddTargetDependentFunctionAttr)
@@ -619,7 +655,7 @@
 (define-llvm llvmb-float-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMBFloatTypeInContext)
 (define-llvm llvm-basic-block-as-value (_fun _LLVMBasicBlockRef -> _LLVMValueRef) #:c-id LLVMBasicBlockAsValue)
 (define-llvm llvm-binary-copy-memory-buffer (_fun _LLVMBinaryRef -> _LLVMMemoryBufferRef) #:c-id LLVMBinaryCopyMemoryBuffer)
-(define-llvm llvm-binary-get-type (_fun _LLVMBinaryRef -> _uint) #:c-id LLVMBinaryGetType)
+(define-llvm llvm-binary-get-type (_fun _LLVMBinaryRef -> _llvm-binary-type) #:c-id LLVMBinaryGetType)
 (define-llvm llvm-block-address (_fun _LLVMValueRef _LLVMBasicBlockRef -> _LLVMValueRef) #:c-id LLVMBlockAddress)
 (define-llvm llvm-build-ashr (_fun (builder lhs rhs [name ""]) ::
                                   (builder : _LLVMBuilderRef)
@@ -675,10 +711,10 @@
                                   (name : _string)
                                   -> _LLVMValueRef)
   #:c-id LLVMBuildArrayMalloc)
-(define-llvm llvm-build-atomic-cmp-xchg (_fun _LLVMBuilderRef _LLVMValueRef _LLVMValueRef _LLVMValueRef _uint _uint _bool -> _LLVMValueRef) #:c-id LLVMBuildAtomicCmpXchg)
-(define-llvm llvm-build-atomic-cmp-xchg-sync-scope (_fun _LLVMBuilderRef _LLVMValueRef _LLVMValueRef _LLVMValueRef _uint _uint _uint -> _LLVMValueRef) #:c-id LLVMBuildAtomicCmpXchgSyncScope)
-(define-llvm llvm-build-atomic-rmw (_fun _LLVMBuilderRef _uint _LLVMValueRef _LLVMValueRef _uint _bool -> _LLVMValueRef) #:c-id LLVMBuildAtomicRMW)
-(define-llvm llvm-build-atomic-rmw-sync-scope (_fun _LLVMBuilderRef _uint _LLVMValueRef _LLVMValueRef _uint _uint -> _LLVMValueRef) #:c-id LLVMBuildAtomicRMWSyncScope)
+(define-llvm llvm-build-atomic-cmp-xchg (_fun _LLVMBuilderRef _LLVMValueRef _LLVMValueRef _LLVMValueRef _llvm-atomic-ordering _llvm-atomic-ordering _bool -> _LLVMValueRef) #:c-id LLVMBuildAtomicCmpXchg)
+(define-llvm llvm-build-atomic-cmp-xchg-sync-scope (_fun _LLVMBuilderRef _LLVMValueRef _LLVMValueRef _LLVMValueRef _llvm-atomic-ordering _llvm-atomic-ordering _uint -> _LLVMValueRef) #:c-id LLVMBuildAtomicCmpXchgSyncScope)
+(define-llvm llvm-build-atomic-rmw (_fun _LLVMBuilderRef _llvm-atomic-rmw-bin-op _LLVMValueRef _LLVMValueRef _llvm-atomic-ordering _bool -> _LLVMValueRef) #:c-id LLVMBuildAtomicRMW)
+(define-llvm llvm-build-atomic-rmw-sync-scope (_fun _LLVMBuilderRef _llvm-atomic-rmw-bin-op _LLVMValueRef _LLVMValueRef _llvm-atomic-ordering _uint -> _LLVMValueRef) #:c-id LLVMBuildAtomicRMWSyncScope)
 (define-llvm llvm-build-bin-op (_fun (builder opcode lhs rhs [name ""]) ::
                                   (builder : _LLVMBuilderRef)
                                   (opcode : _uint)
@@ -1528,7 +1564,7 @@
 (define-llvm llvm-create-string-error (_fun _string -> _LLVMErrorRef) #:c-id LLVMCreateStringError)
 (define-llvm llvm-create-target-data (_fun _string -> _LLVMTargetDataRef) #:c-id LLVMCreateTargetData)
 (define-llvm llvm-create-target-data-layout (_fun _LLVMTargetMachineRef -> _LLVMTargetDataRef) #:c-id LLVMCreateTargetDataLayout)
-(define-llvm llvm-create-target-machine (_fun _LLVMTargetRef _string _string _string _uint _uint _uint -> _LLVMTargetMachineRef) #:c-id LLVMCreateTargetMachine)
+(define-llvm llvm-create-target-machine (_fun _LLVMTargetRef _string _string _string _llvm-reloc-mode _llvm-code-model _llvm-code-gen-opt-level -> _LLVMTargetMachineRef) #:c-id LLVMCreateTargetMachine)
 (define-llvm llvm-create-target-machine-options (_fun -> _LLVMTargetMachineOptionsRef) #:c-id LLVMCreateTargetMachineOptions)
 (define-llvm llvm-create-target-machine-with-options (_fun _LLVMTargetRef _string _LLVMTargetMachineOptionsRef -> _LLVMTargetMachineRef) #:c-id LLVMCreateTargetMachineWithOptions)
 (define-llvm llvm-create-type-attribute (_fun _LLVMContextRef _uint _LLVMTypeRef -> _LLVMAttributeRefRef) #:c-id LLVMCreateTypeAttribute)
@@ -1538,7 +1574,7 @@
 (define-llvm llvmdi-builder-create-basic-type (_fun _LLVMDIBuilderRef _string _ulong _uint64 _uint _uint -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateBasicType)
 (define-llvm llvmdi-builder-create-bit-field-member-type (_fun _LLVMDIBuilderRef _LLVMMetadataRef _string _ulong _LLVMMetadataRef _uint _uint64 _uint64 _uint64 _uint _LLVMMetadataRef -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateBitFieldMemberType)
 (define-llvm llvmdi-builder-create-class-type (_fun _LLVMDIBuilderRef _LLVMMetadataRef _string _ulong _LLVMMetadataRef _uint _uint64 _uint32 _uint64 _uint _LLVMMetadataRef _pointer _uint _LLVMMetadataRef _LLVMMetadataRef _string _ulong -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateClassType)
-(define-llvm llvmdi-builder-create-compile-unit (_fun _LLVMDIBuilderRef _uint _LLVMMetadataRef _string _ulong _int _string _ulong _uint _string _ulong _uint _uint _int _int _string _ulong _string _ulong -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateCompileUnit)
+(define-llvm llvmdi-builder-create-compile-unit (_fun _LLVMDIBuilderRef _llvmdwarf-source-language _LLVMMetadataRef _string _ulong _int _string _ulong _uint _string _ulong _llvmdwarf-emission-kind _uint _int _int _string _ulong _string _ulong -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateCompileUnit)
 (define-llvm llvmdi-builder-create-constant-value-expression (_fun _LLVMDIBuilderRef _uint64 -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateConstantValueExpression)
 (define-llvm llvmdi-builder-create-debug-location (_fun _LLVMContextRef _uint _uint _LLVMMetadataRef _LLVMMetadataRef -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateDebugLocation)
 (define-llvm llvmdi-builder-create-enumeration-type (_fun _LLVMDIBuilderRef _LLVMMetadataRef _string _ulong _LLVMMetadataRef _uint _uint64 _uint32 _pointer _uint _LLVMMetadataRef -> _LLVMMetadataRef) #:c-id LLVMDIBuilderCreateEnumerationType)
@@ -1602,7 +1638,7 @@
 (define-llvm llvmdi-scope-get-file (_fun _LLVMMetadataRef -> _LLVMMetadataRef) #:c-id LLVMDIScopeGetFile)
 (define-llvm llvmdi-subprogram-get-line (_fun _LLVMMetadataRef -> _uint) #:c-id LLVMDISubprogramGetLine)
 (define-llvm llvmdi-type-get-align-in-bits (_fun _LLVMMetadataRef -> _uint32) #:c-id LLVMDITypeGetAlignInBits)
-(define-llvm llvmdi-type-get-flags (_fun _LLVMMetadataRef -> _uint) #:c-id LLVMDITypeGetFlags)
+(define-llvm llvmdi-type-get-flags (_fun _LLVMMetadataRef -> _llvmdi-flags) #:c-id LLVMDITypeGetFlags)
 (define-llvm llvmdi-type-get-line (_fun _LLVMMetadataRef -> _uint) #:c-id LLVMDITypeGetLine)
 (define-llvm llvmdi-type-get-name (_fun _LLVMMetadataRef _pointer -> _string) #:c-id LLVMDITypeGetName)
 (define-llvm llvmdi-type-get-offset-in-bits (_fun _LLVMMetadataRef -> _uint64) #:c-id LLVMDITypeGetOffsetInBits)
@@ -1681,7 +1717,7 @@
 (define-llvm llvm-get-array-length (_fun _LLVMTypeRef -> _uint) #:c-id LLVMGetArrayLength)
 (define-llvm llvm-get-array-length2 (_fun _LLVMTypeRef -> _uint64) #:c-id LLVMGetArrayLength2)
 (define-llvm llvm-get-as-string (_fun _LLVMValueRef _pointer -> _string) #:c-id LLVMGetAsString)
-(define-llvm llvm-get-atomic-rmw-bin-op (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetAtomicRMWBinOp)
+(define-llvm llvm-get-atomic-rmw-bin-op (_fun _LLVMValueRef -> _llvm-atomic-rmw-bin-op) #:c-id LLVMGetAtomicRMWBinOp)
 (define-llvm llvm-get-atomic-sync-scope-id (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetAtomicSyncScopeID)
 (define-llvm llvm-get-attribute-count-at-index (_fun _LLVMValueRef _uint -> _uint) #:c-id LLVMGetAttributeCountAtIndex)
 (define-llvm llvm-get-attributes-at-index (_fun _LLVMValueRef _uint _pointer -> _void) #:c-id LLVMGetAttributesAtIndex)
@@ -1744,7 +1780,7 @@
 (define-llvm llvm-get-cmp-xchg-failure-ordering (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetCmpXchgFailureOrdering)
 (define-llvm llvm-get-cmp-xchg-success-ordering (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetCmpXchgSuccessOrdering)
 (define-llvm llvm-get-comdat (_fun _LLVMValueRef -> _LLVMComdatRef) #:c-id LLVMGetComdat)
-(define-llvm llvm-get-comdat-selection-kind (_fun _LLVMComdatRef -> _uint) #:c-id LLVMGetComdatSelectionKind)
+(define-llvm llvm-get-comdat-selection-kind (_fun _LLVMComdatRef -> _llvm-comdat-selection-kind) #:c-id LLVMGetComdatSelectionKind)
 (define-llvm llvm-get-condition (_fun _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMGetCondition)
 (define-llvm llvm-get-const-opcode (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetConstOpcode)
 (define-llvm llvm-get-constant-ptr-auth-addr-discriminator (_fun _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMGetConstantPtrAuthAddrDiscriminator)
@@ -1754,7 +1790,7 @@
 (define-llvm llvm-get-current-debug-location (_fun _LLVMBuilderRef -> _LLVMValueRef) #:c-id LLVMGetCurrentDebugLocation)
 (define-llvm llvm-get-current-debug-location2 (_fun _LLVMBuilderRef -> _LLVMMetadataRef) #:c-id LLVMGetCurrentDebugLocation2)
 (define-llvm llvm-get-di-node-tag (_fun _LLVMMetadataRef -> _uint16) #:c-id LLVMGetDINodeTag)
-(define-llvm llvm-get-dll-storage-class (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetDLLStorageClass)
+(define-llvm llvm-get-dll-storage-class (_fun _LLVMValueRef -> _llvmdll-storage-class) #:c-id LLVMGetDLLStorageClass)
 (define-llvm llvm-get-data-layout (_fun _LLVMModuleRef -> _string) #:c-id LLVMGetDataLayout)
 (define-llvm llvm-get-data-layout-str (_fun _LLVMModuleRef -> _string) #:c-id LLVMGetDataLayoutStr)
 (define-llvm llvm-get-debug-loc-column (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetDebugLocColumn)
@@ -1763,7 +1799,7 @@
 (define-llvm llvm-get-debug-loc-line (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetDebugLocLine)
 (define-llvm llvm-get-default-target-triple (_fun -> _string) #:c-id LLVMGetDefaultTargetTriple)
 (define-llvm llvm-get-diag-info-description (_fun _LLVMDiagnosticInfoRef -> _string) #:c-id LLVMGetDiagInfoDescription)
-(define-llvm llvm-get-diag-info-severity (_fun _LLVMDiagnosticInfoRef -> _uint) #:c-id LLVMGetDiagInfoSeverity)
+(define-llvm llvm-get-diag-info-severity (_fun _LLVMDiagnosticInfoRef -> _llvm-diagnostic-severity) #:c-id LLVMGetDiagInfoSeverity)
 (define-llvm llvm-get-element-as-constant (_fun _LLVMValueRef _uint -> _LLVMValueRef) #:c-id LLVMGetElementAsConstant)
 (define-llvm llvm-get-element-type (_fun _LLVMTypeRef -> _LLVMTypeRef) #:c-id LLVMGetElementType)
 (define-llvm llvm-get-entry-basic-block (_fun _LLVMValueRef -> _LLVMBasicBlockRef) #:c-id LLVMGetEntryBasicBlock)
@@ -1790,7 +1826,7 @@
 (define-llvm llvm-get-first-target (_fun -> _LLVMTargetRef) #:c-id LLVMGetFirstTarget)
 (define-llvm llvm-get-first-use (_fun _LLVMValueRef -> _LLVMUseRef) #:c-id LLVMGetFirstUse)
 (define-llvm llvm-get-function-address (_fun _LLVMExecutionEngineRef _string -> _uint64) #:c-id LLVMGetFunctionAddress)
-(define-llvm llvm-get-function-call-conv (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetFunctionCallConv)
+(define-llvm llvm-get-function-call-conv (_fun _LLVMValueRef -> _llvm-call-conv) #:c-id LLVMGetFunctionCallConv)
 (define-llvm llvm-get-gc (_fun _LLVMValueRef -> _string) #:c-id LLVMGetGC)
 (define-llvm llvm-get-gep-source-element-type (_fun _LLVMValueRef -> _LLVMTypeRef) #:c-id LLVMGetGEPSourceElementType)
 (define-llvm llvm-get-global-context (_fun -> _LLVMContextRef) #:c-id LLVMGetGlobalContext)
@@ -1805,11 +1841,11 @@
 (define-llvm llvm-get-incoming-value (_fun _LLVMValueRef _uint -> _LLVMValueRef) #:c-id LLVMGetIncomingValue)
 (define-llvm llvm-get-indices (_fun _LLVMValueRef -> _pointer) #:c-id LLVMGetIndices)
 (define-llvm llvm-get-initializer (_fun _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMGetInitializer)
-(define-llvm llvm-get-inline-asm (_fun _LLVMTypeRef _string _ulong _string _ulong _bool _bool _uint _bool -> _LLVMValueRef) #:c-id LLVMGetInlineAsm)
+(define-llvm llvm-get-inline-asm (_fun _LLVMTypeRef _string _ulong _string _ulong _bool _bool _llvm-inline-asm-dialect _bool -> _LLVMValueRef) #:c-id LLVMGetInlineAsm)
 (define-llvm llvm-get-inline-asm-asm-string (_fun _LLVMValueRef _pointer -> _string) #:c-id LLVMGetInlineAsmAsmString)
 (define-llvm llvm-get-inline-asm-can-unwind (_fun _LLVMValueRef -> _int) #:c-id LLVMGetInlineAsmCanUnwind)
 (define-llvm llvm-get-inline-asm-constraint-string (_fun _LLVMValueRef _pointer -> _string) #:c-id LLVMGetInlineAsmConstraintString)
-(define-llvm llvm-get-inline-asm-dialect (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetInlineAsmDialect)
+(define-llvm llvm-get-inline-asm-dialect (_fun _LLVMValueRef -> _llvm-inline-asm-dialect) #:c-id LLVMGetInlineAsmDialect)
 (define-llvm llvm-get-inline-asm-function-type (_fun _LLVMValueRef -> _LLVMTypeRef) #:c-id LLVMGetInlineAsmFunctionType)
 (define-llvm llvm-get-inline-asm-has-side-effects (_fun _LLVMValueRef -> _int) #:c-id LLVMGetInlineAsmHasSideEffects)
 (define-llvm llvm-get-inline-asm-needs-aligned-stack (_fun _LLVMValueRef -> _int) #:c-id LLVMGetInlineAsmNeedsAlignedStack)
@@ -1831,7 +1867,7 @@
 (define-llvm llvm-get-last-instruction (_fun _LLVMBasicBlockRef -> _LLVMValueRef) #:c-id LLVMGetLastInstruction)
 (define-llvm llvm-get-last-named-metadata (_fun _LLVMModuleRef -> _LLVMNamedMDNodeRef) #:c-id LLVMGetLastNamedMetadata)
 (define-llvm llvm-get-last-param (_fun _LLVMValueRef -> _LLVMValueRef) #:c-id LLVMGetLastParam)
-(define-llvm llvm-get-linkage (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetLinkage)
+(define-llvm llvm-get-linkage (_fun _LLVMValueRef -> _llvm-linkage) #:c-id LLVMGetLinkage)
 (define-llvm llvm-get-md-kind-id (_fun _string _uint -> _uint) #:c-id LLVMGetMDKindID)
 (define-llvm llvm-get-md-kind-id-in-context (_fun _LLVMContextRef _string _uint -> _uint) #:c-id LLVMGetMDKindIDInContext)
 (define-llvm llvm-get-md-node-num-operands (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetMDNodeNumOperands)
@@ -1939,7 +1975,7 @@
 (define-llvm llvm-get-symbol-size (_fun _LLVMSymbolIteratorRef -> _uint64) #:c-id LLVMGetSymbolSize)
 (define-llvm llvm-get-symbols (_fun _LLVMObjectFileRef -> _LLVMSymbolIteratorRef) #:c-id LLVMGetSymbols)
 (define-llvm llvm-get-sync-scope-id (_fun _LLVMContextRef _string _ulong -> _uint) #:c-id LLVMGetSyncScopeID)
-(define-llvm llvm-get-tail-call-kind (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetTailCallKind)
+(define-llvm llvm-get-tail-call-kind (_fun _LLVMValueRef -> _llvm-tail-call-kind) #:c-id LLVMGetTailCallKind)
 (define-llvm llvm-get-target (_fun _LLVMModuleRef -> _string) #:c-id LLVMGetTarget)
 (define-llvm llvm-get-target-description (_fun _LLVMTargetRef -> _string) #:c-id LLVMGetTargetDescription)
 (define-llvm llvm-get-target-ext-type-int-param (_fun _LLVMTypeRef _uint -> _uint) #:c-id LLVMGetTargetExtTypeIntParam)
@@ -1962,25 +1998,25 @@
 (define-llvm llvm-get-target-machine-target (_fun _LLVMTargetMachineRef -> _LLVMTargetRef) #:c-id LLVMGetTargetMachineTarget)
 (define-llvm llvm-get-target-machine-triple (_fun _LLVMTargetMachineRef -> _string) #:c-id LLVMGetTargetMachineTriple)
 (define-llvm llvm-get-target-name (_fun _LLVMTargetRef -> _string) #:c-id LLVMGetTargetName)
-(define-llvm llvm-get-thread-local-mode (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetThreadLocalMode)
+(define-llvm llvm-get-thread-local-mode (_fun _LLVMValueRef -> _llvm-thread-local-mode) #:c-id LLVMGetThreadLocalMode)
 (define-llvm llvm-get-type-attribute-value (_fun _LLVMAttributeRefRef -> _LLVMTypeRef) #:c-id LLVMGetTypeAttributeValue)
 (define-llvm llvm-get-type-by-name (_fun _LLVMModuleRef _string -> _LLVMTypeRef) #:c-id LLVMGetTypeByName)
 (define-llvm llvm-get-type-by-name2 (_fun _LLVMContextRef _string -> _LLVMTypeRef) #:c-id LLVMGetTypeByName2)
 (define-llvm llvm-get-type-context (_fun _LLVMTypeRef -> _LLVMContextRef) #:c-id LLVMGetTypeContext)
-(define-llvm llvm-get-type-kind (_fun _LLVMTypeRef -> _uint) #:c-id LLVMGetTypeKind)
+(define-llvm llvm-get-type-kind (_fun _LLVMTypeRef -> _llvm-type-kind) #:c-id LLVMGetTypeKind)
 (define-llvm llvm-get-undef (_fun _LLVMTypeRef -> _LLVMValueRef) #:c-id LLVMGetUndef)
 (define-llvm llvm-get-undef-mask-elem (_fun -> _int) #:c-id LLVMGetUndefMaskElem)
-(define-llvm llvm-get-unnamed-address (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetUnnamedAddress)
+(define-llvm llvm-get-unnamed-address (_fun _LLVMValueRef -> _llvm-unnamed-addr) #:c-id LLVMGetUnnamedAddress)
 (define-llvm llvm-get-unwind-dest (_fun _LLVMValueRef -> _LLVMBasicBlockRef) #:c-id LLVMGetUnwindDest)
 (define-llvm llvm-get-used-value (_fun _LLVMUseRef -> _LLVMValueRef) #:c-id LLVMGetUsedValue)
 (define-llvm llvm-get-user (_fun _LLVMUseRef -> _LLVMValueRef) #:c-id LLVMGetUser)
 (define-llvm llvm-get-value-context (_fun _LLVMValueRef -> _LLVMContextRef) #:c-id LLVMGetValueContext)
-(define-llvm llvm-get-value-kind (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetValueKind)
+(define-llvm llvm-get-value-kind (_fun _LLVMValueRef -> _llvm-value-kind) #:c-id LLVMGetValueKind)
 (define-llvm llvm-get-value-name (_fun _LLVMValueRef -> _string) #:c-id LLVMGetValueName)
 (define-llvm llvm-get-value-name2 (_fun _LLVMValueRef _pointer -> _string) #:c-id LLVMGetValueName2)
 (define-llvm llvm-get-vector-size (_fun _LLVMTypeRef -> _uint) #:c-id LLVMGetVectorSize)
 (define-llvm llvm-get-version (_fun _pointer _pointer _pointer -> _void) #:c-id LLVMGetVersion)
-(define-llvm llvm-get-visibility (_fun _LLVMValueRef -> _uint) #:c-id LLVMGetVisibility)
+(define-llvm llvm-get-visibility (_fun _LLVMValueRef -> _llvm-visibility) #:c-id LLVMGetVisibility)
 (define-llvm llvm-get-volatile (_fun _LLVMValueRef -> _int) #:c-id LLVMGetVolatile)
 (define-llvm llvm-get-weak (_fun _LLVMValueRef -> _int) #:c-id LLVMGetWeak)
 (define-llvm llvm-global-clear-metadata (_fun _LLVMValueRef -> _void) #:c-id LLVMGlobalClearMetadata)
@@ -2109,7 +2145,7 @@
 (define-llvm llvm-metadata-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMMetadataTypeInContext)
 (define-llvm llvm-module-create-with-name (_fun _string -> _LLVMModuleRef) #:c-id LLVMModuleCreateWithName)
 (define-llvm llvm-module-create-with-name-in-context (_fun _string _LLVMContextRef -> _LLVMModuleRef) #:c-id LLVMModuleCreateWithNameInContext)
-(define-llvm llvm-module-flag-entries-get-flag-behavior (_fun _LLVMModuleFlagEntryRef _uint -> _uint) #:c-id LLVMModuleFlagEntriesGetFlagBehavior)
+(define-llvm llvm-module-flag-entries-get-flag-behavior (_fun _LLVMModuleFlagEntryRef _uint -> _llvm-module-flag-behavior) #:c-id LLVMModuleFlagEntriesGetFlagBehavior)
 (define-llvm llvm-module-flag-entries-get-key (_fun _LLVMModuleFlagEntryRef _uint _pointer -> _string) #:c-id LLVMModuleFlagEntriesGetKey)
 (define-llvm llvm-module-flag-entries-get-metadata (_fun _LLVMModuleFlagEntryRef _uint -> _LLVMMetadataRef) #:c-id LLVMModuleFlagEntriesGetMetadata)
 (define-llvm llvm-move-basic-block-after (_fun _LLVMBasicBlockRef _LLVMBasicBlockRef -> _void) #:c-id LLVMMoveBasicBlockAfter)
@@ -2392,18 +2428,18 @@
 (define-llvm llvm-search-for-address-of-symbol (_fun _string -> _pointer) #:c-id LLVMSearchForAddressOfSymbol)
 (define-llvm llvm-set-alignment (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetAlignment)
 (define-llvm llvm-set-arg-operand (_fun _LLVMValueRef _uint _LLVMValueRef -> _void) #:c-id LLVMSetArgOperand)
-(define-llvm llvm-set-atomic-rmw-bin-op (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetAtomicRMWBinOp)
+(define-llvm llvm-set-atomic-rmw-bin-op (_fun _LLVMValueRef _llvm-atomic-rmw-bin-op -> _void) #:c-id LLVMSetAtomicRMWBinOp)
 (define-llvm llvm-set-atomic-single-thread (_fun _LLVMValueRef _int -> _void) #:c-id LLVMSetAtomicSingleThread)
 (define-llvm llvm-set-atomic-sync-scope-id (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetAtomicSyncScopeID)
 (define-llvm llvm-set-cleanup (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetCleanup)
 (define-llvm llvm-set-cmp-xchg-failure-ordering (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetCmpXchgFailureOrdering)
 (define-llvm llvm-set-cmp-xchg-success-ordering (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetCmpXchgSuccessOrdering)
 (define-llvm llvm-set-comdat (_fun _LLVMValueRef _LLVMComdatRef -> _void) #:c-id LLVMSetComdat)
-(define-llvm llvm-set-comdat-selection-kind (_fun _LLVMComdatRef _uint -> _void) #:c-id LLVMSetComdatSelectionKind)
+(define-llvm llvm-set-comdat-selection-kind (_fun _LLVMComdatRef _llvm-comdat-selection-kind -> _void) #:c-id LLVMSetComdatSelectionKind)
 (define-llvm llvm-set-condition (_fun _LLVMValueRef _LLVMValueRef -> _void) #:c-id LLVMSetCondition)
 (define-llvm llvm-set-current-debug-location (_fun _LLVMBuilderRef _LLVMValueRef -> _void) #:c-id LLVMSetCurrentDebugLocation)
 (define-llvm llvm-set-current-debug-location2 (_fun _LLVMBuilderRef _LLVMMetadataRef -> _void) #:c-id LLVMSetCurrentDebugLocation2)
-(define-llvm llvm-set-dll-storage-class (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetDLLStorageClass)
+(define-llvm llvm-set-dll-storage-class (_fun _LLVMValueRef _llvmdll-storage-class -> _void) #:c-id LLVMSetDLLStorageClass)
 (define-llvm llvm-set-data-layout (_fun _LLVMModuleRef _string -> _void) #:c-id LLVMSetDataLayout)
 (define-llvm llvm-set-disasm-options (_fun _pointer _uint64 -> _int) #:c-id LLVMSetDisasmOptions)
 (define-llvm llvm-set-exact (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetExact)
@@ -2420,7 +2456,7 @@
 (define-llvm llvm-set-is-disjoint (_fun _LLVMValueRef _int -> _void) #:c-id LLVMSetIsDisjoint)
 (define-llvm llvm-set-is-in-bounds (_fun _LLVMValueRef _int -> _void) #:c-id LLVMSetIsInBounds)
 (define-llvm llvm-set-is-new-dbg-info-format (_fun _LLVMModuleRef _int -> _void) #:c-id LLVMSetIsNewDbgInfoFormat)
-(define-llvm llvm-set-linkage (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetLinkage)
+(define-llvm llvm-set-linkage (_fun _LLVMValueRef _llvm-linkage -> _void) #:c-id LLVMSetLinkage)
 (define-llvm llvm-set-metadata (_fun _LLVMValueRef _uint _LLVMValueRef -> _void) #:c-id LLVMSetMetadata)
 (define-llvm llvm-set-module-data-layout (_fun _LLVMModuleRef _LLVMTargetDataRef -> _void) #:c-id LLVMSetModuleDataLayout)
 (define-llvm llvm-set-module-identifier (_fun _LLVMModuleRef _string _ulong -> _void) #:c-id LLVMSetModuleIdentifier)
@@ -2442,21 +2478,21 @@
 (define-llvm llvm-set-subprogram (_fun _LLVMValueRef _LLVMMetadataRef -> _void) #:c-id LLVMSetSubprogram)
 (define-llvm llvm-set-successor (_fun _LLVMValueRef _uint _LLVMBasicBlockRef -> _void) #:c-id LLVMSetSuccessor)
 (define-llvm llvm-set-tail-call (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetTailCall)
-(define-llvm llvm-set-tail-call-kind (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetTailCallKind)
+(define-llvm llvm-set-tail-call-kind (_fun _LLVMValueRef _llvm-tail-call-kind -> _void) #:c-id LLVMSetTailCallKind)
 (define-llvm llvm-set-target (_fun _LLVMModuleRef _string -> _void) #:c-id LLVMSetTarget)
 (define-llvm llvm-set-target-machine-asm-verbosity (_fun _LLVMTargetMachineRef _int -> _void) #:c-id LLVMSetTargetMachineAsmVerbosity)
 (define-llvm llvm-set-target-machine-fast-i-sel (_fun _LLVMTargetMachineRef _int -> _void) #:c-id LLVMSetTargetMachineFastISel)
 (define-llvm llvm-set-target-machine-global-i-sel (_fun _LLVMTargetMachineRef _int -> _void) #:c-id LLVMSetTargetMachineGlobalISel)
-(define-llvm llvm-set-target-machine-global-i-sel-abort (_fun _LLVMTargetMachineRef _uint -> _void) #:c-id LLVMSetTargetMachineGlobalISelAbort)
+(define-llvm llvm-set-target-machine-global-i-sel-abort (_fun _LLVMTargetMachineRef _llvm-global-i-sel-abort-mode -> _void) #:c-id LLVMSetTargetMachineGlobalISelAbort)
 (define-llvm llvm-set-target-machine-machine-outliner (_fun _LLVMTargetMachineRef _int -> _void) #:c-id LLVMSetTargetMachineMachineOutliner)
 (define-llvm llvm-set-thread-local (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetThreadLocal)
-(define-llvm llvm-set-thread-local-mode (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetThreadLocalMode)
+(define-llvm llvm-set-thread-local-mode (_fun _LLVMValueRef _llvm-thread-local-mode -> _void) #:c-id LLVMSetThreadLocalMode)
 (define-llvm llvm-set-unnamed-addr (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetUnnamedAddr)
-(define-llvm llvm-set-unnamed-address (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetUnnamedAddress)
+(define-llvm llvm-set-unnamed-address (_fun _LLVMValueRef _llvm-unnamed-addr -> _void) #:c-id LLVMSetUnnamedAddress)
 (define-llvm llvm-set-unwind-dest (_fun _LLVMValueRef _LLVMBasicBlockRef -> _void) #:c-id LLVMSetUnwindDest)
 (define-llvm llvm-set-value-name (_fun _LLVMValueRef _string -> _void) #:c-id LLVMSetValueName)
 (define-llvm llvm-set-value-name2 (_fun _LLVMValueRef _string _ulong -> _void) #:c-id LLVMSetValueName2)
-(define-llvm llvm-set-visibility (_fun _LLVMValueRef _uint -> _void) #:c-id LLVMSetVisibility)
+(define-llvm llvm-set-visibility (_fun _LLVMValueRef _llvm-visibility -> _void) #:c-id LLVMSetVisibility)
 (define-llvm llvm-set-volatile (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetVolatile)
 (define-llvm llvm-set-weak (_fun _LLVMValueRef _bool -> _void) #:c-id LLVMSetWeak)
 (define-llvm llvm-shutdown (_fun -> _void) #:c-id LLVMShutdown)
@@ -2502,7 +2538,7 @@
                                               (targetmachine : _LLVMTargetMachineRef)
                                               (mod : _LLVMModuleRef)
                                               (file-path : _string)
-                                              (param-3 : _uint)
+                                              (param-3 : _llvm-code-gen-file-type)
                                               (out-param-4 : _pointer)
                                               ; coercion the integer failure to bool
                                               ; 0 should be #f, otherwise is #t
@@ -2512,7 +2548,7 @@
 (define-llvm llvm-target-machine-emit-to-memory-buffer (_fun (targetmachine mod param-2 out-param-3 out-param-4) ::
                                               (targetmachine : _LLVMTargetMachineRef)
                                               (mod : _LLVMModuleRef)
-                                              (param-2 : _uint)
+                                              (param-2 : _llvm-code-gen-file-type)
                                               (out-param-3 : _pointer)
                                               (out-param-4 : _pointer)
                                               ; coercion the integer failure to bool
@@ -2522,10 +2558,10 @@
   #:c-id LLVMTargetMachineEmitToMemoryBuffer)
 (define-llvm llvm-target-machine-options-set-abi (_fun _LLVMTargetMachineOptionsRef _string -> _void) #:c-id LLVMTargetMachineOptionsSetABI)
 (define-llvm llvm-target-machine-options-set-cpu (_fun _LLVMTargetMachineOptionsRef _string -> _void) #:c-id LLVMTargetMachineOptionsSetCPU)
-(define-llvm llvm-target-machine-options-set-code-gen-opt-level (_fun _LLVMTargetMachineOptionsRef _uint -> _void) #:c-id LLVMTargetMachineOptionsSetCodeGenOptLevel)
-(define-llvm llvm-target-machine-options-set-code-model (_fun _LLVMTargetMachineOptionsRef _uint -> _void) #:c-id LLVMTargetMachineOptionsSetCodeModel)
+(define-llvm llvm-target-machine-options-set-code-gen-opt-level (_fun _LLVMTargetMachineOptionsRef _llvm-code-gen-opt-level -> _void) #:c-id LLVMTargetMachineOptionsSetCodeGenOptLevel)
+(define-llvm llvm-target-machine-options-set-code-model (_fun _LLVMTargetMachineOptionsRef _llvm-code-model -> _void) #:c-id LLVMTargetMachineOptionsSetCodeModel)
 (define-llvm llvm-target-machine-options-set-features (_fun _LLVMTargetMachineOptionsRef _string -> _void) #:c-id LLVMTargetMachineOptionsSetFeatures)
-(define-llvm llvm-target-machine-options-set-reloc-mode (_fun _LLVMTargetMachineOptionsRef _uint -> _void) #:c-id LLVMTargetMachineOptionsSetRelocMode)
+(define-llvm llvm-target-machine-options-set-reloc-mode (_fun _LLVMTargetMachineOptionsRef _llvm-reloc-mode -> _void) #:c-id LLVMTargetMachineOptionsSetRelocMode)
 (define-llvm llvm-temporary-md-node (_fun (ctx vals) ::
                                   (ctx : _LLVMContextRef)
                                   (vals : (_list i _LLVMMetadataRef))
@@ -2588,1539 +2624,7 @@
 (define-llvm llvmx86amx-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMX86AMXTypeInContext)
 (define-llvm llvmx86fp80-type (_fun -> _LLVMTypeRef) #:c-id LLVMX86FP80Type)
 (define-llvm llvmx86fp80-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMX86FP80TypeInContext)
-; AMDGPUCSCallConv = 90
-; AMDGPUESCallConv = 96
-; AMDGPUGSCallConv = 88
-; AMDGPUHSCallConv = 93
-; AMDGPUKERNELCallConv = 91
-; AMDGPULSCallConv = 95
-; AMDGPUPSCallConv = 89
-; AMDGPUVSCallConv = 87
-; ARMAAPCSCallConv = 67
-; ARMAAPCSVFPCallConv = 68
-; ARMAPCSCallConv = 66
-; AShr = 22
-; AVRBUILTINCallConv = 86
-; AVRINTRCallConv = 84
-; AVRSIGNALCallConv = 85
-; AbortProcessAction = 0
-; Add = 8
-; AddrSpaceCast = 60
-; Alloca = 26
-; And = 23
-; AnyComdatSelectionKind = 0
-; AnyRegCallConv = 13
-; AppendingLinkage = 7
-; ArgumentValueKind = 0
-; ArrayTypeKind = 11
-; AssemblyFile = 0
-; AtomicCmpXchg = 56
-; AtomicOrderingAcquire = 4
-; AtomicOrderingAcquireRelease = 6
-; AtomicOrderingMonotonic = 2
-; AtomicOrderingNotAtomic = 0
-; AtomicOrderingRelease = 5
-; AtomicOrderingSequentiallyConsistent = 7
-; AtomicOrderingUnordered = 1
-; AtomicRMW = 57
-; AtomicRMWBinOpAdd = 1
-; AtomicRMWBinOpAnd = 3
-; AtomicRMWBinOpFAdd = 11
-; AtomicRMWBinOpFMax = 13
-; AtomicRMWBinOpFMin = 14
-; AtomicRMWBinOpFSub = 12
-; AtomicRMWBinOpMax = 7
-; AtomicRMWBinOpMin = 8
-; AtomicRMWBinOpNand = 4
-; AtomicRMWBinOpOr = 5
-; AtomicRMWBinOpSub = 2
-; AtomicRMWBinOpUDecWrap = 16
-; AtomicRMWBinOpUIncWrap = 15
-; AtomicRMWBinOpUMax = 9
-; AtomicRMWBinOpUMin = 10
-; AtomicRMWBinOpUSubCond = 17
-; AtomicRMWBinOpUSubSat = 18
-; AtomicRMWBinOpXchg = 0
-; AtomicRMWBinOpXor = 6
-; AttributeFunctionIndex = -1
-; AttributeReturnIndex = 0
-; AvailableExternallyLinkage = 1
-; BFloatTypeKind = 18
-; BasicBlockValueKind = 1
-; BigEndian = 0
-; BinaryTypeArchive = 0
-; BinaryTypeCOFF = 5
-; BinaryTypeCOFFImportFile = 2
-; BinaryTypeELF32B = 7
-; BinaryTypeELF32L = 6
-; BinaryTypeELF64B = 9
-; BinaryTypeELF64L = 8
-; BinaryTypeIR = 3
-; BinaryTypeMachO32B = 11
-; BinaryTypeMachO32L = 10
-; BinaryTypeMachO64B = 13
-; BinaryTypeMachO64L = 12
-; BinaryTypeMachOUniversalBinary = 1
-; BinaryTypeOffload = 15
-; BinaryTypeWasm = 14
-; BinaryTypeWinRes = 4
-; BitCast = 41
-; BlockAddressValueKind = 9
-; Br = 2
-; CCallConv = 0
-; CXXFASTTLSCallConv = 17
-; Call = 45
-; CallBr = 67
-; CatchPad = 63
-; CatchRet = 62
-; CatchSwitch = 65
-; CleanupPad = 64
-; CleanupRet = 61
-; CodeGenLevelAggressive = 3
-; CodeGenLevelDefault = 2
-; CodeGenLevelLess = 1
-; CodeGenLevelNone = 0
-; CodeModelDefault = 0
-; CodeModelJITDefault = 1
-; CodeModelKernel = 4
-; CodeModelLarge = 6
-; CodeModelMedium = 5
-; CodeModelSmall = 3
-; CodeModelTiny = 2
-; ColdCallConv = 9
-; CommonLinkage = 14
-; ConstantAggregateZeroValueKind = 15
-; ConstantArrayValueKind = 11
-; ConstantAsMetadataMetadataKind = 1
-; ConstantDataArrayValueKind = 16
-; ConstantDataVectorValueKind = 17
-; ConstantExprValueKind = 10
-; ConstantFPValueKind = 19
-; ConstantIntValueKind = 18
-; ConstantPointerNullValueKind = 20
-; ConstantPtrAuthValueKind = 27
-; ConstantStructValueKind = 12
-; ConstantTargetNoneValueKind = 26
-; ConstantTokenNoneValueKind = 21
-; ConstantVectorValueKind = 13
-; DIArgListMetadataKind = 34
-; DIAssignIDMetadataKind = 35
-; DIBasicTypeMetadataKind = 11
-; DICommonBlockMetadataKind = 31
-; DICompileUnitMetadataKind = 16
-; DICompositeTypeMetadataKind = 13
-; DIDerivedTypeMetadataKind = 12
-; DIEnumeratorMetadataKind = 10
-; DIExpressionMetadataKind = 6
-; DIFileMetadataKind = 15
-; DIFlagAccessibility = 3
-; DIFlagAppleBlock = 8
-; DIFlagArtificial = 64
-; DIFlagBigEndian = 134217728
-; DIFlagBitField = 524288
-; DIFlagEnumClass = 16777216
-; DIFlagExplicit = 128
-; DIFlagFixedEnum = 16777216
-; DIFlagFwdDecl = 4
-; DIFlagIndirectVirtualBase = 36
-; DIFlagIntroducedVirtual = 262144
-; DIFlagLValueReference = 8192
-; DIFlagLittleEndian = 268435456
-; DIFlagMultipleInheritance = 131072
-; DIFlagNoReturn = 1048576
-; DIFlagNonTrivial = 67108864
-; DIFlagObjcClassComplete = 512
-; DIFlagObjectPointer = 1024
-; DIFlagPrivate = 1
-; DIFlagProtected = 2
-; DIFlagPrototyped = 256
-; DIFlagPtrToMemberRep = 196608
-; DIFlagPublic = 3
-; DIFlagRValueReference = 16384
-; DIFlagReserved = 32768
-; DIFlagReservedBit4 = 16
-; DIFlagSingleInheritance = 65536
-; DIFlagStaticMember = 4096
-; DIFlagThunk = 33554432
-; DIFlagTypePassByReference = 8388608
-; DIFlagTypePassByValue = 4194304
-; DIFlagVector = 2048
-; DIFlagVirtual = 32
-; DIFlagVirtualInheritance = 196608
-; DIFlagZero = 0
-; DIGenericSubrangeMetadataKind = 33
-; DIGlobalVariableExpressionMetadataKind = 7
-; DIGlobalVariableMetadataKind = 24
-; DIImportedEntityMetadataKind = 28
-; DILabelMetadataKind = 26
-; DILexicalBlockFileMetadataKind = 19
-; DILexicalBlockMetadataKind = 18
-; DILocalVariableMetadataKind = 25
-; DILocationMetadataKind = 5
-; DIMacroFileMetadataKind = 30
-; DIMacroMetadataKind = 29
-; DIModuleMetadataKind = 21
-; DINamespaceMetadataKind = 20
-; DIObjCPropertyMetadataKind = 27
-; DIStringTypeMetadataKind = 32
-; DISubprogramMetadataKind = 17
-; DISubrangeMetadataKind = 9
-; DISubroutineTypeMetadataKind = 14
-; DITemplateTypeParameterMetadataKind = 22
-; DITemplateValueParameterMetadataKind = 23
-; DLLExportLinkage = 11
-; DLLExportStorageClass = 2
-; DLLImportLinkage = 10
-; DLLImportStorageClass = 1
-; DSError = 0
-; DSNote = 3
-; DSRemark = 2
-; DSWarning = 1
-; DWARFEmissionFull = 1
-; DWARFEmissionLineTablesOnly = 2
-; DWARFEmissionNone = 0
-; DWARFMacinfoRecordTypeDefine = 1
-; DWARFMacinfoRecordTypeEndFile = 4
-; DWARFMacinfoRecordTypeMacro = 2
-; DWARFMacinfoRecordTypeStartFile = 3
-; DWARFMacinfoRecordTypeVendorExt = 255
-; DWARFSourceLanguageAda2005 = 44
-; DWARFSourceLanguageAda2012 = 45
-; DWARFSourceLanguageAda83 = 2
-; DWARFSourceLanguageAda95 = 12
-; DWARFSourceLanguageAssembly = 47
-; DWARFSourceLanguageBLISS = 36
-; DWARFSourceLanguageBORLAND_Delphi = 62
-; DWARFSourceLanguageC = 1
-; DWARFSourceLanguageC11 = 28
-; DWARFSourceLanguageC17 = 42
-; DWARFSourceLanguageC89 = 0
-; DWARFSourceLanguageC99 = 11
-; DWARFSourceLanguageCPP_for_OpenCL = 54
-; DWARFSourceLanguageC_plus_plus = 3
-; DWARFSourceLanguageC_plus_plus_03 = 24
-; DWARFSourceLanguageC_plus_plus_11 = 25
-; DWARFSourceLanguageC_plus_plus_14 = 32
-; DWARFSourceLanguageC_plus_plus_17 = 40
-; DWARFSourceLanguageC_plus_plus_20 = 41
-; DWARFSourceLanguageC_sharp = 48
-; DWARFSourceLanguageCobol74 = 4
-; DWARFSourceLanguageCobol85 = 5
-; DWARFSourceLanguageCrystal = 39
-; DWARFSourceLanguageD = 18
-; DWARFSourceLanguageDylan = 31
-; DWARFSourceLanguageFortran03 = 33
-; DWARFSourceLanguageFortran08 = 34
-; DWARFSourceLanguageFortran18 = 43
-; DWARFSourceLanguageFortran77 = 6
-; DWARFSourceLanguageFortran90 = 7
-; DWARFSourceLanguageFortran95 = 13
-; DWARFSourceLanguageGLSL = 50
-; DWARFSourceLanguageGLSL_ES = 51
-; DWARFSourceLanguageGOOGLE_RenderScript = 61
-; DWARFSourceLanguageGo = 21
-; DWARFSourceLanguageHIP = 46
-; DWARFSourceLanguageHLSL = 52
-; DWARFSourceLanguageHaskell = 23
-; DWARFSourceLanguageHylo = 58
-; DWARFSourceLanguageJava = 10
-; DWARFSourceLanguageJulia = 30
-; DWARFSourceLanguageKotlin = 37
-; DWARFSourceLanguageMetal = 59
-; DWARFSourceLanguageMips_Assembler = 60
-; DWARFSourceLanguageModula2 = 9
-; DWARFSourceLanguageModula3 = 22
-; DWARFSourceLanguageMojo = 49
-; DWARFSourceLanguageMove = 57
-; DWARFSourceLanguageOCaml = 26
-; DWARFSourceLanguageObjC = 15
-; DWARFSourceLanguageObjC_plus_plus = 16
-; DWARFSourceLanguageOpenCL = 20
-; DWARFSourceLanguageOpenCL_CPP = 53
-; DWARFSourceLanguagePLI = 14
-; DWARFSourceLanguagePascal83 = 8
-; DWARFSourceLanguagePython = 19
-; DWARFSourceLanguageRenderScript = 35
-; DWARFSourceLanguageRuby = 56
-; DWARFSourceLanguageRust = 27
-; DWARFSourceLanguageSYCL = 55
-; DWARFSourceLanguageSwift = 29
-; DWARFSourceLanguageUPC = 17
-; DWARFSourceLanguageZig = 38
-; DefaultStorageClass = 0
-; DefaultVisibility = 0
-; DistinctMDOperandPlaceholderMetadataKind = 3
-; DoubleTypeKind = 3
-; ExactMatchComdatSelectionKind = 1
-; ExternalLinkage = 0
-; ExternalWeakLinkage = 12
-; ExtractElement = 50
-; ExtractValue = 53
-; FAdd = 9
-; FCmp = 43
-; FDiv = 16
-; FMul = 13
-; FNeg = 66
-; FP128TypeKind = 5
-; FPExt = 38
-; FPToSI = 34
-; FPToUI = 33
-; FPTrunc = 37
-; FRem = 19
-; FSub = 11
-; FastCallConv = 8
-; FastMathAll = 127
-; FastMathAllowContract = 32
-; FastMathAllowReassoc = 1
-; FastMathAllowReciprocal = 16
-; FastMathApproxFunc = 64
-; FastMathNoInfs = 4
-; FastMathNoNaNs = 2
-; FastMathNoSignedZeros = 8
-; FastMathNone = 0
-; Fence = 55
-; FloatTypeKind = 2
-; Freeze = 68
-; FunctionTypeKind = 9
-; FunctionValueKind = 5
-; GEPFlagInBounds = 1
-; GEPFlagNUSW = 2
-; GEPFlagNUW = 4
-; GHCCallConv = 10
-; GeneralDynamicTLSModel = 1
-; GenericDINodeMetadataKind = 8
-; GetElementPtr = 29
-; GhostLinkage = 13
-; GlobalAliasValueKind = 6
-; GlobalIFuncValueKind = 7
-; GlobalISelAbortDisable = 1
-; GlobalISelAbortDisableWithDiag = 2
-; GlobalISelAbortEnable = 0
-; GlobalUnnamedAddr = 2
-; GlobalVariableValueKind = 8
-; HHVMCCallConv = 82
-; HHVMCallConv = 81
-; HalfTypeKind = 1
-; HiPECallConv = 11
-; HiddenVisibility = 1
-; ICmp = 42
-; IndirectBr = 4
-; InitialExecTLSModel = 3
-; InlineAsmDialectATT = 0
-; InlineAsmDialectIntel = 1
-; InlineAsmValueKind = 23
-; InsertElement = 51
-; InsertValue = 54
-; InstructionValueKind = 24
-; IntEQ = 32
-; IntNE = 33
-; IntSGE = 39
-; IntSGT = 38
-; IntSLE = 41
-; IntSLT = 40
-; IntToPtr = 40
-; IntUGE = 35
-; IntUGT = 34
-; IntULE = 37
-; IntULT = 36
-; IntegerTypeKind = 8
-; IntelOCLBICallConv = 77
-; InternalLinkage = 8
-; Invoke = 5
-; JITSymbolGenericFlagsCallable = 4
-; JITSymbolGenericFlagsExported = 1
-; JITSymbolGenericFlagsMaterializationSideEffectsOnly = 8
-; JITSymbolGenericFlagsNone = 0
-; JITSymbolGenericFlagsWeak = 2
-; LShr = 21
-; LabelTypeKind = 7
-; LandingPad = 59
-; LandingPadCatch = 0
-; LandingPadFilter = 1
-; LargestComdatSelectionKind = 2
-; LinkOnceAnyLinkage = 2
-; LinkOnceODRAutoHideLinkage = 4
-; LinkOnceODRLinkage = 3
-; LinkerDestroySource = 0
-; LinkerPreserveSource_Removed = 1
-; LinkerPrivateLinkage = 15
-; LinkerPrivateWeakLinkage = 16
-; LittleEndian = 1
-; Load = 27
-; LocalAsMetadataMetadataKind = 2
-; LocalDynamicTLSModel = 2
-; LocalExecTLSModel = 4
-; LocalUnnamedAddr = 1
-; MDStringMetadataKind = 0
-; MDTupleMetadataKind = 4
-; MSP430BUILTINCallConv = 94
-; MSP430INTRCallConv = 69
-; MemoryDefValueKind = 3
-; MemoryPhiValueKind = 4
-; MemoryUseValueKind = 2
-; MetadataAsValueValueKind = 22
-; MetadataTypeKind = 14
-; ModuleFlagBehaviorAppend = 4
-; ModuleFlagBehaviorAppendUnique = 5
-; ModuleFlagBehaviorError = 0
-; ModuleFlagBehaviorOverride = 3
-; ModuleFlagBehaviorRequire = 2
-; ModuleFlagBehaviorWarning = 1
-; Mul = 12
-; NoDeduplicateComdatSelectionKind = 3
-; NoUnnamedAddr = 0
-; NotThreadLocal = 0
-; ObjectFile = 1
-; Or = 24
-; OrcJITDylibLookupFlagsMatchAllSymbols = 1
-; OrcJITDylibLookupFlagsMatchExportedSymbolsOnly = 0
-; OrcLookupKindDLSym = 1
-; OrcLookupKindStatic = 0
-; OrcSymbolLookupFlagsRequiredSymbol = 0
-; OrcSymbolLookupFlagsWeaklyReferencedSymbol = 1
-; PHI = 44
-; PPC_FP128TypeKind = 6
-; PTXDeviceCallConv = 72
-; PTXKernelCallConv = 71
-; PointerTypeKind = 12
-; PoisonValueValueKind = 25
-; PreserveAllCallConv = 15
-; PreserveMostCallConv = 14
-; PrintMessageAction = 1
-; PrivateLinkage = 9
-; ProtectedVisibility = 2
-; PtrToInt = 39
-; RealOEQ = 1
-; RealOGE = 3
-; RealOGT = 2
-; RealOLE = 5
-; RealOLT = 4
-; RealONE = 6
-; RealORD = 7
-; RealPredicateFalse = 0
-; RealPredicateTrue = 15
-; RealUEQ = 9
-; RealUGE = 11
-; RealUGT = 10
-; RealULE = 13
-; RealULT = 12
-; RealUNE = 14
-; RealUNO = 8
-; RelocDefault = 0
-; RelocDynamicNoPic = 3
-; RelocPIC = 2
-; RelocROPI = 4
-; RelocROPI_RWPI = 6
-; RelocRWPI = 5
-; RelocStatic = 1
-; RemarkTypeAnalysis = 3
-; RemarkTypeAnalysisAliasing = 5
-; RemarkTypeAnalysisFPCommute = 4
-; RemarkTypeFailure = 6
-; RemarkTypeMissed = 2
-; RemarkTypePassed = 1
-; RemarkTypeUnknown = 0
-; Resume = 58
-; Ret = 1
-; ReturnStatusAction = 2
-; SDiv = 15
-; SExt = 32
-; SIToFP = 36
-; SPIRFUNCCallConv = 75
-; SPIRKERNELCallConv = 76
-; SRem = 18
-; SameSizeComdatSelectionKind = 4
-; ScalableVectorTypeKind = 17
-; Select = 46
-; Shl = 20
-; ShuffleVector = 52
-; Store = 28
-; StructTypeKind = 10
-; Sub = 10
-; SwiftCallConv = 16
-; Switch = 3
-; TailCallKindMustTail = 2
-; TailCallKindNoTail = 3
-; TailCallKindNone = 0
-; TailCallKindTail = 1
-; TargetExtTypeKind = 20
-; TokenTypeKind = 16
-; Trunc = 30
-; UDiv = 14
-; UIToFP = 35
-; URem = 17
-; UndefValueValueKind = 14
-; Unreachable = 7
-; UserOp1 = 47
-; UserOp2 = 48
-; VAArg = 49
-; VectorTypeKind = 13
-; VoidTypeKind = 0
-; WeakAnyLinkage = 5
-; WeakODRLinkage = 6
-; Win64CallConv = 79
-; X8664SysVCallConv = 78
-; X86FastcallCallConv = 65
-; X86INTRCallConv = 83
-; X86RegCallCallConv = 92
-; X86StdcallCallConv = 64
-; X86ThisCallCallConv = 70
-; X86VectorCallCallConv = 80
-; X86_AMXTypeKind = 19
-; X86_FP80TypeKind = 4
-; Xor = 25
-; ZExt = 31
-; LTO_CODEGEN_PIC_MODEL_DEFAULT = 3
-; LTO_CODEGEN_PIC_MODEL_DYNAMIC = 1
-; LTO_CODEGEN_PIC_MODEL_DYNAMIC_NO_PIC = 2
-; LTO_CODEGEN_PIC_MODEL_STATIC = 0
-; LTO_DEBUG_MODEL_DWARF = 1
-; LTO_DEBUG_MODEL_NONE = 0
-; LTO_DS_ERROR = 0
-; LTO_DS_NOTE = 2
-; LTO_DS_REMARK = 3
-; LTO_DS_WARNING = 1
-; LTO_SYMBOL_ALIAS = 32768
-; LTO_SYMBOL_ALIGNMENT_MASK = 31
-; LTO_SYMBOL_COMDAT = 16384
-; LTO_SYMBOL_DEFINITION_MASK = 1792
-; LTO_SYMBOL_DEFINITION_REGULAR = 256
-; LTO_SYMBOL_DEFINITION_TENTATIVE = 512
-; LTO_SYMBOL_DEFINITION_UNDEFINED = 1024
-; LTO_SYMBOL_DEFINITION_WEAK = 768
-; LTO_SYMBOL_DEFINITION_WEAKUNDEF = 1280
-; LTO_SYMBOL_PERMISSIONS_CODE = 160
-; LTO_SYMBOL_PERMISSIONS_DATA = 192
-; LTO_SYMBOL_PERMISSIONS_MASK = 224
-; LTO_SYMBOL_PERMISSIONS_RODATA = 128
-; LTO_SYMBOL_SCOPE_DEFAULT = 6144
-; LTO_SYMBOL_SCOPE_DEFAULT_CAN_BE_HIDDEN = 10240
-; LTO_SYMBOL_SCOPE_HIDDEN = 4096
-; LTO_SYMBOL_SCOPE_INTERNAL = 2048
-; LTO_SYMBOL_SCOPE_MASK = 14336
-; LTO_SYMBOL_SCOPE_PROTECTED = 8192
-; AMDGPUCSCallConv = 90
-; AMDGPUESCallConv = 96
-; AMDGPUGSCallConv = 88
-; AMDGPUHSCallConv = 93
-; AMDGPUKERNELCallConv = 91
-; AMDGPULSCallConv = 95
-; AMDGPUPSCallConv = 89
-; AMDGPUVSCallConv = 87
-; ARMAAPCSCallConv = 67
-; ARMAAPCSVFPCallConv = 68
-; ARMAPCSCallConv = 66
-; AShr = 22
-; AVRBUILTINCallConv = 86
-; AVRINTRCallConv = 84
-; AVRSIGNALCallConv = 85
-; AbortProcessAction = 0
-; Add = 8
-; AddrSpaceCast = 60
-; Alloca = 26
-; And = 23
-; AnyComdatSelectionKind = 0
-; AnyRegCallConv = 13
-; AppendingLinkage = 7
-; ArgumentValueKind = 0
-; ArrayTypeKind = 11
-; AssemblyFile = 0
-; AtomicCmpXchg = 56
-; AtomicOrderingAcquire = 4
-; AtomicOrderingAcquireRelease = 6
-; AtomicOrderingMonotonic = 2
-; AtomicOrderingNotAtomic = 0
-; AtomicOrderingRelease = 5
-; AtomicOrderingSequentiallyConsistent = 7
-; AtomicOrderingUnordered = 1
-; AtomicRMW = 57
-; AtomicRMWBinOpAdd = 1
-; AtomicRMWBinOpAnd = 3
-; AtomicRMWBinOpFAdd = 11
-; AtomicRMWBinOpFMax = 13
-; AtomicRMWBinOpFMin = 14
-; AtomicRMWBinOpFSub = 12
-; AtomicRMWBinOpMax = 7
-; AtomicRMWBinOpMin = 8
-; AtomicRMWBinOpNand = 4
-; AtomicRMWBinOpOr = 5
-; AtomicRMWBinOpSub = 2
-; AtomicRMWBinOpUDecWrap = 16
-; AtomicRMWBinOpUIncWrap = 15
-; AtomicRMWBinOpUMax = 9
-; AtomicRMWBinOpUMin = 10
-; AtomicRMWBinOpUSubCond = 17
-; AtomicRMWBinOpUSubSat = 18
-; AtomicRMWBinOpXchg = 0
-; AtomicRMWBinOpXor = 6
-; AttributeFunctionIndex = -1
-; AttributeReturnIndex = 0
-; AvailableExternallyLinkage = 1
-; BFloatTypeKind = 18
-; BasicBlockValueKind = 1
-; BigEndian = 0
-; BinaryTypeArchive = 0
-; BinaryTypeCOFF = 5
-; BinaryTypeCOFFImportFile = 2
-; BinaryTypeELF32B = 7
-; BinaryTypeELF32L = 6
-; BinaryTypeELF64B = 9
-; BinaryTypeELF64L = 8
-; BinaryTypeIR = 3
-; BinaryTypeMachO32B = 11
-; BinaryTypeMachO32L = 10
-; BinaryTypeMachO64B = 13
-; BinaryTypeMachO64L = 12
-; BinaryTypeMachOUniversalBinary = 1
-; BinaryTypeOffload = 15
-; BinaryTypeWasm = 14
-; BinaryTypeWinRes = 4
-; BitCast = 41
-; BlockAddressValueKind = 9
-; Br = 2
-; CCallConv = 0
-; CXXFASTTLSCallConv = 17
-; Call = 45
-; CallBr = 67
-; CatchPad = 63
-; CatchRet = 62
-; CatchSwitch = 65
-; CleanupPad = 64
-; CleanupRet = 61
-; CodeGenLevelAggressive = 3
-; CodeGenLevelDefault = 2
-; CodeGenLevelLess = 1
-; CodeGenLevelNone = 0
-; CodeModelDefault = 0
-; CodeModelJITDefault = 1
-; CodeModelKernel = 4
-; CodeModelLarge = 6
-; CodeModelMedium = 5
-; CodeModelSmall = 3
-; CodeModelTiny = 2
-; ColdCallConv = 9
-; CommonLinkage = 14
-; ConstantAggregateZeroValueKind = 15
-; ConstantArrayValueKind = 11
-; ConstantAsMetadataMetadataKind = 1
-; ConstantDataArrayValueKind = 16
-; ConstantDataVectorValueKind = 17
-; ConstantExprValueKind = 10
-; ConstantFPValueKind = 19
-; ConstantIntValueKind = 18
-; ConstantPointerNullValueKind = 20
-; ConstantPtrAuthValueKind = 27
-; ConstantStructValueKind = 12
-; ConstantTargetNoneValueKind = 26
-; ConstantTokenNoneValueKind = 21
-; ConstantVectorValueKind = 13
-; DIArgListMetadataKind = 34
-; DIAssignIDMetadataKind = 35
-; DIBasicTypeMetadataKind = 11
-; DICommonBlockMetadataKind = 31
-; DICompileUnitMetadataKind = 16
-; DICompositeTypeMetadataKind = 13
-; DIDerivedTypeMetadataKind = 12
-; DIEnumeratorMetadataKind = 10
-; DIExpressionMetadataKind = 6
-; DIFileMetadataKind = 15
-; DIFlagAccessibility = 3
-; DIFlagAppleBlock = 8
-; DIFlagArtificial = 64
-; DIFlagBigEndian = 134217728
-; DIFlagBitField = 524288
-; DIFlagEnumClass = 16777216
-; DIFlagExplicit = 128
-; DIFlagFixedEnum = 16777216
-; DIFlagFwdDecl = 4
-; DIFlagIndirectVirtualBase = 36
-; DIFlagIntroducedVirtual = 262144
-; DIFlagLValueReference = 8192
-; DIFlagLittleEndian = 268435456
-; DIFlagMultipleInheritance = 131072
-; DIFlagNoReturn = 1048576
-; DIFlagNonTrivial = 67108864
-; DIFlagObjcClassComplete = 512
-; DIFlagObjectPointer = 1024
-; DIFlagPrivate = 1
-; DIFlagProtected = 2
-; DIFlagPrototyped = 256
-; DIFlagPtrToMemberRep = 196608
-; DIFlagPublic = 3
-; DIFlagRValueReference = 16384
-; DIFlagReserved = 32768
-; DIFlagReservedBit4 = 16
-; DIFlagSingleInheritance = 65536
-; DIFlagStaticMember = 4096
-; DIFlagThunk = 33554432
-; DIFlagTypePassByReference = 8388608
-; DIFlagTypePassByValue = 4194304
-; DIFlagVector = 2048
-; DIFlagVirtual = 32
-; DIFlagVirtualInheritance = 196608
-; DIFlagZero = 0
-; DIGenericSubrangeMetadataKind = 33
-; DIGlobalVariableExpressionMetadataKind = 7
-; DIGlobalVariableMetadataKind = 24
-; DIImportedEntityMetadataKind = 28
-; DILabelMetadataKind = 26
-; DILexicalBlockFileMetadataKind = 19
-; DILexicalBlockMetadataKind = 18
-; DILocalVariableMetadataKind = 25
-; DILocationMetadataKind = 5
-; DIMacroFileMetadataKind = 30
-; DIMacroMetadataKind = 29
-; DIModuleMetadataKind = 21
-; DINamespaceMetadataKind = 20
-; DIObjCPropertyMetadataKind = 27
-; DIStringTypeMetadataKind = 32
-; DISubprogramMetadataKind = 17
-; DISubrangeMetadataKind = 9
-; DISubroutineTypeMetadataKind = 14
-; DITemplateTypeParameterMetadataKind = 22
-; DITemplateValueParameterMetadataKind = 23
-; DLLExportLinkage = 11
-; DLLExportStorageClass = 2
-; DLLImportLinkage = 10
-; DLLImportStorageClass = 1
-; DSError = 0
-; DSNote = 3
-; DSRemark = 2
-; DSWarning = 1
-; DWARFEmissionFull = 1
-; DWARFEmissionLineTablesOnly = 2
-; DWARFEmissionNone = 0
-; DWARFMacinfoRecordTypeDefine = 1
-; DWARFMacinfoRecordTypeEndFile = 4
-; DWARFMacinfoRecordTypeMacro = 2
-; DWARFMacinfoRecordTypeStartFile = 3
-; DWARFMacinfoRecordTypeVendorExt = 255
-; DWARFSourceLanguageAda2005 = 44
-; DWARFSourceLanguageAda2012 = 45
-; DWARFSourceLanguageAda83 = 2
-; DWARFSourceLanguageAda95 = 12
-; DWARFSourceLanguageAssembly = 47
-; DWARFSourceLanguageBLISS = 36
-; DWARFSourceLanguageBORLAND_Delphi = 62
-; DWARFSourceLanguageC = 1
-; DWARFSourceLanguageC11 = 28
-; DWARFSourceLanguageC17 = 42
-; DWARFSourceLanguageC89 = 0
-; DWARFSourceLanguageC99 = 11
-; DWARFSourceLanguageCPP_for_OpenCL = 54
-; DWARFSourceLanguageC_plus_plus = 3
-; DWARFSourceLanguageC_plus_plus_03 = 24
-; DWARFSourceLanguageC_plus_plus_11 = 25
-; DWARFSourceLanguageC_plus_plus_14 = 32
-; DWARFSourceLanguageC_plus_plus_17 = 40
-; DWARFSourceLanguageC_plus_plus_20 = 41
-; DWARFSourceLanguageC_sharp = 48
-; DWARFSourceLanguageCobol74 = 4
-; DWARFSourceLanguageCobol85 = 5
-; DWARFSourceLanguageCrystal = 39
-; DWARFSourceLanguageD = 18
-; DWARFSourceLanguageDylan = 31
-; DWARFSourceLanguageFortran03 = 33
-; DWARFSourceLanguageFortran08 = 34
-; DWARFSourceLanguageFortran18 = 43
-; DWARFSourceLanguageFortran77 = 6
-; DWARFSourceLanguageFortran90 = 7
-; DWARFSourceLanguageFortran95 = 13
-; DWARFSourceLanguageGLSL = 50
-; DWARFSourceLanguageGLSL_ES = 51
-; DWARFSourceLanguageGOOGLE_RenderScript = 61
-; DWARFSourceLanguageGo = 21
-; DWARFSourceLanguageHIP = 46
-; DWARFSourceLanguageHLSL = 52
-; DWARFSourceLanguageHaskell = 23
-; DWARFSourceLanguageHylo = 58
-; DWARFSourceLanguageJava = 10
-; DWARFSourceLanguageJulia = 30
-; DWARFSourceLanguageKotlin = 37
-; DWARFSourceLanguageMetal = 59
-; DWARFSourceLanguageMips_Assembler = 60
-; DWARFSourceLanguageModula2 = 9
-; DWARFSourceLanguageModula3 = 22
-; DWARFSourceLanguageMojo = 49
-; DWARFSourceLanguageMove = 57
-; DWARFSourceLanguageOCaml = 26
-; DWARFSourceLanguageObjC = 15
-; DWARFSourceLanguageObjC_plus_plus = 16
-; DWARFSourceLanguageOpenCL = 20
-; DWARFSourceLanguageOpenCL_CPP = 53
-; DWARFSourceLanguagePLI = 14
-; DWARFSourceLanguagePascal83 = 8
-; DWARFSourceLanguagePython = 19
-; DWARFSourceLanguageRenderScript = 35
-; DWARFSourceLanguageRuby = 56
-; DWARFSourceLanguageRust = 27
-; DWARFSourceLanguageSYCL = 55
-; DWARFSourceLanguageSwift = 29
-; DWARFSourceLanguageUPC = 17
-; DWARFSourceLanguageZig = 38
-; DefaultStorageClass = 0
-; DefaultVisibility = 0
-; DistinctMDOperandPlaceholderMetadataKind = 3
-; DoubleTypeKind = 3
-; ExactMatchComdatSelectionKind = 1
-; ExternalLinkage = 0
-; ExternalWeakLinkage = 12
-; ExtractElement = 50
-; ExtractValue = 53
-; FAdd = 9
-; FCmp = 43
-; FDiv = 16
-; FMul = 13
-; FNeg = 66
-; FP128TypeKind = 5
-; FPExt = 38
-; FPToSI = 34
-; FPToUI = 33
-; FPTrunc = 37
-; FRem = 19
-; FSub = 11
-; FastCallConv = 8
-; FastMathAll = 127
-; FastMathAllowContract = 32
-; FastMathAllowReassoc = 1
-; FastMathAllowReciprocal = 16
-; FastMathApproxFunc = 64
-; FastMathNoInfs = 4
-; FastMathNoNaNs = 2
-; FastMathNoSignedZeros = 8
-; FastMathNone = 0
-; Fence = 55
-; FloatTypeKind = 2
-; Freeze = 68
-; FunctionTypeKind = 9
-; FunctionValueKind = 5
-; GEPFlagInBounds = 1
-; GEPFlagNUSW = 2
-; GEPFlagNUW = 4
-; GHCCallConv = 10
-; GeneralDynamicTLSModel = 1
-; GenericDINodeMetadataKind = 8
-; GetElementPtr = 29
-; GhostLinkage = 13
-; GlobalAliasValueKind = 6
-; GlobalIFuncValueKind = 7
-; GlobalISelAbortDisable = 1
-; GlobalISelAbortDisableWithDiag = 2
-; GlobalISelAbortEnable = 0
-; GlobalUnnamedAddr = 2
-; GlobalVariableValueKind = 8
-; HHVMCCallConv = 82
-; HHVMCallConv = 81
-; HalfTypeKind = 1
-; HiPECallConv = 11
-; HiddenVisibility = 1
-; ICmp = 42
-; IndirectBr = 4
-; InitialExecTLSModel = 3
-; InlineAsmDialectATT = 0
-; InlineAsmDialectIntel = 1
-; InlineAsmValueKind = 23
-; InsertElement = 51
-; InsertValue = 54
-; InstructionValueKind = 24
-; IntEQ = 32
-; IntNE = 33
-; IntSGE = 39
-; IntSGT = 38
-; IntSLE = 41
-; IntSLT = 40
-; IntToPtr = 40
-; IntUGE = 35
-; IntUGT = 34
-; IntULE = 37
-; IntULT = 36
-; IntegerTypeKind = 8
-; IntelOCLBICallConv = 77
-; InternalLinkage = 8
-; Invoke = 5
-; JITSymbolGenericFlagsCallable = 4
-; JITSymbolGenericFlagsExported = 1
-; JITSymbolGenericFlagsMaterializationSideEffectsOnly = 8
-; JITSymbolGenericFlagsNone = 0
-; JITSymbolGenericFlagsWeak = 2
-; LShr = 21
-; LabelTypeKind = 7
-; LandingPad = 59
-; LandingPadCatch = 0
-; LandingPadFilter = 1
-; LargestComdatSelectionKind = 2
-; LinkOnceAnyLinkage = 2
-; LinkOnceODRAutoHideLinkage = 4
-; LinkOnceODRLinkage = 3
-; LinkerDestroySource = 0
-; LinkerPreserveSource_Removed = 1
-; LinkerPrivateLinkage = 15
-; LinkerPrivateWeakLinkage = 16
-; LittleEndian = 1
-; Load = 27
-; LocalAsMetadataMetadataKind = 2
-; LocalDynamicTLSModel = 2
-; LocalExecTLSModel = 4
-; LocalUnnamedAddr = 1
-; MDStringMetadataKind = 0
-; MDTupleMetadataKind = 4
-; MSP430BUILTINCallConv = 94
-; MSP430INTRCallConv = 69
-; MemoryDefValueKind = 3
-; MemoryPhiValueKind = 4
-; MemoryUseValueKind = 2
-; MetadataAsValueValueKind = 22
-; MetadataTypeKind = 14
-; ModuleFlagBehaviorAppend = 4
-; ModuleFlagBehaviorAppendUnique = 5
-; ModuleFlagBehaviorError = 0
-; ModuleFlagBehaviorOverride = 3
-; ModuleFlagBehaviorRequire = 2
-; ModuleFlagBehaviorWarning = 1
-; Mul = 12
-; NoDeduplicateComdatSelectionKind = 3
-; NoUnnamedAddr = 0
-; NotThreadLocal = 0
-; ObjectFile = 1
-; Or = 24
-; OrcJITDylibLookupFlagsMatchAllSymbols = 1
-; OrcJITDylibLookupFlagsMatchExportedSymbolsOnly = 0
-; OrcLookupKindDLSym = 1
-; OrcLookupKindStatic = 0
-; OrcSymbolLookupFlagsRequiredSymbol = 0
-; OrcSymbolLookupFlagsWeaklyReferencedSymbol = 1
-; PHI = 44
-; PPC_FP128TypeKind = 6
-; PTXDeviceCallConv = 72
-; PTXKernelCallConv = 71
-; PointerTypeKind = 12
-; PoisonValueValueKind = 25
-; PreserveAllCallConv = 15
-; PreserveMostCallConv = 14
-; PrintMessageAction = 1
-; PrivateLinkage = 9
-; ProtectedVisibility = 2
-; PtrToInt = 39
-; RealOEQ = 1
-; RealOGE = 3
-; RealOGT = 2
-; RealOLE = 5
-; RealOLT = 4
-; RealONE = 6
-; RealORD = 7
-; RealPredicateFalse = 0
-; RealPredicateTrue = 15
-; RealUEQ = 9
-; RealUGE = 11
-; RealUGT = 10
-; RealULE = 13
-; RealULT = 12
-; RealUNE = 14
-; RealUNO = 8
-; RelocDefault = 0
-; RelocDynamicNoPic = 3
-; RelocPIC = 2
-; RelocROPI = 4
-; RelocROPI_RWPI = 6
-; RelocRWPI = 5
-; RelocStatic = 1
-; RemarkTypeAnalysis = 3
-; RemarkTypeAnalysisAliasing = 5
-; RemarkTypeAnalysisFPCommute = 4
-; RemarkTypeFailure = 6
-; RemarkTypeMissed = 2
-; RemarkTypePassed = 1
-; RemarkTypeUnknown = 0
-; Resume = 58
-; Ret = 1
-; ReturnStatusAction = 2
-; SDiv = 15
-; SExt = 32
-; SIToFP = 36
-; SPIRFUNCCallConv = 75
-; SPIRKERNELCallConv = 76
-; SRem = 18
-; SameSizeComdatSelectionKind = 4
-; ScalableVectorTypeKind = 17
-; Select = 46
-; Shl = 20
-; ShuffleVector = 52
-; Store = 28
-; StructTypeKind = 10
-; Sub = 10
-; SwiftCallConv = 16
-; Switch = 3
-; TailCallKindMustTail = 2
-; TailCallKindNoTail = 3
-; TailCallKindNone = 0
-; TailCallKindTail = 1
-; TargetExtTypeKind = 20
-; TokenTypeKind = 16
-; Trunc = 30
-; UDiv = 14
-; UIToFP = 35
-; URem = 17
-; UndefValueValueKind = 14
-; Unreachable = 7
-; UserOp1 = 47
-; UserOp2 = 48
-; VAArg = 49
-; VectorTypeKind = 13
-; VoidTypeKind = 0
-; WeakAnyLinkage = 5
-; WeakODRLinkage = 6
-; Win64CallConv = 79
-; X8664SysVCallConv = 78
-; X86FastcallCallConv = 65
-; X86INTRCallConv = 83
-; X86RegCallCallConv = 92
-; X86StdcallCallConv = 64
-; X86ThisCallCallConv = 70
-; X86VectorCallCallConv = 80
-; X86_AMXTypeKind = 19
-; X86_FP80TypeKind = 4
-; Xor = 25
-; ZExt = 31
-; LTO_CODEGEN_PIC_MODEL_DEFAULT = 3
-; LTO_CODEGEN_PIC_MODEL_DYNAMIC = 1
-; LTO_CODEGEN_PIC_MODEL_DYNAMIC_NO_PIC = 2
-; LTO_CODEGEN_PIC_MODEL_STATIC = 0
-; LTO_DEBUG_MODEL_DWARF = 1
-; LTO_DEBUG_MODEL_NONE = 0
-; LTO_DS_ERROR = 0
-; LTO_DS_NOTE = 2
-; LTO_DS_REMARK = 3
-; LTO_DS_WARNING = 1
-; LTO_SYMBOL_ALIAS = 32768
-; LTO_SYMBOL_ALIGNMENT_MASK = 31
-; LTO_SYMBOL_COMDAT = 16384
-; LTO_SYMBOL_DEFINITION_MASK = 1792
-; LTO_SYMBOL_DEFINITION_REGULAR = 256
-; LTO_SYMBOL_DEFINITION_TENTATIVE = 512
-; LTO_SYMBOL_DEFINITION_UNDEFINED = 1024
-; LTO_SYMBOL_DEFINITION_WEAK = 768
-; LTO_SYMBOL_DEFINITION_WEAKUNDEF = 1280
-; LTO_SYMBOL_PERMISSIONS_CODE = 160
-; LTO_SYMBOL_PERMISSIONS_DATA = 192
-; LTO_SYMBOL_PERMISSIONS_MASK = 224
-; LTO_SYMBOL_PERMISSIONS_RODATA = 128
-; LTO_SYMBOL_SCOPE_DEFAULT = 6144
-; LTO_SYMBOL_SCOPE_DEFAULT_CAN_BE_HIDDEN = 10240
-; LTO_SYMBOL_SCOPE_HIDDEN = 4096
-; LTO_SYMBOL_SCOPE_INTERNAL = 2048
-; LTO_SYMBOL_SCOPE_MASK = 14336
-; LTO_SYMBOL_SCOPE_PROTECTED = 8192
-; AMDGPUCSCallConv = 90
-; AMDGPUESCallConv = 96
-; AMDGPUGSCallConv = 88
-; AMDGPUHSCallConv = 93
-; AMDGPUKERNELCallConv = 91
-; AMDGPULSCallConv = 95
-; AMDGPUPSCallConv = 89
-; AMDGPUVSCallConv = 87
-; ARMAAPCSCallConv = 67
-; ARMAAPCSVFPCallConv = 68
-; ARMAPCSCallConv = 66
-; AShr = 22
-; AVRBUILTINCallConv = 86
-; AVRINTRCallConv = 84
-; AVRSIGNALCallConv = 85
-; AbortProcessAction = 0
-; Add = 8
-; AddrSpaceCast = 60
-; Alloca = 26
-; And = 23
-; AnyComdatSelectionKind = 0
-; AnyRegCallConv = 13
-; AppendingLinkage = 7
-; ArgumentValueKind = 0
-; ArrayTypeKind = 11
-; AssemblyFile = 0
-; AtomicCmpXchg = 56
-; AtomicOrderingAcquire = 4
-; AtomicOrderingAcquireRelease = 6
-; AtomicOrderingMonotonic = 2
-; AtomicOrderingNotAtomic = 0
-; AtomicOrderingRelease = 5
-; AtomicOrderingSequentiallyConsistent = 7
-; AtomicOrderingUnordered = 1
-; AtomicRMW = 57
-; AtomicRMWBinOpAdd = 1
-; AtomicRMWBinOpAnd = 3
-; AtomicRMWBinOpFAdd = 11
-; AtomicRMWBinOpFMax = 13
-; AtomicRMWBinOpFMin = 14
-; AtomicRMWBinOpFSub = 12
-; AtomicRMWBinOpMax = 7
-; AtomicRMWBinOpMin = 8
-; AtomicRMWBinOpNand = 4
-; AtomicRMWBinOpOr = 5
-; AtomicRMWBinOpSub = 2
-; AtomicRMWBinOpUDecWrap = 16
-; AtomicRMWBinOpUIncWrap = 15
-; AtomicRMWBinOpUMax = 9
-; AtomicRMWBinOpUMin = 10
-; AtomicRMWBinOpUSubCond = 17
-; AtomicRMWBinOpUSubSat = 18
-; AtomicRMWBinOpXchg = 0
-; AtomicRMWBinOpXor = 6
-; AttributeFunctionIndex = -1
-; AttributeReturnIndex = 0
-; AvailableExternallyLinkage = 1
-; BFloatTypeKind = 18
-; BasicBlockValueKind = 1
-; BigEndian = 0
-; BinaryTypeArchive = 0
-; BinaryTypeCOFF = 5
-; BinaryTypeCOFFImportFile = 2
-; BinaryTypeELF32B = 7
-; BinaryTypeELF32L = 6
-; BinaryTypeELF64B = 9
-; BinaryTypeELF64L = 8
-; BinaryTypeIR = 3
-; BinaryTypeMachO32B = 11
-; BinaryTypeMachO32L = 10
-; BinaryTypeMachO64B = 13
-; BinaryTypeMachO64L = 12
-; BinaryTypeMachOUniversalBinary = 1
-; BinaryTypeOffload = 15
-; BinaryTypeWasm = 14
-; BinaryTypeWinRes = 4
-; BitCast = 41
-; BlockAddressValueKind = 9
-; Br = 2
-; CCallConv = 0
-; CXXFASTTLSCallConv = 17
-; Call = 45
-; CallBr = 67
-; CatchPad = 63
-; CatchRet = 62
-; CatchSwitch = 65
-; CleanupPad = 64
-; CleanupRet = 61
-; CodeGenLevelAggressive = 3
-; CodeGenLevelDefault = 2
-; CodeGenLevelLess = 1
-; CodeGenLevelNone = 0
-; CodeModelDefault = 0
-; CodeModelJITDefault = 1
-; CodeModelKernel = 4
-; CodeModelLarge = 6
-; CodeModelMedium = 5
-; CodeModelSmall = 3
-; CodeModelTiny = 2
-; ColdCallConv = 9
-; CommonLinkage = 14
-; ConstantAggregateZeroValueKind = 15
-; ConstantArrayValueKind = 11
-; ConstantAsMetadataMetadataKind = 1
-; ConstantDataArrayValueKind = 16
-; ConstantDataVectorValueKind = 17
-; ConstantExprValueKind = 10
-; ConstantFPValueKind = 19
-; ConstantIntValueKind = 18
-; ConstantPointerNullValueKind = 20
-; ConstantPtrAuthValueKind = 27
-; ConstantStructValueKind = 12
-; ConstantTargetNoneValueKind = 26
-; ConstantTokenNoneValueKind = 21
-; ConstantVectorValueKind = 13
-; DIArgListMetadataKind = 34
-; DIAssignIDMetadataKind = 35
-; DIBasicTypeMetadataKind = 11
-; DICommonBlockMetadataKind = 31
-; DICompileUnitMetadataKind = 16
-; DICompositeTypeMetadataKind = 13
-; DIDerivedTypeMetadataKind = 12
-; DIEnumeratorMetadataKind = 10
-; DIExpressionMetadataKind = 6
-; DIFileMetadataKind = 15
-; DIFlagAccessibility = 3
-; DIFlagAppleBlock = 8
-; DIFlagArtificial = 64
-; DIFlagBigEndian = 134217728
-; DIFlagBitField = 524288
-; DIFlagEnumClass = 16777216
-; DIFlagExplicit = 128
-; DIFlagFixedEnum = 16777216
-; DIFlagFwdDecl = 4
-; DIFlagIndirectVirtualBase = 36
-; DIFlagIntroducedVirtual = 262144
-; DIFlagLValueReference = 8192
-; DIFlagLittleEndian = 268435456
-; DIFlagMultipleInheritance = 131072
-; DIFlagNoReturn = 1048576
-; DIFlagNonTrivial = 67108864
-; DIFlagObjcClassComplete = 512
-; DIFlagObjectPointer = 1024
-; DIFlagPrivate = 1
-; DIFlagProtected = 2
-; DIFlagPrototyped = 256
-; DIFlagPtrToMemberRep = 196608
-; DIFlagPublic = 3
-; DIFlagRValueReference = 16384
-; DIFlagReserved = 32768
-; DIFlagReservedBit4 = 16
-; DIFlagSingleInheritance = 65536
-; DIFlagStaticMember = 4096
-; DIFlagThunk = 33554432
-; DIFlagTypePassByReference = 8388608
-; DIFlagTypePassByValue = 4194304
-; DIFlagVector = 2048
-; DIFlagVirtual = 32
-; DIFlagVirtualInheritance = 196608
-; DIFlagZero = 0
-; DIGenericSubrangeMetadataKind = 33
-; DIGlobalVariableExpressionMetadataKind = 7
-; DIGlobalVariableMetadataKind = 24
-; DIImportedEntityMetadataKind = 28
-; DILabelMetadataKind = 26
-; DILexicalBlockFileMetadataKind = 19
-; DILexicalBlockMetadataKind = 18
-; DILocalVariableMetadataKind = 25
-; DILocationMetadataKind = 5
-; DIMacroFileMetadataKind = 30
-; DIMacroMetadataKind = 29
-; DIModuleMetadataKind = 21
-; DINamespaceMetadataKind = 20
-; DIObjCPropertyMetadataKind = 27
-; DIStringTypeMetadataKind = 32
-; DISubprogramMetadataKind = 17
-; DISubrangeMetadataKind = 9
-; DISubroutineTypeMetadataKind = 14
-; DITemplateTypeParameterMetadataKind = 22
-; DITemplateValueParameterMetadataKind = 23
-; DLLExportLinkage = 11
-; DLLExportStorageClass = 2
-; DLLImportLinkage = 10
-; DLLImportStorageClass = 1
-; DSError = 0
-; DSNote = 3
-; DSRemark = 2
-; DSWarning = 1
-; DWARFEmissionFull = 1
-; DWARFEmissionLineTablesOnly = 2
-; DWARFEmissionNone = 0
-; DWARFMacinfoRecordTypeDefine = 1
-; DWARFMacinfoRecordTypeEndFile = 4
-; DWARFMacinfoRecordTypeMacro = 2
-; DWARFMacinfoRecordTypeStartFile = 3
-; DWARFMacinfoRecordTypeVendorExt = 255
-; DWARFSourceLanguageAda2005 = 44
-; DWARFSourceLanguageAda2012 = 45
-; DWARFSourceLanguageAda83 = 2
-; DWARFSourceLanguageAda95 = 12
-; DWARFSourceLanguageAssembly = 47
-; DWARFSourceLanguageBLISS = 36
-; DWARFSourceLanguageBORLAND_Delphi = 62
-; DWARFSourceLanguageC = 1
-; DWARFSourceLanguageC11 = 28
-; DWARFSourceLanguageC17 = 42
-; DWARFSourceLanguageC89 = 0
-; DWARFSourceLanguageC99 = 11
-; DWARFSourceLanguageCPP_for_OpenCL = 54
-; DWARFSourceLanguageC_plus_plus = 3
-; DWARFSourceLanguageC_plus_plus_03 = 24
-; DWARFSourceLanguageC_plus_plus_11 = 25
-; DWARFSourceLanguageC_plus_plus_14 = 32
-; DWARFSourceLanguageC_plus_plus_17 = 40
-; DWARFSourceLanguageC_plus_plus_20 = 41
-; DWARFSourceLanguageC_sharp = 48
-; DWARFSourceLanguageCobol74 = 4
-; DWARFSourceLanguageCobol85 = 5
-; DWARFSourceLanguageCrystal = 39
-; DWARFSourceLanguageD = 18
-; DWARFSourceLanguageDylan = 31
-; DWARFSourceLanguageFortran03 = 33
-; DWARFSourceLanguageFortran08 = 34
-; DWARFSourceLanguageFortran18 = 43
-; DWARFSourceLanguageFortran77 = 6
-; DWARFSourceLanguageFortran90 = 7
-; DWARFSourceLanguageFortran95 = 13
-; DWARFSourceLanguageGLSL = 50
-; DWARFSourceLanguageGLSL_ES = 51
-; DWARFSourceLanguageGOOGLE_RenderScript = 61
-; DWARFSourceLanguageGo = 21
-; DWARFSourceLanguageHIP = 46
-; DWARFSourceLanguageHLSL = 52
-; DWARFSourceLanguageHaskell = 23
-; DWARFSourceLanguageHylo = 58
-; DWARFSourceLanguageJava = 10
-; DWARFSourceLanguageJulia = 30
-; DWARFSourceLanguageKotlin = 37
-; DWARFSourceLanguageMetal = 59
-; DWARFSourceLanguageMips_Assembler = 60
-; DWARFSourceLanguageModula2 = 9
-; DWARFSourceLanguageModula3 = 22
-; DWARFSourceLanguageMojo = 49
-; DWARFSourceLanguageMove = 57
-; DWARFSourceLanguageOCaml = 26
-; DWARFSourceLanguageObjC = 15
-; DWARFSourceLanguageObjC_plus_plus = 16
-; DWARFSourceLanguageOpenCL = 20
-; DWARFSourceLanguageOpenCL_CPP = 53
-; DWARFSourceLanguagePLI = 14
-; DWARFSourceLanguagePascal83 = 8
-; DWARFSourceLanguagePython = 19
-; DWARFSourceLanguageRenderScript = 35
-; DWARFSourceLanguageRuby = 56
-; DWARFSourceLanguageRust = 27
-; DWARFSourceLanguageSYCL = 55
-; DWARFSourceLanguageSwift = 29
-; DWARFSourceLanguageUPC = 17
-; DWARFSourceLanguageZig = 38
-; DefaultStorageClass = 0
-; DefaultVisibility = 0
-; DistinctMDOperandPlaceholderMetadataKind = 3
-; DoubleTypeKind = 3
-; ExactMatchComdatSelectionKind = 1
-; ExternalLinkage = 0
-; ExternalWeakLinkage = 12
-; ExtractElement = 50
-; ExtractValue = 53
-; FAdd = 9
-; FCmp = 43
-; FDiv = 16
-; FMul = 13
-; FNeg = 66
-; FP128TypeKind = 5
-; FPExt = 38
-; FPToSI = 34
-; FPToUI = 33
-; FPTrunc = 37
-; FRem = 19
-; FSub = 11
-; FastCallConv = 8
-; FastMathAll = 127
-; FastMathAllowContract = 32
-; FastMathAllowReassoc = 1
-; FastMathAllowReciprocal = 16
-; FastMathApproxFunc = 64
-; FastMathNoInfs = 4
-; FastMathNoNaNs = 2
-; FastMathNoSignedZeros = 8
-; FastMathNone = 0
-; Fence = 55
-; FloatTypeKind = 2
-; Freeze = 68
-; FunctionTypeKind = 9
-; FunctionValueKind = 5
-; GEPFlagInBounds = 1
-; GEPFlagNUSW = 2
-; GEPFlagNUW = 4
-; GHCCallConv = 10
-; GeneralDynamicTLSModel = 1
-; GenericDINodeMetadataKind = 8
-; GetElementPtr = 29
-; GhostLinkage = 13
-; GlobalAliasValueKind = 6
-; GlobalIFuncValueKind = 7
-; GlobalISelAbortDisable = 1
-; GlobalISelAbortDisableWithDiag = 2
-; GlobalISelAbortEnable = 0
-; GlobalUnnamedAddr = 2
-; GlobalVariableValueKind = 8
-; HHVMCCallConv = 82
-; HHVMCallConv = 81
-; HalfTypeKind = 1
-; HiPECallConv = 11
-; HiddenVisibility = 1
-; ICmp = 42
-; IndirectBr = 4
-; InitialExecTLSModel = 3
-; InlineAsmDialectATT = 0
-; InlineAsmDialectIntel = 1
-; InlineAsmValueKind = 23
-; InsertElement = 51
-; InsertValue = 54
-; InstructionValueKind = 24
-; IntEQ = 32
-; IntNE = 33
-; IntSGE = 39
-; IntSGT = 38
-; IntSLE = 41
-; IntSLT = 40
-; IntToPtr = 40
-; IntUGE = 35
-; IntUGT = 34
-; IntULE = 37
-; IntULT = 36
-; IntegerTypeKind = 8
-; IntelOCLBICallConv = 77
-; InternalLinkage = 8
-; Invoke = 5
-; JITSymbolGenericFlagsCallable = 4
-; JITSymbolGenericFlagsExported = 1
-; JITSymbolGenericFlagsMaterializationSideEffectsOnly = 8
-; JITSymbolGenericFlagsNone = 0
-; JITSymbolGenericFlagsWeak = 2
-; LShr = 21
-; LabelTypeKind = 7
-; LandingPad = 59
-; LandingPadCatch = 0
-; LandingPadFilter = 1
-; LargestComdatSelectionKind = 2
-; LinkOnceAnyLinkage = 2
-; LinkOnceODRAutoHideLinkage = 4
-; LinkOnceODRLinkage = 3
-; LinkerDestroySource = 0
-; LinkerPreserveSource_Removed = 1
-; LinkerPrivateLinkage = 15
-; LinkerPrivateWeakLinkage = 16
-; LittleEndian = 1
-; Load = 27
-; LocalAsMetadataMetadataKind = 2
-; LocalDynamicTLSModel = 2
-; LocalExecTLSModel = 4
-; LocalUnnamedAddr = 1
-; MDStringMetadataKind = 0
-; MDTupleMetadataKind = 4
-; MSP430BUILTINCallConv = 94
-; MSP430INTRCallConv = 69
-; MemoryDefValueKind = 3
-; MemoryPhiValueKind = 4
-; MemoryUseValueKind = 2
-; MetadataAsValueValueKind = 22
-; MetadataTypeKind = 14
-; ModuleFlagBehaviorAppend = 4
-; ModuleFlagBehaviorAppendUnique = 5
-; ModuleFlagBehaviorError = 0
-; ModuleFlagBehaviorOverride = 3
-; ModuleFlagBehaviorRequire = 2
-; ModuleFlagBehaviorWarning = 1
-; Mul = 12
-; NoDeduplicateComdatSelectionKind = 3
-; NoUnnamedAddr = 0
-; NotThreadLocal = 0
-; ObjectFile = 1
-; Or = 24
-; OrcJITDylibLookupFlagsMatchAllSymbols = 1
-; OrcJITDylibLookupFlagsMatchExportedSymbolsOnly = 0
-; OrcLookupKindDLSym = 1
-; OrcLookupKindStatic = 0
-; OrcSymbolLookupFlagsRequiredSymbol = 0
-; OrcSymbolLookupFlagsWeaklyReferencedSymbol = 1
-; PHI = 44
-; PPC_FP128TypeKind = 6
-; PTXDeviceCallConv = 72
-; PTXKernelCallConv = 71
-; PointerTypeKind = 12
-; PoisonValueValueKind = 25
-; PreserveAllCallConv = 15
-; PreserveMostCallConv = 14
-; PrintMessageAction = 1
-; PrivateLinkage = 9
-; ProtectedVisibility = 2
-; PtrToInt = 39
-; RealOEQ = 1
-; RealOGE = 3
-; RealOGT = 2
-; RealOLE = 5
-; RealOLT = 4
-; RealONE = 6
-; RealORD = 7
-; RealPredicateFalse = 0
-; RealPredicateTrue = 15
-; RealUEQ = 9
-; RealUGE = 11
-; RealUGT = 10
-; RealULE = 13
-; RealULT = 12
-; RealUNE = 14
-; RealUNO = 8
-; RelocDefault = 0
-; RelocDynamicNoPic = 3
-; RelocPIC = 2
-; RelocROPI = 4
-; RelocROPI_RWPI = 6
-; RelocRWPI = 5
-; RelocStatic = 1
-; RemarkTypeAnalysis = 3
-; RemarkTypeAnalysisAliasing = 5
-; RemarkTypeAnalysisFPCommute = 4
-; RemarkTypeFailure = 6
-; RemarkTypeMissed = 2
-; RemarkTypePassed = 1
-; RemarkTypeUnknown = 0
-; Resume = 58
-; Ret = 1
-; ReturnStatusAction = 2
-; SDiv = 15
-; SExt = 32
-; SIToFP = 36
-; SPIRFUNCCallConv = 75
-; SPIRKERNELCallConv = 76
-; SRem = 18
-; SameSizeComdatSelectionKind = 4
-; ScalableVectorTypeKind = 17
-; Select = 46
-; Shl = 20
-; ShuffleVector = 52
-; Store = 28
-; StructTypeKind = 10
-; Sub = 10
-; SwiftCallConv = 16
-; Switch = 3
-; TailCallKindMustTail = 2
-; TailCallKindNoTail = 3
-; TailCallKindNone = 0
-; TailCallKindTail = 1
-; TargetExtTypeKind = 20
-; TokenTypeKind = 16
-; Trunc = 30
-; UDiv = 14
-; UIToFP = 35
-; URem = 17
-; UndefValueValueKind = 14
-; Unreachable = 7
-; UserOp1 = 47
-; UserOp2 = 48
-; VAArg = 49
-; VectorTypeKind = 13
-; VoidTypeKind = 0
-; WeakAnyLinkage = 5
-; WeakODRLinkage = 6
-; Win64CallConv = 79
-; X8664SysVCallConv = 78
-; X86FastcallCallConv = 65
-; X86INTRCallConv = 83
-; X86RegCallCallConv = 92
-; X86StdcallCallConv = 64
-; X86ThisCallCallConv = 70
-; X86VectorCallCallConv = 80
-; X86_AMXTypeKind = 19
-; X86_FP80TypeKind = 4
-; Xor = 25
-; ZExt = 31
-; LTO_CODEGEN_PIC_MODEL_DEFAULT = 3
-; LTO_CODEGEN_PIC_MODEL_DYNAMIC = 1
-; LTO_CODEGEN_PIC_MODEL_DYNAMIC_NO_PIC = 2
-; LTO_CODEGEN_PIC_MODEL_STATIC = 0
-; LTO_DEBUG_MODEL_DWARF = 1
-; LTO_DEBUG_MODEL_NONE = 0
-; LTO_DS_ERROR = 0
-; LTO_DS_NOTE = 2
-; LTO_DS_REMARK = 3
-; LTO_DS_WARNING = 1
-; LTO_SYMBOL_ALIAS = 32768
-; LTO_SYMBOL_ALIGNMENT_MASK = 31
-; LTO_SYMBOL_COMDAT = 16384
-; LTO_SYMBOL_DEFINITION_MASK = 1792
-; LTO_SYMBOL_DEFINITION_REGULAR = 256
-; LTO_SYMBOL_DEFINITION_TENTATIVE = 512
-; LTO_SYMBOL_DEFINITION_UNDEFINED = 1024
-; LTO_SYMBOL_DEFINITION_WEAK = 768
-; LTO_SYMBOL_DEFINITION_WEAKUNDEF = 1280
-; LTO_SYMBOL_PERMISSIONS_CODE = 160
-; LTO_SYMBOL_PERMISSIONS_DATA = 192
-; LTO_SYMBOL_PERMISSIONS_MASK = 224
-; LTO_SYMBOL_PERMISSIONS_RODATA = 128
-; LTO_SYMBOL_SCOPE_DEFAULT = 6144
-; LTO_SYMBOL_SCOPE_DEFAULT_CAN_BE_HIDDEN = 10240
-; LTO_SYMBOL_SCOPE_HIDDEN = 4096
-; LTO_SYMBOL_SCOPE_INTERNAL = 2048
-; LTO_SYMBOL_SCOPE_MASK = 14336
-; LTO_SYMBOL_SCOPE_PROTECTED = 8192
+
 ; High-level wrapper functions
 (define llvm-module llvm-module-create-with-name)
 (define llvm-builder-create llvm-create-builder)
