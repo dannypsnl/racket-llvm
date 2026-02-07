@@ -3,17 +3,13 @@
   (require rackunit
            "../main.rkt")
 
-  ;; Test LLJIT Builder Creation and Disposal
-  (test-case "Create and dispose LLJIT builder"
+  (test-case "Create LLJIT builder"
     (define builder (llvm-orc-create-lljit-builder))
-    (check-not-false builder)
-    (llvm-orc-dispose-lljit-builder builder))
+    (check-not-false builder))
 
-  ;; Test Thread-Safe Context Creation
-  (test-case "Create and dispose thread-safe context"
+  (test-case "Create thread-safe context"
     (define ctx (llvm-orc-create-new-thread-safe-context))
-    (check-not-false ctx)
-    (llvm-orc-dispose-thread-safe-context ctx))
+    (check-not-false ctx))
 
   ;; Test Thread-Safe Module Creation
   (test-case "Create thread-safe module from LLVM module"

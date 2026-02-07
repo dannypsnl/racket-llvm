@@ -1,6 +1,7 @@
 #lang racket/base
 (provide (all-defined-out))
 (require ffi/unsafe
+         ffi/unsafe/alloc
          "../definer.rkt")
 
 ; LLVM FFI bindings
@@ -2163,31 +2164,25 @@
 (define-llvm llvm-orc-absolute-symbols (_fun _LLVMOrcCSymbolMapPairRef _ulong -> _LLVMOrcOpaqueMaterializationUnitRef) #:c-id LLVMOrcAbsoluteSymbols)
 (define-llvm llvm-orc-create-custom-capi-definition-generator (_fun _pointer _pointer _pointer -> _LLVMOrcOpaqueDefinitionGeneratorRef) #:c-id LLVMOrcCreateCustomCAPIDefinitionGenerator)
 (define-llvm llvm-orc-create-custom-materialization-unit (_fun _string _pointer _LLVMOrcCSymbolFlagsMapPairRef _ulong _LLVMOrcOpaqueSymbolStringPoolEntryRef _pointer _pointer _pointer -> _LLVMOrcOpaqueMaterializationUnitRef) #:c-id LLVMOrcCreateCustomMaterializationUnit)
-(define-llvm llvm-orc-create-dump-objects (_fun _string _string -> _LLVMOrcOpaqueDumpObjectsRef) #:c-id LLVMOrcCreateDumpObjects)
 (define-llvm llvm-orc-create-dynamic-library-search-generator-for-path (_fun _pointer _string _byte _pointer _pointer -> _LLVMErrorRef) #:c-id LLVMOrcCreateDynamicLibrarySearchGeneratorForPath)
 (define-llvm llvm-orc-create-dynamic-library-search-generator-for-process (_fun _pointer _byte _pointer _pointer -> _LLVMErrorRef) #:c-id LLVMOrcCreateDynamicLibrarySearchGeneratorForProcess)
 (define-llvm llvm-orc-create-lljit (_fun _pointer _LLVMOrcOpaqueLLJITBuilderRef -> _LLVMErrorRef) #:c-id LLVMOrcCreateLLJIT)
-(define-llvm llvm-orc-create-lljit-builder (_fun -> _LLVMOrcOpaqueLLJITBuilderRef) #:c-id LLVMOrcCreateLLJITBuilder)
-(define-llvm llvm-orc-create-local-indirect-stubs-manager (_fun _string -> _LLVMOrcOpaqueIndirectStubsManagerRef) #:c-id LLVMOrcCreateLocalIndirectStubsManager)
 (define-llvm llvm-orc-create-local-lazy-call-through-manager (_fun _string _LLVMOrcOpaqueExecutionSessionRef _uint64 _pointer -> _LLVMErrorRef) #:c-id LLVMOrcCreateLocalLazyCallThroughManager)
-(define-llvm llvm-orc-create-new-thread-safe-context (_fun -> _LLVMOrcOpaqueThreadSafeContextRef) #:c-id LLVMOrcCreateNewThreadSafeContext)
-(define-llvm llvm-orc-create-new-thread-safe-module (_fun _LLVMModuleRef _LLVMOrcOpaqueThreadSafeContextRef -> _LLVMOrcOpaqueThreadSafeModuleRef) #:c-id LLVMOrcCreateNewThreadSafeModule)
 (define-llvm llvm-orc-create-rt-dyld-object-linking-layer-with-mcjit-memory-manager-like-callbacks (_fun _LLVMOrcOpaqueExecutionSessionRef _pointer _pointer _pointer _pointer _pointer _pointer _pointer -> _LLVMOrcOpaqueObjectLayerRef) #:c-id LLVMOrcCreateRTDyldObjectLinkingLayerWithMCJITMemoryManagerLikeCallbacks)
-(define-llvm llvm-orc-create-rt-dyld-object-linking-layer-with-section-memory-manager (_fun _LLVMOrcOpaqueExecutionSessionRef -> _LLVMOrcOpaqueObjectLayerRef) #:c-id LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager)
 (define-llvm llvm-orc-dispose-c-symbol-flags-map (_fun _LLVMOrcCSymbolFlagsMapPairRef -> _void) #:c-id LLVMOrcDisposeCSymbolFlagsMap)
 (define-llvm llvm-orc-dispose-definition-generator (_fun _LLVMOrcOpaqueDefinitionGeneratorRef -> _void) #:c-id LLVMOrcDisposeDefinitionGenerator)
-(define-llvm llvm-orc-dispose-dump-objects (_fun _LLVMOrcOpaqueDumpObjectsRef -> _void) #:c-id LLVMOrcDisposeDumpObjects)
-(define-llvm llvm-orc-dispose-indirect-stubs-manager (_fun _LLVMOrcOpaqueIndirectStubsManagerRef -> _void) #:c-id LLVMOrcDisposeIndirectStubsManager)
-(define-llvm llvm-orc-dispose-jit-target-machine-builder (_fun _LLVMOrcOpaqueJITTargetMachineBuilderRef -> _void) #:c-id LLVMOrcDisposeJITTargetMachineBuilder)
+(define-llvm llvm-orc-dispose-dump-objects (_fun _LLVMOrcOpaqueDumpObjectsRef -> _void) #:c-id LLVMOrcDisposeDumpObjects #:wrap (deallocator))
+(define-llvm llvm-orc-dispose-indirect-stubs-manager (_fun _LLVMOrcOpaqueIndirectStubsManagerRef -> _void) #:c-id LLVMOrcDisposeIndirectStubsManager #:wrap (deallocator))
+(define-llvm llvm-orc-dispose-jit-target-machine-builder (_fun _LLVMOrcOpaqueJITTargetMachineBuilderRef -> _void) #:c-id LLVMOrcDisposeJITTargetMachineBuilder #:wrap (deallocator))
 (define-llvm llvm-orc-dispose-lljit (_fun _LLVMOrcOpaqueLLJITRef -> _LLVMErrorRef) #:c-id LLVMOrcDisposeLLJIT)
-(define-llvm llvm-orc-dispose-lljit-builder (_fun _LLVMOrcOpaqueLLJITBuilderRef -> _void) #:c-id LLVMOrcDisposeLLJITBuilder)
+(define-llvm llvm-orc-dispose-lljit-builder (_fun _LLVMOrcOpaqueLLJITBuilderRef -> _void) #:c-id LLVMOrcDisposeLLJITBuilder #:wrap (deallocator))
 (define-llvm llvm-orc-dispose-lazy-call-through-manager (_fun _LLVMOrcOpaqueLazyCallThroughManagerRef -> _void) #:c-id LLVMOrcDisposeLazyCallThroughManager)
 (define-llvm llvm-orc-dispose-materialization-responsibility (_fun _LLVMOrcOpaqueMaterializationResponsibilityRef -> _void) #:c-id LLVMOrcDisposeMaterializationResponsibility)
 (define-llvm llvm-orc-dispose-materialization-unit (_fun _LLVMOrcOpaqueMaterializationUnitRef -> _void) #:c-id LLVMOrcDisposeMaterializationUnit)
-(define-llvm llvm-orc-dispose-object-layer (_fun _LLVMOrcOpaqueObjectLayerRef -> _void) #:c-id LLVMOrcDisposeObjectLayer)
+(define-llvm llvm-orc-dispose-object-layer (_fun _LLVMOrcOpaqueObjectLayerRef -> _void) #:c-id LLVMOrcDisposeObjectLayer #:wrap (deallocator))
 (define-llvm llvm-orc-dispose-symbols (_fun _pointer -> _void) #:c-id LLVMOrcDisposeSymbols)
-(define-llvm llvm-orc-dispose-thread-safe-context (_fun _LLVMOrcOpaqueThreadSafeContextRef -> _void) #:c-id LLVMOrcDisposeThreadSafeContext)
-(define-llvm llvm-orc-dispose-thread-safe-module (_fun _LLVMOrcOpaqueThreadSafeModuleRef -> _void) #:c-id LLVMOrcDisposeThreadSafeModule)
+(define-llvm llvm-orc-dispose-thread-safe-context (_fun _LLVMOrcOpaqueThreadSafeContextRef -> _void) #:c-id LLVMOrcDisposeThreadSafeContext #:wrap (deallocator))
+(define-llvm llvm-orc-dispose-thread-safe-module (_fun _LLVMOrcOpaqueThreadSafeModuleRef -> _void) #:c-id LLVMOrcDisposeThreadSafeModule #:wrap (deallocator))
 (define-llvm llvm-orc-dump-objects--call-operator (_fun _LLVMOrcOpaqueDumpObjectsRef _pointer -> _LLVMErrorRef) #:c-id LLVMOrcDumpObjects_CallOperator)
 (define-llvm llvm-orc-execution-session-create-bare-jit-dylib (_fun _LLVMOrcOpaqueExecutionSessionRef _string -> _LLVMOrcOpaqueJITDylibRef) #:c-id LLVMOrcExecutionSessionCreateBareJITDylib)
 (define-llvm llvm-orc-execution-session-create-jit-dylib (_fun _LLVMOrcOpaqueExecutionSessionRef _pointer _string -> _LLVMErrorRef) #:c-id LLVMOrcExecutionSessionCreateJITDylib)
@@ -2203,7 +2198,6 @@
 (define-llvm llvm-orc-jit-dylib-create-resource-tracker (_fun _LLVMOrcOpaqueJITDylibRef -> _LLVMOrcOpaqueResourceTrackerRef) #:c-id LLVMOrcJITDylibCreateResourceTracker)
 (define-llvm llvm-orc-jit-dylib-define (_fun _LLVMOrcOpaqueJITDylibRef _LLVMOrcOpaqueMaterializationUnitRef -> _LLVMErrorRef) #:c-id LLVMOrcJITDylibDefine)
 (define-llvm llvm-orc-jit-dylib-get-default-resource-tracker (_fun _LLVMOrcOpaqueJITDylibRef -> _LLVMOrcOpaqueResourceTrackerRef) #:c-id LLVMOrcJITDylibGetDefaultResourceTracker)
-(define-llvm llvm-orc-jit-target-machine-builder-create-from-target-machine (_fun _LLVMTargetMachineRef -> _LLVMOrcOpaqueJITTargetMachineBuilderRef) #:c-id LLVMOrcJITTargetMachineBuilderCreateFromTargetMachine)
 (define-llvm llvm-orc-jit-target-machine-builder-detect-host (_fun _pointer -> _LLVMErrorRef) #:c-id LLVMOrcJITTargetMachineBuilderDetectHost)
 (define-llvm llvm-orc-jit-target-machine-builder-get-target-triple (_fun _LLVMOrcOpaqueJITTargetMachineBuilderRef -> _string) #:c-id LLVMOrcJITTargetMachineBuilderGetTargetTriple)
 (define-llvm llvm-orc-jit-target-machine-builder-set-target-triple (_fun _LLVMOrcOpaqueJITTargetMachineBuilderRef _string -> _void) #:c-id LLVMOrcJITTargetMachineBuilderSetTargetTriple)
@@ -2251,6 +2245,42 @@
 (define-llvm llvm-orc-symbol-string-pool-entry-str (_fun _LLVMOrcOpaqueSymbolStringPoolEntryRef -> _string) #:c-id LLVMOrcSymbolStringPoolEntryStr)
 (define-llvm llvm-orc-thread-safe-context-get-context (_fun _LLVMOrcOpaqueThreadSafeContextRef -> _LLVMContextRef) #:c-id LLVMOrcThreadSafeContextGetContext)
 (define-llvm llvm-orc-thread-safe-module-with-module-do (_fun _LLVMOrcOpaqueThreadSafeModuleRef _pointer _pointer -> _LLVMErrorRef) #:c-id LLVMOrcThreadSafeModuleWithModuleDo)
+
+(define-llvm llvm-orc-create-lljit-builder
+  (_fun -> _LLVMOrcOpaqueLLJITBuilderRef)
+  #:c-id LLVMOrcCreateLLJITBuilder
+  #:wrap (allocator llvm-orc-dispose-lljit-builder))
+
+(define-llvm llvm-orc-create-new-thread-safe-context
+  (_fun -> _LLVMOrcOpaqueThreadSafeContextRef)
+  #:c-id LLVMOrcCreateNewThreadSafeContext
+  #:wrap (allocator llvm-orc-dispose-thread-safe-context))
+
+(define-llvm llvm-orc-create-new-thread-safe-module
+  (_fun _LLVMModuleRef _LLVMOrcOpaqueThreadSafeContextRef -> _LLVMOrcOpaqueThreadSafeModuleRef)
+  #:c-id LLVMOrcCreateNewThreadSafeModule
+  #:wrap (allocator llvm-orc-dispose-thread-safe-module))
+
+(define-llvm llvm-orc-create-dump-objects
+  (_fun _string _string -> _LLVMOrcOpaqueDumpObjectsRef)
+  #:c-id LLVMOrcCreateDumpObjects
+  #:wrap (allocator llvm-orc-dispose-dump-objects))
+
+(define-llvm llvm-orc-create-local-indirect-stubs-manager
+  (_fun _string -> _LLVMOrcOpaqueIndirectStubsManagerRef)
+  #:c-id LLVMOrcCreateLocalIndirectStubsManager
+  #:wrap (allocator llvm-orc-dispose-indirect-stubs-manager))
+
+(define-llvm llvm-orc-jit-target-machine-builder-create-from-target-machine
+  (_fun _LLVMTargetMachineRef -> _LLVMOrcOpaqueJITTargetMachineBuilderRef)
+  #:c-id LLVMOrcJITTargetMachineBuilderCreateFromTargetMachine
+  #:wrap (allocator llvm-orc-dispose-jit-target-machine-builder))
+
+(define-llvm llvm-orc-create-rt-dyld-object-linking-layer-with-section-memory-manager
+  (_fun _LLVMOrcOpaqueExecutionSessionRef -> _LLVMOrcOpaqueObjectLayerRef)
+  #:c-id LLVMOrcCreateRTDyldObjectLinkingLayerWithSectionMemoryManager
+  #:wrap (allocator llvm-orc-dispose-object-layer))
+
 (define-llvm llvmppcfp128-type (_fun -> _LLVMTypeRef) #:c-id LLVMPPCFP128Type)
 (define-llvm llvmppcfp128-type-in-context (_fun _LLVMContextRef -> _LLVMTypeRef) #:c-id LLVMPPCFP128TypeInContext)
 (define-llvm llvm-parse-bitcode (_fun (memorybuffer out-param-1 out-param-2) ::
