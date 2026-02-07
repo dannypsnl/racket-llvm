@@ -80,6 +80,18 @@
     Add a global variable into given module.
 }
 
+@defproc[(llvm-add-global-i-func [module LLVMModuleRef?] [name string?] [address-space unsigned] [type LLVMTypeRef?] [flags unsigned] [resolver LLVMValueRef?]) LLVMValueRef?]{
+    Adds a global indirect function to the module with the given name, type, and resolver function.
+}
+
+@defproc[(llvm-add-global-in-address-space [module LLVMModuleRef?] [type LLVMTypeRef?] [name string?] [address-space unsigned]) LLVMValueRef?]{
+    Adds a global variable to the module with the given type, name, and address space.
+}
+
+@defproc[(llvm-add-global-mapping [execution-engine LLVMExecutionEngineRef?] [global LLVMValueRef?] [address pointer]) void?]{
+    Maps a global variable to a specific memory address in the execution engine.
+}
+
 @defproc[(llvm-get-named-global [module LLVMModuleRef?] [global-variable-name string?])
     LLVMValueRef?
 ]{
@@ -174,4 +186,14 @@
 
 @defproc[(llvm-link-in-interpreter) void?]{
     Links in the LLVM interpreter. Must be called before creating an interpreter-based execution engine.
+}
+
+@section{Module Linking and Aliases}
+
+@defproc[(llvm-add-alias2 [module LLVMModuleRef?] [alias-type LLVMTypeRef?] [address-space unsigned] [function LLVMValueRef?] [name string?]) LLVMValueRef?]{
+    Creates an alias for a function in the given module. The alias has the specified type and address space.
+}
+
+@defproc[(llvm-add-analysis-passes [target-machine LLVMTargetMachineRef?] [pass-manager LLVMPassManagerRef?]) void?]{
+    Adds analysis passes to a pass manager for the given target machine.
 }
