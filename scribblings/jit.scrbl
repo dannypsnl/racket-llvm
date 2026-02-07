@@ -73,8 +73,8 @@ Generic values are used to pass arguments to and receive results from JIT-compil
 
 @section{Target Machine Configuration}
 
-@defproc[(llvm-create-target-machine [target LLVMTargetRef?] [triple string?] [cpu string?] [features string?] [level _llvm-code-gen-opt-level] [reloc _llvm-reloc-mode] [model _llvm-code-model])
-    LLVMTargetMachineRef?
+@defproc[(llvm-create-target-machine [target _LLVMTargetRef] [triple string?] [cpu string?] [features string?] [level _llvm-code-gen-opt-level] [reloc _llvm-reloc-mode] [model _llvm-code-model])
+    _LLVMTargetMachineRef
 ]{
     Creates a target machine for the given target, CPU, and features.
     @racket[level] specifies optimization level.
@@ -82,13 +82,13 @@ Generic values are used to pass arguments to and receive results from JIT-compil
     @racket[model] specifies the code model.
 }
 
-@defproc[(llvm-target-machine-emit-to-file [target-machine LLVMTargetMachineRef?] [module LLVMModuleRef?] [filename string?] [codegen _llvm-code-gen-file-type])
+@defproc[(llvm-target-machine-emit-to-file [target-machine _LLVMTargetMachineRef] [module LLVMModuleRef?] [filename string?] [codegen _llvm-code-gen-file-type])
     void?
 ]{
     Emits the module as code to the given file. @racket[codegen] specifies whether to emit assembly or object code.
 }
 
-@defproc[(llvm-target-machine-emit-to-memory-buffer [target-machine LLVMTargetMachineRef?] [module LLVMModuleRef?] [codegen _llvm-code-gen-file-type])
+@defproc[(llvm-target-machine-emit-to-memory-buffer [target-machine _LLVMTargetMachineRef] [module LLVMModuleRef?] [codegen _llvm-code-gen-file-type])
     bytes?
 ]{
     Emits the module as code to a memory buffer. Returns the generated code as bytes.
@@ -119,7 +119,7 @@ Generic values are used to pass arguments to and receive results from JIT-compil
 }
 
 @defproc[(llvm-binary-copy-memory-buffer [binary LLVMBinaryRef?])
-    LLVMMemoryBufferRef?
+    _LLVMMemoryBufferRef
 ]{
     Creates a copy of the memory buffer of a binary object file.
 }
@@ -131,78 +131,78 @@ The ORC JIT (On-Request Compilation) API provides a higher-level JIT compilation
 @subsection{LLJIT Builder and Creation}
 
 @defproc[(llvm-orc-create-lljit-builder)
-    LLVMOrcOpaqueLLJITBuilderRef?
+    _LLVMOrcOpaqueLLJITBuilderRef
 ]{
     Creates a new LLJIT builder for configuring JIT options before creating an LLJIT instance.
 }
 
-@defproc[(llvm-orc-lljit-builder-set-jit-target-machine-builder [builder LLVMOrcOpaqueLLJITBuilderRef?] [target-machine-builder LLVMOrcOpaqueJITTargetMachineBuilderRef?])
+@defproc[(llvm-orc-lljit-builder-set-jit-target-machine-builder [builder _LLVMOrcOpaqueLLJITBuilderRef] [target-machine-builder _LLVMOrcOpaqueJITTargetMachineBuilderRef])
     void?
 ]{
     Sets the target machine builder for the LLJIT builder.
 }
 
-@defproc[(llvm-orc-dispose-lljit-builder [builder LLVMOrcOpaqueLLJITBuilderRef?])
+@defproc[(llvm-orc-dispose-lljit-builder [builder _LLVMOrcOpaqueLLJITBuilderRef])
     void?
 ]{
     Disposes of an LLJIT builder.
 }
 
-@defproc[(llvm-orc-create-lljit [out-lljit (box/c any?)] [builder LLVMOrcOpaqueLLJITBuilderRef?])
-    LLVMErrorRef?
+@defproc[(llvm-orc-create-lljit [out-lljit (box/c any?)] [builder _LLVMOrcOpaqueLLJITBuilderRef])
+    _LLVMErrorRef
 ]{
     Creates an LLJIT instance using the given builder. The LLJIT reference is returned in @racket[out-lljit].
 }
 
-@defproc[(llvm-orc-dispose-lljit [lljit LLVMOrcOpaqueLLJITRef?])
-    LLVMErrorRef?
+@defproc[(llvm-orc-dispose-lljit [lljit _LLVMOrcOpaqueLLJITRef])
+    _LLVMErrorRef
 ]{
     Disposes of an LLJIT instance.
 }
 
 @subsection{Adding Code to LLJIT}
 
-@defproc[(llvm-orc-lljit-add-llvmir-module [lljit LLVMOrcOpaqueLLJITRef?] [dylib LLVMOrcOpaqueJITDylibRef?] [module LLVMOrcOpaqueThreadSafeModuleRef?])
-    LLVMErrorRef?
+@defproc[(llvm-orc-lljit-add-llvmir-module [lljit _LLVMOrcOpaqueLLJITRef] [dylib _LLVMOrcOpaqueJITDylibRef] [module _LLVMOrcOpaqueThreadSafeModuleRef])
+    _LLVMErrorRef
 ]{
     Adds an LLVM IR module to the LLJIT instance.
 }
 
-@defproc[(llvm-orc-lljit-add-object-file [lljit LLVMOrcOpaqueLLJITRef?] [dylib LLVMOrcOpaqueJITDylibRef?] [obj-buffer LLVMMemoryBufferRef?])
-    LLVMErrorRef?
+@defproc[(llvm-orc-lljit-add-object-file [lljit _LLVMOrcOpaqueLLJITRef] [dylib _LLVMOrcOpaqueJITDylibRef] [obj-buffer _LLVMMemoryBufferRef])
+    _LLVMErrorRef
 ]{
     Adds an object file to the LLJIT instance.
 }
 
 @subsection{Looking up Symbols}
 
-@defproc[(llvm-orc-lljit-lookup [lljit LLVMOrcOpaqueLLJITRef?] [out-address (box/c any?)] [symbol string?])
-    LLVMErrorRef?
+@defproc[(llvm-orc-lljit-lookup [lljit _LLVMOrcOpaqueLLJITRef] [out-address (box/c any?)] [symbol string?])
+    _LLVMErrorRef
 ]{
     Looks up a symbol in the LLJIT instance and returns its address in @racket[out-address].
 }
 
 @subsection{LLJIT Introspection}
 
-@defproc[(llvm-orc-lljit-get-main-jit-dylib [lljit LLVMOrcOpaqueLLJITRef?])
-    LLVMOrcOpaqueJITDylibRef?
+@defproc[(llvm-orc-lljit-get-main-jit-dylib [lljit _LLVMOrcOpaqueLLJITRef])
+    _LLVMOrcOpaqueJITDylibRef
 ]{
     Returns the main JIT dylib of the LLJIT instance.
 }
 
-@defproc[(llvm-orc-lljit-get-execution-session [lljit LLVMOrcOpaqueLLJITRef?])
-    LLVMOrcOpaqueExecutionSessionRef?
+@defproc[(llvm-orc-lljit-get-execution-session [lljit _LLVMOrcOpaqueLLJITRef])
+    _LLVMOrcOpaqueExecutionSessionRef
 ]{
     Returns the execution session of the LLJIT instance.
 }
 
-@defproc[(llvm-orc-lljit-get-data-layout-str [lljit LLVMOrcOpaqueLLJITRef?])
+@defproc[(llvm-orc-lljit-get-data-layout-str [lljit _LLVMOrcOpaqueLLJITRef])
     string?
 ]{
     Returns the data layout string of the LLJIT instance.
 }
 
-@defproc[(llvm-orc-lljit-get-triple-string [lljit LLVMOrcOpaqueLLJITRef?])
+@defproc[(llvm-orc-lljit-get-triple-string [lljit _LLVMOrcOpaqueLLJITRef])
     string?
 ]{
     Returns the target triple string of the LLJIT instance.
@@ -211,18 +211,18 @@ The ORC JIT (On-Request Compilation) API provides a higher-level JIT compilation
 @subsection{Thread-Safe Modules}
 
 @defproc[(llvm-orc-create-new-thread-safe-context)
-    LLVMOrcOpaqueThreadSafeContextRef?
+    _LLVMOrcOpaqueThreadSafeContextRef
 ]{
     Creates a thread-safe context for use with ORC JIT.
 }
 
-@defproc[(llvm-orc-create-new-thread-safe-module [module LLVMModuleRef?] [context LLVMOrcOpaqueThreadSafeContextRef?])
-    LLVMOrcOpaqueThreadSafeModuleRef?
+@defproc[(llvm-orc-create-new-thread-safe-module [module LLVMModuleRef?] [context _LLVMOrcOpaqueThreadSafeContextRef])
+    _LLVMOrcOpaqueThreadSafeModuleRef
 ]{
     Creates a thread-safe module from an LLVM module and context.
 }
 
-@defproc[(llvm-orc-dispose-thread-safe-context [context LLVMOrcOpaqueThreadSafeContextRef?])
+@defproc[(llvm-orc-dispose-thread-safe-context [context _LLVMOrcOpaqueThreadSafeContextRef])
     void?
 ]{
     Disposes of a thread-safe context.

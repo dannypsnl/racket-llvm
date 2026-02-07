@@ -16,9 +16,22 @@ Core LLVM reference types used throughout the API.
             [_LLVMExecutionEngineRef ctype?]
             [_LLVMPassManagerRef ctype?]
             [_LLVMPassManagerBuilderRef ctype?]
+            [_LLVMTargetRef ctype?]
             [_LLVMTargetDataRef ctype?]
             [_LLVMTargetMachineRef ctype?]
-            [_LLVMTargetMachineOptionsRef ctype?])]{
+            [_LLVMTargetMachineOptionsRef ctype?]
+            [_LLVMComdatRef ctype?]
+            [_LLVMMetadataRef ctype?]
+            [_LLVMModuleFlagEntryRef ctype?]
+            [_LLVMErrorRef ctype?]
+            [_LLVMOrcOpaqueLLJITBuilderRef ctype?]
+            [_LLVMOrcOpaqueLLJITRef ctype?]
+            [_LLVMOrcOpaqueJITDylibRef ctype?]
+            [_LLVMOrcOpaqueJITTargetMachineBuilderRef ctype?]
+            [_LLVMOrcOpaqueThreadSafeModuleRef ctype?]
+            [_LLVMOrcOpaqueThreadSafeContextRef ctype?]
+            [_LLVMOrcOpaqueExecutionSessionRef ctype?]
+            [_LLVMMemoryBufferRef ctype?])]{
     LLVM primitive types.
 }
 

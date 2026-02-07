@@ -73,6 +73,9 @@ All arithmetic instructions take a @racket[builder], operands, and an optional @
 
     The alias @racket[llvm-build-int-cmp] is also available.
 }
+@defproc[(llvm-build-int-cmp [builder LLVMBuilderRef?] [predicate symbol?] [lhs LLVMValueRef?] [rhs LLVMValueRef?] [name string? ""])
+    LLVMValueRef?
+]{Alias of @racket[llvm-build-icmp]}
 
 @defproc[(llvm-build-fcmp [builder LLVMBuilderRef?] [predicate symbol?] [lhs LLVMValueRef?] [rhs LLVMValueRef?] [name string? ""])
     LLVMValueRef?
@@ -84,6 +87,9 @@ All arithmetic instructions take a @racket[builder], operands, and an optional @
 
     The alias @racket[llvm-build-float-cmp] is also available.
 }
+@defproc[(llvm-build-float-cmp [builder LLVMBuilderRef?] [predicate symbol?] [lhs LLVMValueRef?] [rhs LLVMValueRef?] [name string? ""])
+    LLVMValueRef?
+]{Alias of @racket[llvm-build-fcmp]}
 
 @defproc[(llvm-build-is-null [builder LLVMBuilderRef?] [v LLVMValueRef?] [name string? ""]) LLVMValueRef?]{Checks if value is null.}
 @defproc[(llvm-build-is-not-null [builder LLVMBuilderRef?] [v LLVMValueRef?] [name string? ""]) LLVMValueRef?]{Checks if value is not null.}

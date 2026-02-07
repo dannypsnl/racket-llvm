@@ -138,21 +138,21 @@
 
 @section{COMDAT (Common Data)}
 
-@defproc[(llvm-get-comdat-selection-kind [comdat LLVMComdatRef?]) _llvm-comdat-selection-kind]{
+@defproc[(llvm-get-comdat-selection-kind [comdat _LLVMComdatRef]) _llvm-comdat-selection-kind]{
     Returns the selection strategy for a COMDAT symbol.
 }
 
-@defproc[(llvm-set-comdat-selection-kind [comdat LLVMComdatRef?] [kind _llvm-comdat-selection-kind]) void?]{
+@defproc[(llvm-set-comdat-selection-kind [comdat _LLVMComdatRef] [kind _llvm-comdat-selection-kind]) void?]{
     Sets the selection strategy for a COMDAT symbol (how duplicates are handled during linking).
 }
 
 @section{Module Flags}
 
-@defproc[(llvm-add-module-flag [module LLVMModuleRef?] [behavior _llvm-module-flag-behavior] [key string?] [value LLVMMetadataRef?]) void?]{
+@defproc[(llvm-add-module-flag [module LLVMModuleRef?] [behavior _llvm-module-flag-behavior] [key string?] [value _LLVMMetadataRef]) void?]{
     Adds a module flag with the specified behavior for handling conflicts.
 }
 
-@defproc[(llvm-module-flag-entries-get-flag-behavior [entry LLVMModuleFlagEntryRef?] [index exact-nonnegative-integer?]) _llvm-module-flag-behavior]{
+@defproc[(llvm-module-flag-entries-get-flag-behavior [entry _LLVMModuleFlagEntryRef] [index exact-nonnegative-integer?]) _llvm-module-flag-behavior]{
     Returns the behavior of a module flag entry.
 }
 
