@@ -179,6 +179,50 @@ All arithmetic instructions take a @racket[builder], operands, and an optional @
 @defproc[(llvm-build-global-string-ptr [builder LLVMBuilderRef?] [str string?] [name string? ""]) LLVMValueRef?]{Creates a pointer to a global string constant. The alias @racket[llvm-build-string-ptr] is also available.}
 @defproc[(llvm-build-string-ptr [builder LLVMBuilderRef?] [str string?] [name string? ""]) LLVMValueRef?]{Alias of @racket[llvm-build-global-string-ptr]}
 
+@section{Atomic Operations}
+
+@defproc[(llvm-build-atomic-rmw [builder LLVMBuilderRef?] [op _llvm-atomic-rmw-bin-op] [ptr LLVMValueRef?] [val LLVMValueRef?] [ordering _llvm-atomic-ordering] [single-thread? boolean?] [name string? ""])
+    LLVMValueRef?
+]{
+    Builds an atomic read-modify-write instruction. @racket[op] specifies the operation, @racket[ordering] specifies memory semantics.
+}
+
+@defproc[(llvm-build-atomic-cmp-xchg [builder LLVMBuilderRef?] [ptr LLVMValueRef?] [cmp LLVMValueRef?] [new LLVMValueRef?] [success-order _llvm-atomic-ordering] [failure-order _llvm-atomic-ordering] [single-thread? boolean?] [name string? ""])
+    LLVMValueRef?
+]{
+    Builds an atomic compare-and-swap instruction. Returns a struct with the old value and a boolean indicating success.
+}
+
+@defproc[(llvm-get-atomic-rmw-bin-op [inst LLVMValueRef?]) _llvm-atomic-rmw-bin-op]{
+    Returns the atomic RMW operation of an atomic RMW instruction.
+}
+
+@defproc[(llvm-set-atomic-rmw-bin-op [inst LLVMValueRef?] [op _llvm-atomic-rmw-bin-op]) void?]{
+    Sets the atomic RMW operation of an atomic RMW instruction.
+}
+
+@section{Call Optimization}
+
+@defproc[(llvm-get-tail-call-kind [call LLVMValueRef?]) _llvm-tail-call-kind]{
+    Returns the tail call kind of a function call instruction.
+}
+
+@defproc[(llvm-set-tail-call-kind [call LLVMValueRef?] [kind _llvm-tail-call-kind]) void?]{
+    Sets the tail call kind of a function call instruction.
+}
+
+@section{Inline Assembly}
+
+@defproc[(llvm-get-inline-asm [ty LLVMTypeRef?] [asm-string string?] [constraint-string string?] [has-side-effects? boolean?] [is-align-stack? boolean?] [dialect _llvm-inline-asm-dialect] [can-throw? boolean?])
+    LLVMValueRef?
+]{
+    Creates an inline assembly value. @racket[dialect] specifies AT&T or Intel syntax.
+}
+
+@defproc[(llvm-get-inline-asm-dialect [value LLVMValueRef?]) _llvm-inline-asm-dialect]{
+    Returns the assembly dialect (AT&T or Intel) of an inline assembly value.
+}
+
 @section{Value Queries}
 
 @defproc[(llvm-typeof [val LLVMValueRef?]) LLVMTypeRef?]{Returns the type of a value.}

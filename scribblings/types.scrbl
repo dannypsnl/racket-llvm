@@ -80,6 +80,10 @@ LLVM types represent the type system of the intermediate representation. Every v
 
 @section{Type Queries}
 
+@defproc[(llvm-get-type-kind [type LLVMTypeRef?]) _llvm-type-kind]{
+    Returns the kind (classification) of a type.
+}
+
 @defproc[(llvm-get-int-type-width [type LLVMTypeRef?]) exact-nonnegative-integer?]{Returns the bit width of an integer type.}
 @defproc[(llvm-get-return-type [function-type LLVMTypeRef?]) LLVMTypeRef?]{Returns the return type of a function type.}
 @defproc[(llvm-count-param-types [function-type LLVMTypeRef?]) exact-nonnegative-integer?]{Returns the number of parameter types in a function type.}

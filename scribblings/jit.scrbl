@@ -70,3 +70,42 @@ Generic values are used to pass arguments to and receive results from JIT-compil
 ]{
     convert @racket[generic-value] back to racket @racket[number?]
 }
+
+@section{Target Machine Configuration}
+
+@defproc[(llvm-create-target-machine [target LLVMTargetRef?] [triple string?] [cpu string?] [features string?] [level _llvm-code-gen-opt-level] [reloc _llvm-reloc-mode] [model _llvm-code-model])
+    LLVMTargetMachineRef?
+]{
+    Creates a target machine for the given target, CPU, and features.
+    @racket[level] specifies optimization level.
+    @racket[reloc] specifies the relocation model.
+    @racket[model] specifies the code model.
+}
+
+@defproc[(llvm-target-machine-emit-to-file [target-machine LLVMTargetMachineRef?] [module LLVMModuleRef?] [filename string?] [codegen _llvm-code-gen-file-type])
+    void?
+]{
+    Emits the module as code to the given file. @racket[codegen] specifies whether to emit assembly or object code.
+}
+
+@defproc[(llvm-target-machine-emit-to-memory-buffer [target-machine LLVMTargetMachineRef?] [module LLVMModuleRef?] [codegen _llvm-code-gen-file-type])
+    bytes?
+]{
+    Emits the module as code to a memory buffer. Returns the generated code as bytes.
+}
+
+@defproc[(llvm-target-machine-options-set-code-gen-opt-level [options LLVMTargetMachineOptionsRef?] [level _llvm-code-gen-opt-level]) void?]{
+    Sets the code generation optimization level for target machine options.
+}
+
+@defproc[(llvm-target-machine-options-set-code-model [options LLVMTargetMachineOptionsRef?] [model _llvm-code-model]) void?]{
+    Sets the code model for target machine options.
+}
+
+@defproc[(llvm-target-machine-options-set-reloc-mode [options LLVMTargetMachineOptionsRef?] [reloc _llvm-reloc-mode]) void?]{
+    Sets the relocation mode for target machine options.
+}
+
+@defproc[(llvm-set-target-machine-global-i-sel-abort [machine LLVMTargetMachineRef?] [mode _llvm-global-i-sel-abort-mode]) void?]{
+    Controls whether GlobalISel aborts on failure.
+}

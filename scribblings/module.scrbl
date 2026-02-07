@@ -94,6 +94,68 @@
     Gets the initializer of a global variable.
 }
 
+@section{Global Value Properties}
+
+@defproc[(llvm-get-linkage [global LLVMValueRef?]) _llvm-linkage]{
+    Returns the linkage type of a global value.
+}
+
+@defproc[(llvm-set-linkage [global LLVMValueRef?] [linkage _llvm-linkage]) void?]{
+    Sets the linkage type of a global value.
+}
+
+@defproc[(llvm-get-visibility [global LLVMValueRef?]) _llvm-visibility]{
+    Returns the visibility of a global symbol (default, hidden, or protected).
+}
+
+@defproc[(llvm-set-visibility [global LLVMValueRef?] [visibility _llvm-visibility]) void?]{
+    Sets the visibility of a global symbol.
+}
+
+@defproc[(llvm-get-unnamed-address [global LLVMValueRef?]) _llvm-unnamed-addr]{
+    Returns the unnamed address mode of a global value.
+}
+
+@defproc[(llvm-set-unnamed-address [global LLVMValueRef?] [addr _llvm-unnamed-addr]) void?]{
+    Sets the unnamed address mode of a global value.
+}
+
+@defproc[(llvm-get-dll-storage-class [global LLVMValueRef?]) _llvmdll-storage-class]{
+    Returns the DLL storage class of a global value (Windows: import or export).
+}
+
+@defproc[(llvm-set-dll-storage-class [global LLVMValueRef?] [storage-class _llvmdll-storage-class]) void?]{
+    Sets the DLL storage class of a global value.
+}
+
+@defproc[(llvm-get-thread-local-mode [global LLVMValueRef?]) _llvm-thread-local-mode]{
+    Returns the thread-local storage mode of a global variable.
+}
+
+@defproc[(llvm-set-thread-local-mode [global LLVMValueRef?] [mode _llvm-thread-local-mode]) void?]{
+    Sets the thread-local storage mode of a global variable.
+}
+
+@section{COMDAT (Common Data)}
+
+@defproc[(llvm-get-comdat-selection-kind [comdat LLVMComdatRef?]) _llvm-comdat-selection-kind]{
+    Returns the selection strategy for a COMDAT symbol.
+}
+
+@defproc[(llvm-set-comdat-selection-kind [comdat LLVMComdatRef?] [kind _llvm-comdat-selection-kind]) void?]{
+    Sets the selection strategy for a COMDAT symbol (how duplicates are handled during linking).
+}
+
+@section{Module Flags}
+
+@defproc[(llvm-add-module-flag [module LLVMModuleRef?] [behavior _llvm-module-flag-behavior] [key string?] [value LLVMMetadataRef?]) void?]{
+    Adds a module flag with the specified behavior for handling conflicts.
+}
+
+@defproc[(llvm-module-flag-entries-get-flag-behavior [entry LLVMModuleFlagEntryRef?] [index exact-nonnegative-integer?]) _llvm-module-flag-behavior]{
+    Returns the behavior of a module flag entry.
+}
+
 @section{Context}
 
 @defproc[(llvm-context-create) LLVMContextRef?]{
