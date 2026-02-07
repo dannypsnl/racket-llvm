@@ -2517,7 +2517,7 @@
                                   (pack? : _bool)
                                   -> _void)
   #:c-id LLVMStructSetBody)
-(define-llvm llvm-struct-type (_fun (element-types [packed? #f]) ::
+(define-llvm llvm-struct-type (_fun ([element-types (list)] [packed? #f]) ::
                                   (element-types : (_list i _LLVMTypeRef))
                                   (_uint = (length element-types))
                                   (packed? : _bool)
