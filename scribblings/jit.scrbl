@@ -94,15 +94,15 @@ Generic values are used to pass arguments to and receive results from JIT-compil
     Emits the module as code to a memory buffer. Returns the generated code as bytes.
 }
 
-@defproc[(llvm-target-machine-options-set-code-gen-opt-level [options LLVMTargetMachineOptionsRef?] [level _llvm-code-gen-opt-level]) void?]{
+@defproc[(llvm-target-machine-options-set-code-gen-opt-level [options _LLVMTargetMachineOptionsRef?] [level _llvm-code-gen-opt-level]) void?]{
     Sets the code generation optimization level for target machine options.
 }
 
-@defproc[(llvm-target-machine-options-set-code-model [options LLVMTargetMachineOptionsRef?] [model _llvm-code-model]) void?]{
+@defproc[(llvm-target-machine-options-set-code-model [options _LLVMTargetMachineOptionsRef?] [model _llvm-code-model]) void?]{
     Sets the code model for target machine options.
 }
 
-@defproc[(llvm-target-machine-options-set-reloc-mode [options LLVMTargetMachineOptionsRef?] [reloc _llvm-reloc-mode]) void?]{
+@defproc[(llvm-target-machine-options-set-reloc-mode [options _LLVMTargetMachineOptionsRef?] [reloc _llvm-reloc-mode]) void?]{
     Sets the relocation mode for target machine options.
 }
 
