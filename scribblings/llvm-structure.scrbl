@@ -31,7 +31,8 @@ Core LLVM reference types used throughout the API.
             [_LLVMOrcOpaqueThreadSafeModuleRef ctype?]
             [_LLVMOrcOpaqueThreadSafeContextRef ctype?]
             [_LLVMOrcOpaqueExecutionSessionRef ctype?]
-            [_LLVMMemoryBufferRef ctype?])]{
+            [_LLVMMemoryBufferRef ctype?]
+            [_LLVMDIBuilderRef ctype?])]{
     LLVM primitive types.
 }
 

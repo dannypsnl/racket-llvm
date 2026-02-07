@@ -137,7 +137,7 @@ Possible values include:
 ]
 }
 
-@section{Atomic Operations}
+@section{Enums for Atomic Operations}
 
 @defidform[_llvm-atomic-ordering]{
 Specifies memory ordering semantics for atomic operations. Used by @racket[llvm-build-atomic-rmw], @racket[llvm-build-atomic-cmp-xchg], and related functions.
@@ -187,7 +187,7 @@ Possible values:
 ]
 }
 
-@section{Inline Assembly}
+@section{Enums for Inline Assembly}
 
 @defidform[_llvm-inline-asm-dialect]{
 Specifies the assembly dialect for inline assembly. Used by @racket[llvm-get-inline-asm], @racket[llvm-get-inline-asm-dialect].
