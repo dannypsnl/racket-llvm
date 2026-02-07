@@ -21,13 +21,13 @@ Functions for JIT compilation and execution of LLVM IR.
 }
 
 @defproc[(llvm-get-execution-engine-target-data [engine LLVMExecutionEngineRef?])
-    LLVMTargetDataRef?
+    _LLVMTargetDataRef?
 ]{
     Returns the target data associated with the execution engine.
 }
 
 @defproc[(llvm-get-execution-engine-target-machine [engine LLVMExecutionEngineRef?])
-    LLVMTargetMachineRef?
+    _LLVMTargetMachineRef?
 ]{
     Returns the target machine associated with the execution engine.
 }
