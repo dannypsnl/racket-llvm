@@ -109,3 +109,17 @@ Generic values are used to pass arguments to and receive results from JIT-compil
 @defproc[(llvm-set-target-machine-global-i-sel-abort [machine LLVMTargetMachineRef?] [mode _llvm-global-i-sel-abort-mode]) void?]{
     Controls whether GlobalISel aborts on failure.
 }
+
+@section{Binary Objects}
+
+@defproc[(llvm-binary-get-type [binary LLVMBinaryRef?])
+    _llvm-binary-type
+]{
+    Returns the type of a binary object file.
+}
+
+@defproc[(llvm-binary-copy-memory-buffer [binary LLVMBinaryRef?])
+    LLVMMemoryBufferRef?
+]{
+    Creates a copy of the memory buffer of a binary object file.
+}
